@@ -3,13 +3,13 @@ Projet de S3 à EPITA du groupe "Les Fiers de Hache".
 
 Développé par :
 
-Antoine SAINSON
+- Antoine SAINSON
 
-Maxence CARON--LASNE
+- Maxence CARON--LASNE
 
-Lucas
+- Lucas
 
-Paul
+- Paul
 
 
 
