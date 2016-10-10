@@ -7,9 +7,9 @@ Développé par :
 
 - Maxence CARON--LASNE
 
-- Lucas Monségu
+- Lucas MONSEGU
 
-- Paul Beneteau
+- Paul BENETEAU
 
 
 
