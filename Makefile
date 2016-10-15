@@ -1,21 +1,24 @@
-## Simple SDL mini code
- 
-CC=clang
- 
-CPPFLAGS= `pkg-config --cflags sdl`
-CFLAGS= -Wall -Wextra -std=c99 -O3
-LDFLAGS=
-LDLIBS= `pkg-config --libs sdl` -lSDL_image
- 
-SRC= main.c
-OBJ= ${SRC:.c=.o}
- 
-all: main
- 
-main: ${OBJ}
- 
+TARGET = prog
+LIBS = -lm -lSDLmain -lSDL -lSDL_image
+
+CC = gcc
+CFLAGS = -g -Wall 
+.PHONY: default all clean
+
+default: $(TARGET)
+all: default
+
+OBJECTS = $(patsubst %.c, %.o, $(wildcard *.c))
+HEADERS = $(wildcard *.h)
+
+%.o: %.c $(HEADERS)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+.PRECIOUS: $(TARGET) $(OBJECTS)
+
+$(TARGET): $(OBJECTS)
+	$(CC) $(OBJECTS) -Wall $(LIBS) -o $@
+
 clean:
-	rm -f *~ *.o
-	rm -f main
- 
-# END
+	-rm -f *.o
+	-rm -f $(TARGET)
