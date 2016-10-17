@@ -3,7 +3,7 @@ Projet de S3 à EPITA du groupe "Les Fiers de Hache".
 
 Développé par :
 
-- CHF DE PROJET: Antoine SAINSON
+- CHEF DE PROJET: Antoine SAINSON
 
 - Maxence CARON--LASNE
 
