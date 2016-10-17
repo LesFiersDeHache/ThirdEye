@@ -35,7 +35,7 @@ void bitmapInit(Bitmap* bm, unsigned short width, unsigned short height)
     }
 }
  
-int getPixel(Bitmap* bm, unsigned short x, unsigned short y)
+ unsigned short getPixel(Bitmap* bm, unsigned short x, unsigned short y)
 {
    // assert(x < bm->width); // Debug
    // assert(y < bm->height); // Debug
@@ -93,10 +93,10 @@ static int minValue(int x, int y)
  
 void adjustBitmap(Bitmap* bm_in, Bitmap* bm_out, unsigned short x1, unsigned short y1, unsigned short x2, unsigned short y2)
 {
-    assert(x1 < bm_in->width); // Debug
-    assert(y1 < bm_in->height); // Debug    
-    assert(x2 < bm_in->width); // Debug
-    assert(y2 < bm_in->height); // Debug
+    assert(x1 <= bm_in->width); // Debug
+    assert(y1 <= bm_in->height); // Debug    
+    assert(x2 <= bm_in->width); // Debug
+    assert(y2 <= bm_in->height); // Debug
    
     bitmapInit(bm_out, distBtwPts(x1, x2) + 1, distBtwPts(y1, y2) + 1);
    
@@ -104,7 +104,7 @@ void adjustBitmap(Bitmap* bm_in, Bitmap* bm_out, unsigned short x1, unsigned sho
     for ( unsigned short i = x1; i <= x2 ; ++i ) {
        
         for ( unsigned short j = y1; j <= y2; ++j ) {
-            warnx("Try to copy at (%hd,%hd).", i, j);
+            //warnx("Try to copy at (%hd,%hd).", i, j);
             int px = getPixel(bm_in, i, j);
             setPixel(bm_out, i - x1, j - y1, px);
         }

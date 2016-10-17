@@ -4,7 +4,7 @@
 #include <SDL/SDL_image.h>
 #include <assert.h>
 #include "Bitmap.h"
-
+#include "CutBitmap.h"
 
 void wait_for_keypressed(void) {
   SDL_Event             event;
@@ -48,7 +48,7 @@ SDL_Surface* display_image(SDL_Surface *img) {
          img->w, img->h, SDL_GetError());
   }
  
-  /* Blit onto the screen surface */
+  
   if(SDL_BlitSurface(img, NULL, screen, NULL) < 0)
     warnx("BlitSurface error: %s\n", SDL_GetError());
  
@@ -166,7 +166,9 @@ Bitmap LoadToBitmap(char *path)
 
 int main(int argc, char *argv[])
 {  
-  Bitmap b = LoadToBitmap("globe.bmp");    
+  Bitmap b = LoadToBitmap("wow.bmp");
+  struct list* into; 
+  into = cutblockY(b);
   return 0;  
 }
 

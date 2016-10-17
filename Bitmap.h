@@ -1,6 +1,7 @@
 # include <stdlib.h>
 
-
+#ifndef ONLYONCE_BITMAP
+#define ONLYONCE_BITMAP
 typedef enum Pixel
 {
 
@@ -35,3 +36,4 @@ static int maxValue(int x, int y);
 static int minValue(int x, int y);
 void adjustBitmap(Bitmap* bm_in, Bitmap* bm_out, unsigned short x1, unsigned short y1, unsigned short x2, unsigned short y2);
 
+#endif
