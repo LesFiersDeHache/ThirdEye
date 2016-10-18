@@ -6,5 +6,7 @@
 
 struct list* cutblockY(Bitmap bmp);
 
+struct list* cutblockX(Bitmap bmp);
 
+struct list* CutLines(Bitmap bmp);
 #endif

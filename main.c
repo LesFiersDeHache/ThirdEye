@@ -168,7 +168,7 @@ int main(int argc, char *argv[])
 {  
   Bitmap b = LoadToBitmap("wow.bmp");
   struct list* into; 
-  into = cutblockY(b);
+  into = CutLines(b);//18
   return 0;  
 }
 

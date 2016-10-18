@@ -104,9 +104,10 @@ void adjustBitmap(Bitmap* bm_in, Bitmap* bm_out, unsigned short x1, unsigned sho
     for ( unsigned short i = x1; i <= x2 ; ++i ) {
        
         for ( unsigned short j = y1; j <= y2; ++j ) {
-            //warnx("Try to copy at (%hd,%hd).", i, j);
+            warnx("Try to copy at (%hd,%hd).", i, j);
             int px = getPixel(bm_in, i, j);
             setPixel(bm_out, i - x1, j - y1, px);
+            printf("imout\n");
         }
     }
    
