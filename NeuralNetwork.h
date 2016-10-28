@@ -11,7 +11,7 @@ typedef struct NeuralNetwork {
 
     float* weights;
     unsigned int size_of_weights;
-    float* biaises
+    float* biaises;
     unsigned int size_of_biaises;
 
 } NeuralNetwork;
@@ -28,6 +28,11 @@ unsigned int index_weight);
 
 void setWeight(NeuralNetwork* NN, unsigned short layer, unsigned int neuron,
 unsigned int index_weight, float new_weight);
+
+void setBiais(NeuralNetwork* NN, unsigned short layer, unsigned int neuron,
+float new_biais);
+
+float getBiais(NeuralNetwork* NN, unsigned short layer, unsigned int neuron);
 
 void printNeuralNetwork(NeuralNetwork* NN);
 

@@ -207,6 +207,18 @@ unsigned int index_weight, float new_weight) {
     NN->weights[getIndex(NN, layer, neuron, index_weight)] = new_weight;
 }
 
+
+void setBiais(NeuralNetwork* NN, unsigned short layer, unsigned int neuron,
+float new_biais) {
+    
+    //TODO
+}
+
+float getBiais(NeuralNetwork* NN, unsigned short layer, unsigned int neuron) {
+    //TODO
+    return 0f;
+}
+
 // ############################## PRINT NEURAL NET ###################################//
 
 void printNeuralNetwork(NeuralNetwork* NN) {
