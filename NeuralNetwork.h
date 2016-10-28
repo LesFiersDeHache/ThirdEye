@@ -33,8 +33,6 @@ void printNeuralNetwork(NeuralNetwork* NN);
 
 void freeNeuralNetwork(NeuralNetwork* NN);
 
-float* feedNeuralNetwork(NeuralNetwork* NN, float* inputs);
-
 // ######### STATIC FUNCTIONS ######### //
 
 static float randomWeight();
