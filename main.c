@@ -164,6 +164,30 @@ Bitmap LoadToBitmap(char *path)
   return BitM;    
 }
 
+SDL_Surface* BitmapToSurface(Bitmap* bitm)
+{
+  SDL_Surface *surface = SDL_CreateRGBSurface(0, bitm->width,bitm->height, 32, 0, 0, 0, 0);
+  for (int i = 0; i < bitm->width; i++)
+  {
+    for (int j = 0; j < bitm->height; j++)
+      {
+	int pixel = getPixel(bitm,i,j);
+	if (pixel == 0)
+		{		 
+		 Uint32 newpixel = SDL_MapRGB(surface->format, 0, 0, 0);
+		 putpixel2(surface,i,j,newpixel);
+		}
+	else
+		{
+		  Uint32 newpixel = SDL_MapRGB(surface->format, 255, 255, 255);
+		 putpixel2(surface,i,j,newpixel);
+		}
+      }    
+  }
+  return surface;
+
+}
+
 int main(int argc, char *argv[])
 {  
   Bitmap b = LoadToBitmap("wow.bmp");
