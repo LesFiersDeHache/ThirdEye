@@ -24,8 +24,8 @@ float* buildErrorsArray(NeuralNetwork* NN, float out, float out2) // output = Ex
 {  
   float lasterror = out - out2;  
   int length = 0;
-  for (short k = 0; k < NN->nb_layers; k++)    
-      length += NN->nb_neurons[k];    
+  for (short d = 1; d < NN->nb_layers; d++)    
+      length += NN->nb_neurons[d];    
   float *tab = malloc(length*sizeof(float));
   tab[0] = lasterror;  
   int h = 0;
@@ -48,7 +48,20 @@ float* buildErrorsArray(NeuralNetwork* NN, float out, float out2) // output = Ex
     }
   
   //free(tab);
+  reverseArray(tab,length);
   return tab;
+}
+
+
+void reverseArray(float*tab,int len)
+{
+  int k= len/2;
+  for(int i=0;i<k;i++)
+    {
+      float d = tab[i];
+      tab[i]= tab[len-1-i];
+      tab[len-1-i] = d;
+    }
 }
 
 /*
@@ -69,4 +82,5 @@ int main(int argc, char *argv[])
   printf("tab6 = %3.3f\n",*(tab2+6));  
   return 0;  
 }
+
 */
