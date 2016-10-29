@@ -35,12 +35,13 @@ typedef struct NeuralNetwork {
 
 //return a random weight
 static float randomWeight() {
-    return ((float)(rand() % 1000)) / ((float)(1000));
+    //return ((float)(rand() % 1000)) / ((float)(1000));
+    return 0.5;
 }
 
 //return a random biais
 static float randomBiaises() {
-    //TODO
+    //return ((float)(rand() % 1000)) / ((float)(1000));
     return 0.0;
 }
 
@@ -59,8 +60,6 @@ Outputs :
 void initNeuralNetwork(NeuralNetwork* NN, unsigned short nb_layers, 
 unsigned int* nb_neurons) {
 
-    // warnx("init : 1");
-
     unsigned int size_of_weights = 0;
     unsigned int size_of_biaises = 0;
 
@@ -70,13 +69,9 @@ unsigned int* nb_neurons) {
         size_of_biaises += nb_neurons[i];
     }
    
-    //warnx("init : 2");
-
     //Set NN variables
     //NN->nb_layers = malloc(sizeof(unsigned short));
     NN->nb_layers = nb_layers;
-
-    //warnx("init 2.1");
 
     //Set nb_neurons tab
     NN->nb_neurons = malloc(nb_layers * sizeof(unsigned int));
@@ -84,51 +79,34 @@ unsigned int* nb_neurons) {
         NN->nb_neurons[i] = nb_neurons[i];
     }
 
-    //warnx("init : 3");
-
     //Allocate memory for weights tab
     NN->weights = malloc(sizeof(float) * size_of_weights);
-
-    //warnx("init : 4");
 
     if ( NN->weights == NULL ) {
         err(0, "Allocation problem : malloc failed to initialize NN->weights");
     }
 
-    //warnx("init : 5");
-
     NN->size_of_weights = size_of_weights;
     
-    //warnx("init : 6");
-
     //Allocate memory for biaises tab
     NN->biaises = malloc(sizeof(unsigned int) * size_of_biaises);
     
-    //warnx("init : 7");
-
     if ( NN->biaises == NULL ) {
         err(0, "Allocation problem : malloc failed to initialize NN->biaises");
     }
     
-    //warnx("init : 8");
-
     NN->size_of_biaises = size_of_biaises;
     
-    //warnx("init : 9");
-
     //Initialize weights tab with random weights
     for ( unsigned int i = 0 ; i < size_of_weights ; ++i ) {
         NN->weights[i] = randomWeight();
     }
 
-    //warnx("init : 10");
-    
     //Initialize biaises tab with random biaises
     for ( unsigned int i = 0 ; i < size_of_biaises ; ++i ) {
-        NN->biaises[i] = randomBiaises();    
+        float rd = randomBiaises();
+        NN->biaises[i] = rd;    
     }
-
-    //warnx("init : 11");
 }
 
 // ############################## LOAD NEURAL NETWORK #########################//
@@ -210,16 +188,40 @@ unsigned int index_weight, float new_weight) {
 
 void setBiais(NeuralNetwork* NN, unsigned short layer, unsigned int neuron,
 float new_biais) {
-    
-    //TODO
+
+    unsigned int index = 0;
+
+    for (unsigned short i = 1 ; i < layer ; ++i) {
+        index += NN->nb_neurons[i];
+    }
+    //warnx("setBiais index : %d", index + neuron);
+    NN->biaises[index + neuron] = new_biais;
 }
 
 float getBiais(NeuralNetwork* NN, unsigned short layer, unsigned int neuron) {
-    //TODO
-    return 0.0;
+
+    unsigned int index = 0;
+
+    for (unsigned short i = 1 ; i < layer ; ++i) {
+        index += NN->nb_neurons[i];
+    }
+    //warnx("getBiais index : %d", index + neuron);
+    float biais = NN->biaises[index + neuron];
+    return biais;
 }
 
 // ############################## PRINT NEURAL NET ###################################//
+
+/*
+static void printBiaises(NeuralNetwork* NN) {
+
+    warnx("Biaises : ");
+    for ( unsigned int i = 0 ; i < NN->size_of_biaises ; ++i ) {
+        warnx("Neuron n°%d : %f ; ", i, NN->biaises[i]);
+    }
+
+}
+*/
 
 void printNeuralNetwork(NeuralNetwork* NN) {
 
@@ -233,7 +235,7 @@ void printNeuralNetwork(NeuralNetwork* NN) {
                 printf("w(%d) = %f ; ", k, getWeight(NN, i, j, k));
             }
 
-            printf("|\n");
+            printf("| Biais = %f |\n", getBiais(NN, i, j));
         }
         printf("\n");
     }
@@ -255,3 +257,21 @@ void freeNeuralNetwork(NeuralNetwork* NN) {
     //TODO
 }
 
+/*
+int main() {
+
+    //warnx("1");
+    NeuralNetwork NN;
+    NeuralNetwork* nn = &NN;
+
+    unsigned int nb_neurons[3] = {2, 3, 1} ;
+
+    initNeuralNetwork(nn, 3, nb_neurons);
+    
+    //warnx("2");
+
+    printNeuralNetwork(nn);
+
+    //warnx("3");
+    return 0;
+}*/

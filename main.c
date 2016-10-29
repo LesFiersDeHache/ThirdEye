@@ -3,9 +3,12 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <assert.h>
-#include "Bitmap.h"
-#include "CutBitmap.h"
 
+#include "FeedForward.h"
+//#include "Bitmap.h"
+//#include "CutBitmap.h"
+
+/*
 void wait_for_keypressed(void) {
   SDL_Event             event;
   // Infinite loop, waiting for event
@@ -196,6 +199,37 @@ int main(int argc, char *argv[])
   return 0;  
 }
 
+*/
 
+int main() {
+    
+    //warnx("LEEET'S");
+    NeuralNetwork nn;
+    NeuralNetwork* NN = &nn;
+    
+    //warnx("1");
+    unsigned int nb_neurons[3] = { 2, 3, 1 };
+    initNeuralNetwork(NN, 3, nb_neurons);
+    
+    //warnx("2");
+    float inputs[2] = {1.0, 0.0};
+    Outputs outputs_obj;
+    Outputs* outputs = &outputs_obj;
+    
+    //warnx("3");
+    initOutputs(outputs, 3, 3);
+    
+    //warnx("4");
+    printOutputs(outputs, 0);
+
+    //warnx("5");
+    feedForward(NN, inputs, 2, outputs);
+
+    //warnx("6");
+    printOutputs(outputs, 0);
+
+    //warnx("7");
+    return 0;
+}
 
 

@@ -18,20 +18,9 @@ typedef struct Outputs {
 void initOutputs(Outputs* outputs, unsigned short nb_layers, unsigned int
 max_neuron);
 
-static void setOutput(Outputs* outputs, unsigned short layer, unsigned int
-neuron, float new_out);
-
-static float computeOutput(Outputs* outputs, NeuralNetwork* NN, unsigned short
-layer,
-unsigned int neuron);
-
-static void feedOneLayer( NeuralNetwork* NN, Outputs* outputs, unsigned short
-layer_to_feed);
-
-static unsigned short layerWithMaxNeurons(NeuralNetwork* NN);
 
 void feedForward (NeuralNetwork* NN, float* inputs, unsigned int inputs_len,
 Outputs* outputs);
 
-
+void printOutputs(Outputs* outputs, unsigned short begin_layer);
 

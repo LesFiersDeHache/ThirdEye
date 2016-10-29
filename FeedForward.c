@@ -25,6 +25,10 @@ max_neuron) {
     outputs->nb_layers = nb_layers;
     outputs->max_neuron = max_neuron;
 
+    for ( unsigned int i = 0 ; i < nb_layers * max_neuron ; ++i ) {
+        outputs->tab[i] = -1.0;
+    }
+
 }
 
 static void setOutput(Outputs* outputs, unsigned short layer, unsigned int neuron, float new_out) {
@@ -49,9 +53,10 @@ void printOutputs(Outputs* outputs, unsigned short begin_layer) {
 
 // ###### STATIC FOR FF #####//
 
-static void fillOutputsWithInputs(float* inputs, Outputs* outputs) {
+static void fillOutputsWithInputs(float* inputs, Outputs* outputs, unsigned int
+nb_inputs) {
     
-    for ( unsigned int i = 0 ; i < outputs->max_neuron ; ++i ) {
+    for ( unsigned int i = 0 ; i < nb_inputs ; ++i ) {
         outputs->tab[i] = inputs[i];
     }
 }
@@ -97,7 +102,7 @@ void feedForward (NeuralNetwork* NN, float* inputs, unsigned int inputs_len, Out
     initOutputs(outputs, NN->nb_layers, layerWithMaxNeurons(NN)); 
 
     assert(inputs_len <= outputs->max_neuron);
-    fillOutputsWithInputs(inputs, outputs);
+    fillOutputsWithInputs(inputs, outputs, inputs_len);
     
     for ( unsigned short i = 1 ; i < NN->nb_layers ; ++i ) {
         feedOneLayer(NN, outputs, i);
@@ -127,4 +132,4 @@ int main(){
     //free(outputs);
 
     return 0;
-} */
+}*/
