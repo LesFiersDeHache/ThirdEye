@@ -1,21 +1,31 @@
+//save.c
+
+
 # include <stdlib.h>
-# include "NeuralNetwork.h"
+//# include "NeuralNetwork.h"
 # include <stdio.h>
 # include <err.h>
 
-char* float_to_char(float f, char* c) {
-c[0] = (int)f;
-c[1] = ',';
-for (int i = 2; i < 6; ++i)
+void floatToChar(float f, char* c) {
+
+short t = (int)f;
+
+c[0] = t;
+
+return c;
+}
+
+
+int main(int argc, char *argv[])
 {
-	f = f * 10;
-	c[i] = f % 10	
+  float f = 1.110;
+  char* c [6];
+  printf("%s\n",c);
+  printf("wow");
 }
 
-}
 
-
-void save(NeuralNetwork nn, char *folder_weights_path, char *folder_biaises_path)
+/*void save(NeuralNetwork* nn, char *biaises_path, char *weights_path)
 {
 	//Weights
 
@@ -81,4 +91,4 @@ void load(NeuralNetwork nn, char *folder_weights_path, char *folder_biaises_path
 			++weights;
 		}	
 	}
-}
+}*/

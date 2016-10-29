@@ -2,12 +2,15 @@
 # include "NeuralNetwork.h"
 
 
-#ifndef ONLYONCE_BITMAP
-#define ONLYONCE_BITMAP
+#ifndef ONLYONCE_SAVE
+#define ONLYONCE_SAVE
 
-void save(NeuralNetwork nn);
+void floatToChar(float f, char* c);
 
-void load(NeuralNetwork nn);
+//void save(NeuralNetwork *nn, char* biases_path, char* weights_path);
+
+//void load(NeuralNetwork *nn, char* biases_path, char* weights_path);
+
 
 #endif
 
