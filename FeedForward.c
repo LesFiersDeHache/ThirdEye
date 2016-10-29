@@ -35,7 +35,7 @@ static void setOutput(Outputs* outputs, unsigned short layer, unsigned int neuro
     outputs->tab[layer * outputs->max_neuron + neuron] = new_out;
 }
 
-static float getOutput(Outputs* outputs, unsigned layer, unsigned int neuron) {
+float getOutput(Outputs* outputs, unsigned short layer, unsigned int neuron) {
 
     return outputs->tab[layer * outputs->max_neuron + neuron];
 }
