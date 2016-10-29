@@ -37,16 +37,3 @@ float getBiais(NeuralNetwork* NN, unsigned short layer, unsigned int neuron);
 void printNeuralNetwork(NeuralNetwork* NN);
 
 void freeNeuralNetwork(NeuralNetwork* NN);
-
-// ######### STATIC FUNCTIONS ######### //
-
-static float randomWeight();
-
-static float randomBiais();
-
-static unsigned int getNbOfWeights(NeuralNetwork* NN, unsigned short layer);
-
-static unsigned int getIndex(NeuralNetwork* NN, unsigned short layer, unsigned
-int neuron, unsigned int index_weight);
-
-

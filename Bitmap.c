@@ -81,7 +81,7 @@ static unsigned short distBtwPts(unsigned int x, unsigned int y)
     }
 }
  
-static int maxValue(int x, int y)
+/*static int maxValue(int x, int y)
 {
     return (x > y) ? x : y;
 }
@@ -90,7 +90,8 @@ static int minValue(int x, int y)
 {
     return (x < y) ? x : y;
 }
- 
+*/
+
 void adjustBitmap(Bitmap* bm_in, Bitmap* bm_out, unsigned short x1, unsigned short y1, unsigned short x2, unsigned short y2)
 {
     assert(x1 <= bm_in->width); // Debug
