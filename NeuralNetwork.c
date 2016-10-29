@@ -35,14 +35,14 @@ typedef struct NeuralNetwork {
 
 //return a random weight
 static float randomWeight() {
-    //return ((float)(rand() % 1000)) / ((float)(1000));
-    return 0.5;
+    return ((float)(rand() % 1000)) / ((float)(1000));
+    //return 0.5;
 }
 
 //return a random biais
 static float randomBiaises() {
-    //return ((float)(rand() % 1000)) / ((float)(1000));
-    return 0.0;
+    return ((float)(rand() % 1000)) / ((float)(1000));
+    //return 0.0;
 }
 
 /* initNeuralNetwork
@@ -60,6 +60,9 @@ Outputs :
 void initNeuralNetwork(NeuralNetwork* NN, unsigned short nb_layers, 
 unsigned int* nb_neurons) {
 
+    time_t t;
+    srand((unsigned) time(&t));
+    
     unsigned int size_of_weights = 0;
     unsigned int size_of_biaises = 0;
 
