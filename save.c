@@ -3,6 +3,18 @@
 # include <stdio.h>
 # include <err.h>
 
+char* float_to_char(float f, char* c) {
+c[0] = (int)f;
+c[1] = ',';
+for (int i = 2; i < 6; ++i)
+{
+	f = f * 10;
+	c[i] = f % 10	
+}
+
+}
+
+
 void save(NeuralNetwork nn, char *folder_weights_path, char *folder_biaises_path)
 {
 	//Weights
