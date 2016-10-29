@@ -42,14 +42,24 @@ float getOutput(Outputs* outputs, unsigned short layer, unsigned int neuron) {
 
 void printOutputs(Outputs* outputs, unsigned short begin_layer) {
     
+    printf("### OUTPUTS ###\n");
+    printf("|");
+    for ( unsigned short i = begin_layer ; i < outputs->nb_layers ; ++i ) {
+        printf("Layer %d  |", i);
+    }
+    printf("\n");
     for ( unsigned int j = 0 ; j < outputs->max_neuron ; ++j ) {
         printf("|");
         for ( unsigned short i = begin_layer ; i < outputs->nb_layers ; ++i ) {
+            if (getOutput(outputs, i, j) >= 0) { printf(" "); }
             printf("%f|", getOutput(outputs, i, j));
         }
         printf("\n");
     }
+    printf("\n");
 }
+
+
 
 // ###### STATIC FOR FF #####//
 

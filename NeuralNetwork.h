@@ -34,6 +34,7 @@ float new_biais);
 
 float getBiais(NeuralNetwork* NN, unsigned short layer, unsigned int neuron);
 
+void prettyPrintNeuralNetwork(NeuralNetwork* NN, unsigned short min_layer);
 void printNeuralNetwork(NeuralNetwork* NN);
 
 void freeNeuralNetwork(NeuralNetwork* NN);

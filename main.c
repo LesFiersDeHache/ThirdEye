@@ -210,7 +210,7 @@ int main() {
     //warnx("1");
     unsigned int nb_neurons[3] = { 2, 3, 1 };
     initNeuralNetwork(NN, 3, nb_neurons);
-    printNeuralNetwork(NN);
+    prettyPrintNeuralNetwork(NN, 0);
 
     //warnx("2");
     float inputs[2] = {1.0, 0.0};

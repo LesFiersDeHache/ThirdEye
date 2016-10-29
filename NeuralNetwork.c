@@ -226,6 +226,26 @@ static void printBiaises(NeuralNetwork* NN) {
 }
 */
 
+void prettyPrintNeuralNetwork(NeuralNetwork* NN, unsigned short min_layer) {
+    
+    printf("### NEURAL NETWORK ###\n");
+
+    for ( unsigned short layer = min_layer ; layer < NN->nb_layers ; ++layer ) {
+        printf("\nLayer %d :\n", layer);
+
+        for ( unsigned int neuron = 0 ; neuron < NN->nb_neurons[layer] ;
+        neuron++ ) {
+            printf("|\n|__Neuron n°%d : biais : %f\n", neuron, getBiais(NN, layer, neuron));
+
+            for ( unsigned int w = 0 ; w < getNbOfWeights(NN, layer) ; ++w ) {
+                printf("|  |__w(%d) = %f\n", w, getWeight(NN, layer, neuron, w));
+            }
+        }
+    }
+    printf("\n");
+
+}
+
 void printNeuralNetwork(NeuralNetwork* NN) {
 
     for ( short i = 1 ; i < NN->nb_layers; ++i ) {
@@ -273,7 +293,7 @@ int main() {
     
     //warnx("2");
 
-    printNeuralNetwork(nn);
+    prettyPrintNeuralNetwork(nn);
 
     //warnx("3");
     return 0;
