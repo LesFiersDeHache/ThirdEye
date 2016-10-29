@@ -216,7 +216,7 @@ float new_biais) {
 
 float getBiais(NeuralNetwork* NN, unsigned short layer, unsigned int neuron) {
     //TODO
-    return 0f;
+    return 0.0;
 }
 
 // ############################## PRINT NEURAL NET ###################################//

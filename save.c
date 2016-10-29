@@ -15,7 +15,7 @@ c[0] = t;
 return c;
 }
 
-
+/*
 int main(int argc, char *argv[])
 {
   float f = 1.110;
@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
   printf("%s\n",c);
   printf("wow");
 }
-
+*/
 
 /*void save(NeuralNetwork* nn, char *biaises_path, char *weights_path)
 {
