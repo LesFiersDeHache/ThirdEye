@@ -7,4 +7,6 @@ float sigmoid(float x);
 
 float dSigmoid(float x);
 
+float* buildErrorsArray(NeuralNetwork* NN, float out, float out2);
+
 #endif

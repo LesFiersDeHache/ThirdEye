@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <math.h>
+#include <err.h>
+#include <stdlib.h>
 #include"NeuralNetwork.h"
 /*
 float sigmoid(float x)
@@ -11,5 +13,60 @@ float dSigmoid(float x)
 {
 	float sig = sigmoid(x);
 	return sig * (1. - sig);
+}
+*/
+
+// erreur couche  = erreur couche + 1 * poids couche + 1
+// last error = TrueOutput - Output
+
+
+float* buildErrorsArray(NeuralNetwork* NN, float out, float out2) // output = Exepected Output, trueoutput = FoundOutput
+{  
+  float lasterror = out - out2;  
+  int length = 0;
+  for (short k = 0; k < NN->nb_layers; k++)    
+      length += NN->nb_neurons[k];    
+  float *tab = malloc(length*sizeof(float));
+  tab[0] = lasterror;  
+  int h = 0;
+  int start = 0;  
+  for(unsigned short i =NN->nb_layers-2; i >0;i--) // place layer
+    {                 
+      for(int j = NN->nb_neurons[i]-1; j >= 0;j--) // place neuron ou on calcule le poids
+	{	 	  
+	  float somme = 0;
+	  start = h; //h = position du neurone de la couche + 1 a ajouter dans le tableau;
+	  for(int k = NN->nb_neurons[i + 1]-1; k >= 0;k--) // place neuron couche + 1
+	    {	      
+	      somme += tab[h] * getWeight(NN,i+1,k,j);	  
+	      h++;		
+	    }
+	  h = start;	  
+	  tab[h + NN->nb_neurons[i + 1] + NN->nb_neurons[i] - j-1] = somme;
+	}
+      h += NN->nb_neurons[i + 1];      
+    }
+  
+  //free(tab);
+  return tab;
+}
+
+/*
+int main(int argc, char *argv[])
+{  
+  NeuralNetwork NN;
+  NeuralNetwork *nn = &NN;  
+  int tab[4] = {2, 3, 3, 1};
+  initNeuralNetwork(nn,4,tab);
+  printNeuralNetwork(nn);
+  float *tab2 = buildErrorsArray(nn,0.8,0.4);
+  printf("tab0 = %3.3f\n",*tab2);
+  printf("tab1 = %3.3f\n",*(tab2+1));
+  printf("tab2 = %3.3f\n",*(tab2+2));
+  printf("tab3 = %3.3f\n",*(tab2+3));
+  printf("tab4 = %3.3f\n",*(tab2+4));
+  printf("tab5 = %3.3f\n",*(tab2+5));
+  printf("tab6 = %3.3f\n",*(tab2+6));  
+  return 0;  
 }
 */
