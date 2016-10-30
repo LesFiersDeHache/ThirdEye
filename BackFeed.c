@@ -72,7 +72,7 @@ void UpdateWeight(NeuralNetwork* NN, float goodres,Outputs* outputs)//expected r
 	      //float w = getWeight(NN,i,k,j);
 	      int s = FindError(NN,i,k);
 	      //printf("---------------------------k = %d\n",k);
-	      float nw = dSigmoid(getOutput(outputs,i-1,k)*tab[s]);
+	      float nw = dSigmoid(getOutput(outputs,i-1,k))*tab[s];
 	      //printf("new weight=%2.5f\n",nw);
 	      setWeight(NN,i,j,k,nw);
 	    }
