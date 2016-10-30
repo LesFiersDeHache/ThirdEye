@@ -41,8 +41,8 @@ static float randomWeight() {
 
 //return a random biais
 static float randomBiaises() {
-    return ((float)(rand() % 1000)) / ((float)(1000));
-    //return 0.0;
+    //return ((float)(rand() % 1000)) / ((float)(1000));
+    return 0.0;
 }
 
 /* initNeuralNetwork

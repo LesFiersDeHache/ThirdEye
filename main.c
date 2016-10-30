@@ -10,19 +10,21 @@
 #include "Sigmoid.h"
 #include <time.h>
 
-#define NB_OF_LOOPS 1
+#define NB_OF_LOOPS 10000 
 #define MODE 1
+#define PRINT 0
+void neuralLearning(NeuralNetwork* NN, Outputs* outputs, 
+                    unsigned int nb_of_feeding);
 
-void neuralLearning(NeuralNetwork* NN, Outputs* outputs, unsigned int nb_of_feeding);
-
-void neuralTesting(NeuralNetwork* NN, Outputs* outputs, unsigned int nb_of_testing);
+float neuralTesting(NeuralNetwork* NN, Outputs* outputs, 
+                   unsigned int nb_of_testing);
 
 int main (int argc, char *argv[])
 {
   // ##### INIT ##### //
 
   // SET RANDOM
-  warnx("1");
+  printf("###### LET'S BEGIN THIS! #####\n\n");
   srand(time(NULL));
   
   // INIT NEURAL NETWORK
@@ -32,9 +34,8 @@ int main (int argc, char *argv[])
   unsigned int nb_neurons[3] = {2, 3, 1}; 
   
   initNeuralNetwork(NN, 3, nb_neurons);
-  warnx("2");
+  printf("#### NEURAL NETWORK ####\n\n");
   printNeuralNetwork(NN);
-  warnx("3");
   
   // INIT OUTPUTS
 
@@ -43,15 +44,19 @@ int main (int argc, char *argv[])
   
   // ##### EXEC ##### //
   
+  float p = 0;
+  float q = 0;
+
   switch (MODE) {
     case 0 :
       neuralLearning(NN, outputs, NB_OF_LOOPS);
       break;
   
     case 1 :
-      neuralTesting(NN, outputs, NB_OF_LOOPS);
+      p = neuralTesting(NN, outputs, NB_OF_LOOPS);
       neuralLearning(NN, outputs, NB_OF_LOOPS);
-      neuralTesting(NN, outputs, NB_OF_LOOPS);
+      q = neuralTesting(NN, outputs, NB_OF_LOOPS);
+      printf("%f ; %f", p, q);
       break;
 
     default :
@@ -62,38 +67,61 @@ int main (int argc, char *argv[])
   return 0;
 }
 
-void neuralLearning(NeuralNetwork* NN, Outputs* outputs, unsigned int nb_of_feeding)
+void neuralLearning(NeuralNetwork* NN, Outputs* outputs, 
+                    unsigned int nb_of_feeding)
 {
-  warnx("Preparing learning : 3, 2, 1...\nENGAGE!"); 
+
+  printf("\n\n#######################\n");
+  printf("### Engage learning ###\n"); 
+  printf("#######################\n\n");
+  
   for (unsigned int i = 0 ; i < nb_of_feeding ; ++i)
   {
+    #if PRINT != 0  
+    printf("## ENGAGE LEARNING N°%d! ##\n", i);
+    #endif
+
     short a = rand() % 2;
     short b = rand() % 2;
-    warnx("a = %d ; b = %d\n", a, b);
     short expected_output = (a != b);
+    
+    #if PRINT != 0
+    printf("## Testing with : ");
+    printf("a = %d ; b = %d ; exp_out = %d ##\n", a, b, expected_output);
+    #endif
 
     float inputs[2] = {(float)a, (float)b};
-
-    warnx("\n### Feeding n.%d in progress...", i);
+    
+    #if PRINT != 0
+    printf("\n## FEEDING n.%d in progress... ##\n", i);
+    #endif
     // FeedForward
     feedForward(NN, inputs, 2, outputs);
-    warnx("\n# Feeding n.%d over", i);
-    printOutputs(outputs, 0);
     
-    warnx("\n### Updating n.%d of the neural network...", i);
+    #if PRINT != 0   
+    printf("# Feeding n.%d over #\n", i);
+    printf("# New Outputs : #\n");
+    printOutputs(outputs, 0);
+    printf("\n## UPDATING n.%d of the neural network... ##\n", i);
+    #endif
+
     // Update Weight
     UpdateWeight(NN, expected_output, outputs);
-    warnx("\n# Updating n.%d over.", i);
+    
+    #if PRINT != 0
+    printf("# Updating n.%d over. #\n", i);
+    printf("# New Weights : \n");
     printNeuralNetwork(NN);
-    printOutputs(outputs, 0);
-   
+    printf("## END OF LEARNING N°%d! ##", i);
+    #endif
   }
-  warnx("\n##### Learning complete. ######");
+  warnx("\n### Learning complete. ####");
   printNeuralNetwork(NN);
   printOutputs(outputs, 0);
 }
 
-void neuralTesting(NeuralNetwork* NN, Outputs* outputs, unsigned int nb_of_testing)
+float neuralTesting(NeuralNetwork* NN, Outputs* outputs, 
+                   unsigned int nb_of_testing)
 {
   unsigned int nb_of_win = 0;
   float final_output;
@@ -101,9 +129,12 @@ void neuralTesting(NeuralNetwork* NN, Outputs* outputs, unsigned int nb_of_testi
   
   for (unsigned int i = 0 ; i < nb_of_testing ; ++i)
   {
-    short a = rand() % 1;
-    short b = rand() % 1;
+    short a = rand() % 2;
+    short b = rand() % 2;
+    #if PRINT != 0
     warnx("a = %d ; b = %d\n", a, b);
+    #endif
+    
     short expected_output = (a != b);
 
     float inputs[2] = {(float)a, (float)b};
@@ -120,4 +151,5 @@ void neuralTesting(NeuralNetwork* NN, Outputs* outputs, unsigned int nb_of_testi
   }
   
   warnx("Percentage of win = %f", (float)nb_of_win / (float)nb_of_testing);
+  return (float)nb_of_win / (float)nb_of_testing;
 }
