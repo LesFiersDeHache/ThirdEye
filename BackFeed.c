@@ -22,7 +22,7 @@ float dSigmoid(float x)
 // last error = TrueOutput - Output
 
 
-float* buildErrorsArray(NeuralNetwork* NN, float out, float out2) // output = Exepected Output, trueoutput = FoundOutput
+float* buildErrorsArray(NeuralNetwork* NN, float out, float out2, float learning_speed) // output = Exepected Output, trueoutput = FoundOutput
 {
   //printf("error1=%2.5f\n",out);
   //printf("error2=%2.5f\n",out2);
@@ -57,10 +57,10 @@ float* buildErrorsArray(NeuralNetwork* NN, float out, float out2) // output = Ex
   return tab;
 }
 
-void UpdateWeight(NeuralNetwork* NN, float goodres,Outputs* outputs)//expected res, my res
+void UpdateWeight(NeuralNetwork* NN, float goodres,Outputs* outputs, float learning_speed)//expected res, my res
 {
   float myres = getOutput(outputs,outputs->nb_layers-1,0);
-  float* tab = buildErrorsArray(NN,goodres,myres);
+  float* tab = buildErrorsArray(NN,goodres,myres,1.0);
   for(int i = 1; i <NN->nb_layers;i++)
     {
       //printf("-------------------------------i = %d\n",i);

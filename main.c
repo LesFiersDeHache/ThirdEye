@@ -116,7 +116,7 @@ void neuralLearning(NeuralNetwork* NN, Outputs* outputs,
     #endif
 
     // Update Weight
-    UpdateWeight(NN, expected_output, outputs);
+    UpdateWeight(NN, expected_output, outputs,1.0);
     
     #if PRINT != 0
     printf("# Updating n.%d over. #\n", i);
