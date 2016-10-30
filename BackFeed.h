@@ -9,7 +9,8 @@ float dSigmoid(float x);
 
 float* buildErrorsArray(NeuralNetwork* NN, float out, float out2);
 
-void UpdateWeight(NeuralNetwork* NN, float goodres,Outputs* outputs);
+// Use this
+void UpdateWeight(NeuralNetwork* NN, float goodres, Outputs* outputs);
 
 
 int FindError(NeuralNetwork* NN,int layer, int num);

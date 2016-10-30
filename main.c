@@ -8,247 +8,116 @@
 #include "FeedForward.h"
 #include "BackFeed.h"
 #include "Sigmoid.h"
+#include <time.h>
 
-//#include "Bitmap.h"
-//#include "CutBitmap.h"
+#define NB_OF_LOOPS 1
+#define MODE 1
 
-/*
-void wait_for_keypressed(void) {
-  SDL_Event             event;
-  // Infinite loop, waiting for event
-  for (;;) {
-    // Take an event
-    SDL_PollEvent( &event );
-    // Switch on event type
-    switch (event.type) {
-    // Someone pressed a key -> leave the function
-    case SDL_KEYDOWN: return;
-    default: break;
-    }
-  // Loop until we got the expected event
-  }
-}
-void init_sdl(void) {
-  // Init only the video part
-  if( SDL_Init(SDL_INIT_VIDEO)==-1 ) {
-    // If it fails, die with an error message
-    errx(1,"Could not initialize SDL: %s.\n", SDL_GetError());
-  }
-  // We don't really need a function for that ...
-}
-SDL_Surface* load_image(char *path) {
-  SDL_Surface          *img;
-  // Load an image using SDL_image with format detection
-  img = IMG_Load(path);
-  if (!img)
-    // If it fails, die with an error message
-    errx(3, "can't load %s: %s", path, IMG_GetError());
-  return img;
-}
-SDL_Surface* display_image(SDL_Surface *img) {
-  SDL_Surface          *screen;
-  // Set the window to the same size as the image
-  screen = SDL_SetVideoMode(img->w, img->h, 0, SDL_SWSURFACE|SDL_ANYFORMAT);
-  if ( screen == NULL ) {
-    // error management
-    errx(1, "Couldn't set %dx%d video mode: %s\n",
-         img->w, img->h, SDL_GetError());
-  }
- 
+void neuralLearning(NeuralNetwork* NN, Outputs* outputs, unsigned int nb_of_feeding);
+
+void neuralTesting(NeuralNetwork* NN, Outputs* outputs, unsigned int nb_of_testing);
+
+int main (int argc, char *argv[])
+{
+  // ##### INIT ##### //
+
+  // SET RANDOM
+  warnx("1");
+  srand(time(NULL));
   
-  if(SDL_BlitSurface(img, NULL, screen, NULL) < 0)
-    warnx("BlitSurface error: %s\n", SDL_GetError());
- 
-  // Update the screen
-  SDL_UpdateRect(screen, 0, 0, img->w, img->h);
- 
-  // wait for a key
-  wait_for_keypressed();
- 
-  // return the screen for further uses
-  return screen;
-}
+  // INIT NEURAL NETWORK
+  NeuralNetwork NN_struct;
+  NeuralNetwork* NN = &NN_struct;
 
+  unsigned int nb_neurons[3] = {2, 3, 1}; 
+  
+  initNeuralNetwork(NN, 3, nb_neurons);
+  warnx("2");
+  printNeuralNetwork(NN);
+  warnx("3");
+  
+  // INIT OUTPUTS
 
+  Outputs outputs_struct;
+  Outputs* outputs = &outputs_struct;
+  
+  // ##### EXEC ##### //
+  
+  switch (MODE) {
+    case 0 :
+      neuralLearning(NN, outputs, NB_OF_LOOPS);
+      break;
+  
+    case 1 :
+      neuralTesting(NN, outputs, NB_OF_LOOPS);
+      neuralLearning(NN, outputs, NB_OF_LOOPS);
+      neuralTesting(NN, outputs, NB_OF_LOOPS);
+      break;
 
-static inline
-Uint8* pixelref(SDL_Surface *surf, unsigned x, unsigned y) {
-  int bpp = surf->format->BytesPerPixel;
-  return (Uint8*)surf->pixels + y * surf->pitch + x * bpp;
-}
- 
-Uint32 getpixelSurface(SDL_Surface *surface, unsigned x, unsigned y) {
-  Uint8 *p = pixelref(surface, x, y);
-  switch(surface->format->BytesPerPixel) {
-  case 1:
-    return *p;
-  case 2:
-    return *(Uint16 *)p;
-  case 3:
-    if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
-      return p[0] << 16 | p[1] << 8 | p[2];
-    else
-      return p[0] | p[1] << 8 | p[2] << 16;
-  case 4:
-    return *(Uint32 *)p;
-  }
+    default :
+      err(1, "bad argument");
+      break;
+    }
+
   return 0;
 }
 
-
-
-/////// Structure Bitmap
-
-
-/////////
-
-
-
-void putpixel2(SDL_Surface *surface, unsigned x, unsigned y, Uint32 pixel) {
-  Uint8 *p = pixelref(surface, x, y);
-  switch(surface->format->BytesPerPixel) {
-  case 1:
-    *p = pixel;
-    break;
-  case 2:
-    *(Uint16 *)p = pixel;
-    break;
-  case 3:
-    if(SDL_BYTEORDER == SDL_BIG_ENDIAN) { 
-      p[0] = (pixel >> 16) & 0xff;
-      p[1] = (pixel >> 8) & 0xff;
-      p[2] = pixel & 0xff;
-    } else {
-      p[0] = pixel & 0xff;
-      p[1] = (pixel >> 8) & 0xff;
-      p[2] = (pixel >> 16) & 0xff;
-    }
-    break;
-  case 4:
-    *(Uint32 *)p = pixel;
-    break;
-  }
-}
-  
-
-
-
-
-Bitmap LoadToBitmap(char *path)
+void neuralLearning(NeuralNetwork* NN, Outputs* outputs, unsigned int nb_of_feeding)
 {
-  init_sdl();
-  SDL_Surface *surface = load_image(path);  
-  int width = surface -> w;
-  int height = surface -> h;
-  Uint8 r;
-  Uint8 g;
-  Uint8 b;
-  Bitmap BitM;
-  bitmapInit(&BitM, width, height);
-  for (int i = 0; i < width; i++)
+  warnx("Preparing learning : 3, 2, 1...\nENGAGE!"); 
+  for (unsigned int i = 0 ; i < nb_of_feeding ; ++i)
   {
-    for (int j = 0; j < height; j++)
-      {
-	Uint32 pixel = getpixelSurface(surface,i,j);
-	SDL_GetRGB(pixel, surface->format, &r, &g, &b);
-       	float lum = (0.3*r + 0.59*g + 0.11*b);
-	if (lum > 120)
-	  {
-	    setPixel(&BitM, i, j, 1);
-	    lum = 255;
-	  }
-	else
-	  {
-	    setPixel(&BitM, i, j, 0);
-	    lum = 0;
-	  }
-	pixel = SDL_MapRGB(surface->format, lum, lum, lum);
+    short a = rand() % 2;
+    short b = rand() % 2;
+    warnx("a = %d ; b = %d\n", a, b);
+    short expected_output = (a != b);
 
-	putpixel2(surface,i,j,pixel); 
-      }
-  }  
-  printf("image Loaded and retruned\n");
-  return BitM;    
-}
+    float inputs[2] = {(float)a, (float)b};
 
-SDL_Surface* BitmapToSurface(Bitmap* bitm)
-{
-  SDL_Surface *surface = SDL_CreateRGBSurface(0, bitm->width,bitm->height, 32, 0, 0, 0, 0);
-  for (int i = 0; i < bitm->width; i++)
-  {
-    for (int j = 0; j < bitm->height; j++)
-      {
-	int pixel = getPixel(bitm,i,j);
-	if (pixel == 0)
-		{		 
-		 Uint32 newpixel = SDL_MapRGB(surface->format, 0, 0, 0);
-		 putpixel2(surface,i,j,newpixel);
-		}
-	else
-		{
-		  Uint32 newpixel = SDL_MapRGB(surface->format, 255, 255, 255);
-		 putpixel2(surface,i,j,newpixel);
-		}
-      }    
-  }
-  return surface;
-
-}
-
-int main(int argc, char *argv[])
-{  
-  Bitmap b = LoadToBitmap("wow.bmp");
-  struct list* into; 
-  into = CutLines(b);//18
-  return 0;  
-}
-
-*/
-
-
-int main() {
-  /*
-    //warnx("LEEET'S");
-    NeuralNetwork nn;
-    NeuralNetwork* NN = &nn;
-    
-    //warnx("1");
-    unsigned int nb_neurons[3] = { 2, 3, 1 };
-    initNeuralNetwork(NN, 3, nb_neurons);
-    prettyPrintNeuralNetwork(NN, 0);
-
-    //warnx("2");
-    float inputs[2] = {1.0, 0.0};
-    float Realoutput =0;
-    if(inputs[0]!=inputs[1])
-      Realoutput = 1.0;
-    Outputs outputs_obj;
-    Outputs* outputs = &outputs_obj;
-    
-    //warnx("3");
-    initOutputs(outputs, 3, 3);
-    
-    //warnx("4");
+    warnx("\n### Feeding n.%d in progress...", i);
+    // FeedForward
+    feedForward(NN, inputs, 2, outputs);
+    warnx("\n# Feeding n.%d over", i);
     printOutputs(outputs, 0);
+    
+    warnx("\n### Updating n.%d of the neural network...", i);
+    // Update Weight
+    UpdateWeight(NN, expected_output, outputs);
+    warnx("\n# Updating n.%d over.", i);
+    printNeuralNetwork(NN);
+    printOutputs(outputs, 0);
+   
+  }
+  warnx("\n##### Learning complete. ######");
+  printNeuralNetwork(NN);
+  printOutputs(outputs, 0);
+}
 
-    //warnx("5");
+void neuralTesting(NeuralNetwork* NN, Outputs* outputs, unsigned int nb_of_testing)
+{
+  unsigned int nb_of_win = 0;
+  float final_output;
+  short bool_output;
+  
+  for (unsigned int i = 0 ; i < nb_of_testing ; ++i)
+  {
+    short a = rand() % 1;
+    short b = rand() % 1;
+    warnx("a = %d ; b = %d\n", a, b);
+    short expected_output = (a != b);
+
+    float inputs[2] = {(float)a, (float)b};
+
     feedForward(NN, inputs, 2, outputs);
 
-    //warnx("6");
-    printOutputs(outputs, 0);
-    
-    printNeuralNetwork(NN);
-    printf("OUTPUT OF NN %f2.3/d\n",getOutput(outputs,outputs->nb_layers-1,0));
-    UpdateWeight(NN,Realoutput,outputs);    
-    printNeuralNetwork( NN);
-    Outputs outputs_obj2;
-    Outputs* outputs2 = &outputs_obj2;
-    //feedForward(NN, inputs, 2, outputs2);
-    //UpdateWeight(NN,Realoutput,outputs2);
-    //printNeuralNetwork( NN);    
-    //warprintf("\%f2.3/d",tab[0]); nx("7");
-    return 0;*/
-    printf("sig = %f2.5\d",dSigmoid(0.6224*0.28)); 
+    final_output = getOutput(outputs, 3, 0);
+    bool_output = (final_output > 0.5);
+
+    if (bool_output == expected_output)
+    {
+      nb_of_win++;
+    }
+  }
+  
+  warnx("Percentage of win = %f", (float)nb_of_win / (float)nb_of_testing);
 }
-
-

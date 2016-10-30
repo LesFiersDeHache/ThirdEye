@@ -24,10 +24,10 @@ float dSigmoid(float x)
 
 float* buildErrorsArray(NeuralNetwork* NN, float out, float out2) // output = Exepected Output, trueoutput = FoundOutput
 {
-  printf("error1=%2.5f\n",out);
-  printf("error2=%2.5f\n",out2);
+  //printf("error1=%2.5f\n",out);
+  //printf("error2=%2.5f\n",out2);
   float lasterror = out - out2;  
-  printf("error=%2.5f\n",lasterror);
+  //printf("error=%2.5f\n",lasterror);
   int length = 0;
   for (short d = 0; d < NN->nb_layers; d++)    
       length += NN->nb_neurons[d];    

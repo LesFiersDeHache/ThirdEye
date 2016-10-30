@@ -2,6 +2,7 @@
 # include <err.h>
 # include <assert.h>
 # include <stdio.h>
+# include <time.h>
 //TODO : documentation !
 #ifndef ONLYONCE_NEURALNETWORK
 #define ONLYONCE_NEURALNETWORK
