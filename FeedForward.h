@@ -14,6 +14,8 @@
 // - nb_layers : nbr of layers of the NeuralNetwork at the origin of the outputs
 // - max_neuron : maximum of layer in a single layer of the NeuralNetwork at the
 //                origin of the outputs
+#ifndef ONLYONCE_FEEDFORWARD
+#define ONLYONCE_FEEDWARD
 typedef struct Outputs {
 
     float* tab;
@@ -55,3 +57,4 @@ Outputs* outputs);
 // - begin_layer : start printing at this layer
 void printOutputs(Outputs* outputs, unsigned short begin_layer);
 
+#endif

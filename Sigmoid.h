@@ -1,7 +1,7 @@
 # include <stdlib.h>
 
-#ifndef ONLYONCE_BITMAP
-#define ONLYONCE_BITMAP
+#ifndef ONLYONCE_SIGMO
+#define ONLYONCE_SIGMO
 
 float sigmoid(float x);
 

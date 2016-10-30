@@ -1,10 +1,14 @@
 #include <err.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <assert.h>
-
+#include "NeuralNetwork.h"
 #include "FeedForward.h"
+#include "BackFeed.h"
+#include "Sigmoid.h"
+
 //#include "Bitmap.h"
 //#include "CutBitmap.h"
 
@@ -201,8 +205,9 @@ int main(int argc, char *argv[])
 
 */
 
+
 int main() {
-    
+  /*
     //warnx("LEEET'S");
     NeuralNetwork nn;
     NeuralNetwork* NN = &nn;
@@ -214,6 +219,9 @@ int main() {
 
     //warnx("2");
     float inputs[2] = {1.0, 0.0};
+    float Realoutput =0;
+    if(inputs[0]!=inputs[1])
+      Realoutput = 1.0;
     Outputs outputs_obj;
     Outputs* outputs = &outputs_obj;
     
@@ -228,9 +236,19 @@ int main() {
 
     //warnx("6");
     printOutputs(outputs, 0);
-
-    //warnx("7");
-    return 0;
+    
+    printNeuralNetwork(NN);
+    printf("OUTPUT OF NN %f2.3/d\n",getOutput(outputs,outputs->nb_layers-1,0));
+    UpdateWeight(NN,Realoutput,outputs);    
+    printNeuralNetwork( NN);
+    Outputs outputs_obj2;
+    Outputs* outputs2 = &outputs_obj2;
+    //feedForward(NN, inputs, 2, outputs2);
+    //UpdateWeight(NN,Realoutput,outputs2);
+    //printNeuralNetwork( NN);    
+    //warprintf("\%f2.3/d",tab[0]); nx("7");
+    return 0;*/
+    printf("sig = %f2.5\d",dSigmoid(0.6224*0.28)); 
 }
 
 

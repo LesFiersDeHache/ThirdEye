@@ -3,7 +3,8 @@
 # include <assert.h>
 # include <stdio.h>
 //TODO : documentation !
-
+#ifndef ONLYONCE_NEURALNETWORK
+#define ONLYONCE_NEURALNETWORK
 typedef struct NeuralNetwork {
 
     unsigned short nb_layers;
@@ -38,3 +39,4 @@ void prettyPrintNeuralNetwork(NeuralNetwork* NN, unsigned short min_layer);
 void printNeuralNetwork(NeuralNetwork* NN);
 
 void freeNeuralNetwork(NeuralNetwork* NN);
+#endif
