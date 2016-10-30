@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <err.h>
 
+
+#ifndef ONLYONCE_LIST
+#define ONLYONCE_LIST
 // List type
 // You don't need to know what is inside
 typedef struct List List;
@@ -50,3 +53,4 @@ int get_coord(int index, List* list);
 //
 // return : the n-th list
 List* get_n(int index, List* list);
+#endif

@@ -1,7 +1,7 @@
 # include <stdlib.h>
 
-#ifndef ONLYONCE_BITMAP
-#define ONLYONCE_BITMAP
+#ifndef ONLYONCE_BITMAP2
+#define ONLYONCE_BITMAP2
 typedef enum Pixel
 {
 

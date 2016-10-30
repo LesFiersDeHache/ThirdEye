@@ -1,12 +1,18 @@
+#include "list.h"
 #include "Bitmap.h"
-#include  "list.h"
 
 #ifndef ONLYONCE_CUTBITMAP
 #define ONLYONCE_CUTBITMAP
 
-struct list* cutblockY(Bitmap bmp);
+List* cutblockY(int* tab, Bitmap *b, int* policeSize);
 
-struct list* cutblockX(Bitmap bmp);
+List* cutblockX(int* tab, Bitmap *b, int* policeSize);
 
-struct list* CutLines(Bitmap bmp);
+List* Cutlines(int* tab,Bitmap* b);
+
+List* Cutchars(int* tab,Bitmap* b, int PoliceSize);
+
+List* CutAll(Bitmap* b);
+
+//struct list *CutAll(Bitmap *b);
 #endif

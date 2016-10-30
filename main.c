@@ -9,6 +9,10 @@
 #include "BackFeed.h"
 #include "Sigmoid.h"
 #include <time.h>
+#include "list.h"
+#include "CutBitmap.h"
+#include "SDLstuff.h"
+#include "Bitmap.h"
 
 #define NB_OF_LOOPS 10000 
 #define MODE 1
@@ -21,8 +25,14 @@ float neuralTesting(NeuralNetwork* NN, Outputs* outputs,
 
 int main (int argc, char *argv[])
 {
+  Bitmap* b = LoadToBitmap("wow2.bmp");
+  int tab[4] = {0,b->width,0,b->height};
+  int PoliceSize = 19;
+  List * L  = cutblockY(tab,b,&PoliceSize);
+  print_list(L);
+  
   // ##### INIT ##### //
-
+  /*
   // SET RANDOM
   printf("###### LET'S BEGIN THIS! #####\n\n");
   srand(time(NULL));
@@ -63,7 +73,7 @@ int main (int argc, char *argv[])
       err(1, "bad argument");
       break;
     }
-
+  */
   return 0;
 }
 

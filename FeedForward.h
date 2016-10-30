@@ -15,7 +15,7 @@
 // - max_neuron : maximum of layer in a single layer of the NeuralNetwork at the
 //                origin of the outputs
 #ifndef ONLYONCE_FEEDFORWARD
-#define ONLYONCE_FEEDWARD
+#define ONLYONCE_FEEDFORWARD
 typedef struct Outputs {
 
     float* tab;

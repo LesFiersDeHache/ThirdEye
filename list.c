@@ -88,22 +88,4 @@ List* get_n(int index, List* list) {
     return list;
 }
 
-int main() {
-    
-    List* list = empty_list();
-    print_list(list);
-    int tab1[4] = {1, 2, 3, 4};
-    int tab2[4] = {2, 3, 4, 5};
-    int tab3[4] = {10, 10, 10, 10};
-    list = push_front(tab1, list);
-    list = push_front(tab2, list);
-    list = push_front(tab1, list);
-    list = push_front(tab3, list);
-    print_list(list);
-    printf("%d\n", get_coord(2, list));
-    printf("%d\n", get_coord(3, get_n(0, list)));
-    printf("%d\n", get_coord(3, get_n(1, list)));
-    printf("%d\n", get_coord(3, get_n(2, list)));
-    printf("%d\n", get_coord(3, get_n(3, list)));
-    return 0;
-}
+
