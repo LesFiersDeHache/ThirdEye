@@ -1,35 +1,23 @@
-
+#include <stdlib.h>
+#include <stdio.h>
+#include <err.h>
 
 /* Standard list implementation in C */
  
 /* lists.h */
  
-# ifndef EPITA_IP_SAMPLES_LISTS_H_
-# define EPITA_IP_SAMPLES_LISTS_H_
-#include "Bitmap.h"
- 
-/* simply linked list of integer */
- 
-struct list
-{
-  struct list *next;
-  Bitmap          data;
-};
- 
-static inline
-struct list* list_empty(void)
-{
-  return NULL;
-}
- 
-static inline
-int list_is_empty(struct list *list)
-{
-  return list == NULL;
-}
- 
-struct list* list_push_front(struct list *list, Bitmap x);
- 
-void list_release(struct list *list);
- 
-# endif /* EPITA_IP_SAMPLES_LISTS_H_ */
+// List
+
+typedef struct List List;
+
+List* push_front(int* tab, List* next);
+
+List* empty_list();
+
+void print_list(List* list);
+
+int is_empty(List* list);
+
+int get_coord(int index, List* list);
+
+List* get_n(int index, List* list);
