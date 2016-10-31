@@ -51,7 +51,7 @@ Mat* ope_MdotM(Mat* mat1, Mat* mat2); //Matrix dot Matrix
 //Vector : one dimensionnal matrix (vertical or horizontal)
 Mat* ope_VdotM(Mat* vect, Mat* mat); //Vector dot Matrix
 
-Mat* ope_VdotV(Mat* vect1, Mat* vect2); //Vector dot Vector
+float ope_VdotV(Mat* vect1, Mat* vect2); //Vector dot Vector
 
 Mat* ope_Mt(Mat* mat); //Matrix transpose
 

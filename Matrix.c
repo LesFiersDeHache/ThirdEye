@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <err.h>
 #include <time.h>
+#include "Sigmoid.h"
 
 #define Uint unsigned int
 #define Ulong unsigned long long
@@ -33,10 +34,18 @@ Mat* newMat(Uint x_len, Uint y_len, float fill) {
     return mat;
 }
 
-Mat* newMatRandom(Uint x_len, Uint y_len, float mult, float add) {
-    
-    Mat* mat;
-    //TODO
+static float randomNumber() {
+    return ((float)(rand() % 1000)) / ((float)(1000));    
+}
+ 
+Mat* newMatRandom(Uint x_len, Uint y_len, float mult, float add) {  
+
+    Mat* mat;        
+    mat = newMat(x_len,y_len,0.0);    
+    for (Uint i = 0; i < x_len * y_len; i++)
+    {
+        mat->tab[i] = randomNumber() * mult + add;
+    }
     return mat;
 }
 
@@ -55,7 +64,8 @@ float getInMat(Mat* mat, Uint x, Uint y) {
 
 //Set value
 void setInMat(Mat* mat, Uint x, Uint y, float new_value) {
-    assert(x < mat->x_len && y < mat->y_len);
+    assert(x < mat->x_len);
+    assert(y < mat->y_len);
     mat->tab[x * mat->y_len + y] = new_value;
 }
 
@@ -99,7 +109,7 @@ Mat* ope_Mcopy(Mat* mat) {
 
     for ( Uint x = 0 ; x < mat->x_len ; ++x ) {
         
-        for ( Uint y = 0 ; y < mat->x_len ; ++x ) {
+        for ( Uint y = 0 ; y < mat->x_len ; ++y ) {
             
             index = x * mat->y_len + y;
             mat_sol->tab[index] = mat->tab[index];
@@ -232,19 +242,40 @@ Mat* ope_MdotM(Mat* mat1, Mat* mat2) {
 //Vector (1 dimension matrix, horizontal or vertical) dot Matrix = Othr Matrix
 Mat* ope_VdotM(Mat* vect, Mat* mat) {
 
-    Mat* mat_sol;
+    Mat* mat_sol = newMat(mat->x_len, 1, 0.0);
     
-    //TODO
+    float result = 0.0;
+
+    for ( Uint x = 0 ; x < vect->x_len ; ++x ) {
+        
+        result = 0.0;
+
+        for (Uint y = 0 ; y < mat->y_len ; ++y ) {
+            
+            result += mat->tab[x * mat->y_len + y] * vect->tab[x];
+        }
+
+        mat_sol->tab[x] = result;
+    }
 
     return mat_sol;
 }
 
 //Vector (1 dimension matrix, horizontal or vertical) dot Vector = Other Matrix
-Mat* ope_VdotV(Mat* vect1, Mat* vect2) {
+float ope_VdotV(Mat* vect1, Mat* vect2) {
     
-    Mat* mat_sol;
-    //TODO
-    return mat_sol;
+    assert(vect1->x_len == 1);
+    assert(vect2->x_len == 1);
+    assert(vect1->y_len == vect2->y_len);
+    
+    float result;
+
+    for (Ulong i = 0 ; i < vect1->y_len ; ++i) {
+        
+        result += vect1->tab[i] * vect2->tab[i];
+    }
+
+    return result;
 }
 
 //Matrix transpose = other matrix
@@ -266,30 +297,52 @@ Mat* ope_Mt(Mat* mat) {
     return mat_sol;
 }
 
+ 
 Mat* ope_apply_sigmoid(Mat* mat) {
-    
+   
     Mat* mat_sol;
-    //TODO
+    mat_sol = newMat(getLenXMat(mat),getLenYMat(mat),0);
+    for(Uint i = 0 ; i < getLenXMat(mat_sol) ; i++)
+    {
+        for(int j = 0;j<getLenYMat(mat);j++)
+        {
+            setInMat(mat_sol,i,j,sigmoid(getInMat(mat,i,j)));
+        }
+   
+    }
     return mat_sol;
 }
-
+ 
 Mat* ope_apply_deriv_sigmoid(Mat* mat) {
-
+ 
     Mat* mat_sol;
-    //TODO
+    mat_sol = newMat(getLenXMat(mat),getLenYMat(mat),0);
+    for(int i = 0 ; i < getLenXMat(mat_sol) ; i++)
+    {
+        for(int j = 0;j<getLenYMat(mat);j++)
+        {
+            setInMat(mat_sol,i,j,dSigmoid(getInMat(mat,i,j)));
+        }
+   
+    }
     return mat_sol;
 }
+
 
 //MAIN
+
 /*
 int main() 
 {
     //TUTORIAL :
 
-    Mat* mat = newMat(4, 6, 2.0);
+    Mat* mat = newMat(4, 6, 1.0);
     Mat* matp = newMat(4, 6, 3.0);
     Mat* matm1 = newMat(4, 2, 2.0);
     Mat* matm2 = newMat(2, 3, 3.0);
+    Mat* vect1 = newMat(1, 3, 2.0);
+    Mat* vect2 = newMat(1, 3, 3.0);
+    Mat* vect3 = newMat(3, 1, 2.0);
     warnx("Get something in a Mat : %f", getInMat(mat, 0, 0));
     setInMat(mat, 1, 2, 5.0);
     
@@ -316,6 +369,22 @@ int main()
 
     warnx("Matrix transpose");
     printMat(ope_Mt(mat));
+    
+    warnx("Vector dot product");
+    printf("%f\n", ope_VdotV(vect1, vect2));
+
+    warnx("Vector dot Matrix");
+    setInMat(vect3, 2, 0, 3.0);
+    printMat(vect3);
+    printMat(ope_VdotM(vect3, mat));
+
+    warnx("Sigmoid");
+    printMat(ope_apply_sigmoid(matp));
+    printMat(ope_apply_sigmoid(mat));
+
+    warnx("Deriv sigmoid");
+    printMat(ope_apply_deriv_sigmoid(matp));
+    printMat(ope_apply_deriv_sigmoid(mat));
 
     warnx("Freeeee");
     freeMat(mat);
