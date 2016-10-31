@@ -114,10 +114,10 @@ unsigned int* nb_neurons) {
 
 // ############################## LOAD NEURAL NETWORK #########################//
 
-void loadNeuralNetwork(NeuralNetwork* NN, char* path) {
+/*void loadNeuralNetwork(NeuralNetwork* NN, char* path) {
     //TODO
 }
-
+*/
 // ############################## GET/SET #####################################//
 
 
@@ -276,9 +276,13 @@ Input :
 Output :
 - void
 */
-void freeNeuralNetwork(NeuralNetwork* NN) {
+
+/*
+void freeNeuralNetwork(NeuralNetwork* NN) { 
     //TODO
 }
+*/
+
 
 /*
 int main() {

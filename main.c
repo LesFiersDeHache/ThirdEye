@@ -74,6 +74,7 @@ int main() {
   CutAll(bmp);
 }
 
+/*
 Mat* initInputDataSet(float a1, float a2, float b1, float b2,
                       float c1, float c2, float d1, float d2) {
 
@@ -102,3 +103,4 @@ Mat* initOutputDataSet(float a, float b, float c, float d) {
 
     return mat_sol;
 }
+*/

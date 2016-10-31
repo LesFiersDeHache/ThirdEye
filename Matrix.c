@@ -304,7 +304,7 @@ Mat* ope_apply_sigmoid(Mat* mat) {
     mat_sol = newMat(getLenXMat(mat),getLenYMat(mat),0);
     for(Uint i = 0 ; i < getLenXMat(mat_sol) ; i++)
     {
-        for(int j = 0;j<getLenYMat(mat);j++)
+        for(unsigned int j = 0;j<getLenYMat(mat);j++)
         {
             setInMat(mat_sol,i,j,sigmoid(getInMat(mat,i,j)));
         }
@@ -317,9 +317,9 @@ Mat* ope_apply_deriv_sigmoid(Mat* mat) {
  
     Mat* mat_sol;
     mat_sol = newMat(getLenXMat(mat),getLenYMat(mat),0);
-    for(int i = 0 ; i < getLenXMat(mat_sol) ; i++)
+    for(unsigned int i = 0 ; i < getLenXMat(mat_sol) ; i++)
     {
-        for(int j = 0;j<getLenYMat(mat);j++)
+        for(unsigned int j = 0;j<getLenYMat(mat);j++)
         {
             setInMat(mat_sol,i,j,dSigmoid(getInMat(mat,i,j)));
         }
