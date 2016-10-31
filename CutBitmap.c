@@ -8,7 +8,6 @@
 #include "SDL/SDL_image.h"
 List* cutblockY(int *tab, Bitmap *b, int* PoliceSize)
 {
-	warnx("INCUTY\n");
 	int Threshold = 0;
 	int white = 0;
 	int policeSize = 0;
@@ -17,10 +16,8 @@ List* cutblockY(int *tab, Bitmap *b, int* PoliceSize)
 	int isStillBlack = 0;
 	int firstblack = 1;
 	List* res = empty_list();
-	warnx("%d",res->a);
 	for(unsigned short y = tab[2];y <= tab[3];y++)
 	{
-		//warnx("X\n");
 		for(unsigned short x = tab[0]; x <= tab[1];x++)
 		{
 			unsigned short k= getPixel(b,x,y);
@@ -46,13 +43,10 @@ List* cutblockY(int *tab, Bitmap *b, int* PoliceSize)
 				white += 1;
 				if(white>Threshold || y+1 == tab[2] - tab[3])
 				{
-					warnx("YMIN : %d\n",yMinB);
-					warnx("YMAX : %d\n",yMaxB);
 
 					yMaxB = y;
 					int newBloc[4] = {tab[0],tab[1],yMinB,yMaxB};
 				        res = push_front(newBloc,res);
-					warnx("lel%p\n", res);
 					firstblack = 1;
 					yMinB = tab[2];
 					yMaxB = tab[2];
@@ -74,9 +68,6 @@ List* cutblockY(int *tab, Bitmap *b, int* PoliceSize)
 
 List* cutblockX(int* tab, Bitmap *b, int* policeSize)
 {
-  warnx("InCutblockX");
-  warnx("%d",tab[0]);
-  warnx("%d",tab[1]);
 	int Threshold = 4* *policeSize;
 	int white = 0;
 	unsigned short xMinB = tab[0];
@@ -87,7 +78,6 @@ List* cutblockX(int* tab, Bitmap *b, int* policeSize)
 	//warnx("%d",tab[0]);
 	//warnx("%d",tab[1]);
 	List* res = empty_list();
-warnx("0");
 	for (long x = tab[0]; x<= tab[1] ;x++)
 	{
 	 //warnx("X  %d",x);
@@ -115,8 +105,6 @@ warnx("0");
 				{
 					xMaxB =x ;
 					int newBloc[4] = {xMinB,xMaxB,tab[2],tab[3]};
-					printf("%d\n", xMinB);
-					printf("%d\n",xMaxB);
 				        res = push_front(newBloc,res);
 					//list_push_front(result,b);
 					firstblack =1;
@@ -171,8 +159,6 @@ List* Cutlines(int* tab,Bitmap *b)
 	 	{
 	 		if(initblock)
 	 		{
-	 			printf("%d\n",yMinB);
-	 			printf("%d\n",y);
 	 			yMaxB = y;
 
 				int newBloc[4] = {tab[0],tab[1],yMinB,yMaxB};
@@ -239,8 +225,6 @@ List* Cutchars(int *tab, Bitmap *b, int PoliceSize)
 	    {
 	      if (blackp > 0)//First Time we got white
 		{
-		  printf("TAB2 %d\n",tab[2]);
-		  printf("TAB3 %d\n",tab[3]);
 		  int newBloc[4] = {xMinB,x,tab[2],tab[3]};
 		  res = push_front(newBloc,res);
 		  

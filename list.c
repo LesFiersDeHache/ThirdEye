@@ -41,6 +41,8 @@ List* empty_list() {
 }
 
 void print_list(List* list) {
+
+  printf("PRINT LIST\n");
     
     while(list->is_end == 0) {
 
@@ -92,7 +94,6 @@ List* get_n(int index, List* list) {
 
 List* Merge(List* L1, List* L2)
 {
-	warnx("BEFORE MERGE");
 	List* new_list = empty_list();
 	new_list = L1;
 	while (new_list->next->is_end == 0) {

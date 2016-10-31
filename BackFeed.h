@@ -7,7 +7,7 @@ float sigmoid(float x);
 
 float dSigmoid(float x);
 
-float* buildErrorsArray(NeuralNetwork* NN, float out, float out2, float learning_speed);
+float* buildErrorsArray(NeuralNetwork* NN, float out, float out2,float learning);
 
 // Use this
 void UpdateWeight(NeuralNetwork* NN, float goodres, Outputs* outputs, float learning_speed);

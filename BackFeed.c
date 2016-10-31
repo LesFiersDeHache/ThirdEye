@@ -22,11 +22,15 @@ float dSigmoid(float x)
 // last error = TrueOutput - Output
 
 
-float* buildErrorsArray(NeuralNetwork* NN, float out, float out2, float learning_speed) // output = Exepected Output, trueoutput = FoundOutput
+float* buildErrorsArray(NeuralNetwork* NN, float out, float out2, float learning) // output = Exepected Output, trueoutput = FoundOutput
 {
   //printf("error1=%2.5f\n",out);
   //printf("error2=%2.5f\n",out2);
-  float lasterror = out - out2;  
+  if (learning == 0.1)
+    {
+      warnx("0.1");
+    }
+  float lasterror = out - out2;
   //printf("error=%2.5f\n",lasterror);
   int length = 0;
   for (short d = 0; d < NN->nb_layers; d++)    
@@ -59,15 +63,16 @@ float* buildErrorsArray(NeuralNetwork* NN, float out, float out2, float learning
 
 void UpdateWeight(NeuralNetwork* NN, float goodres,Outputs* outputs, float learning_speed)//expected res, my res
 {
+  learning_speed += 1;
   float myres = getOutput(outputs,outputs->nb_layers-1,0);
   float* tab = buildErrorsArray(NN,goodres,myres,1.0);
   for(int i = 1; i <NN->nb_layers;i++)
     {
       //printf("-------------------------------i = %d\n",i);
-      for(int j = 0;j<NN->nb_neurons[i];j++)
+      for(unsigned int j = 0;j<NN->nb_neurons[i];j++)
 	{
 	  //printf("-----------------------------j = %d\n",j);
-	  for(int k = 0; k<NN->nb_neurons[i-1];k++)
+	  for(unsigned int k = 0; k<NN->nb_neurons[i-1];k++)
 	    {
 	      //float w = getWeight(NN,i,k,j);
 	      int s = FindError(NN,i,k);
