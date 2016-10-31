@@ -6,14 +6,14 @@
 # include <stdio.h>
 # include <err.h>
 
-void floatToChar(float f, char* c) {
+/*void floatToChar(float f, char* c) {
 
 short t = (int)f;
 
 c[0] = t;
 
 return c;
-}
+}*/
 
 /*
 int main(int argc, char *argv[])

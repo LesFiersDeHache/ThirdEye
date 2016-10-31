@@ -75,8 +75,6 @@ List* cutblockY(int *tab, Bitmap *b, int* PoliceSize)
 List* cutblockX(int* tab, Bitmap *b, int* policeSize)
 {
   warnx("InCutblockX");
-  warnx("wi %d",b->width);
-  warnx("he %d",b->height);
   warnx("%d",tab[0]);
   warnx("%d",tab[1]);
 	int Threshold = 4* *policeSize;
@@ -90,10 +88,10 @@ List* cutblockX(int* tab, Bitmap *b, int* policeSize)
 	//warnx("%d",tab[1]);
 	List* res = empty_list();
 warnx("0");
-	for (unsigned long x = tab[0]; x<= tab[1] ;x++)
+	for (long x = tab[0]; x<= tab[1] ;x++)
 	{
 	 //warnx("X  %d",x);
-		for(unsigned short y = tab[2]; y<=tab[3];y++)
+		for(int y = tab[2]; y<=tab[3];y++)
 		{
 			unsigned short k = getPixel(b,x,y);
 			if(k==0)
@@ -343,13 +341,8 @@ List* CutAll(Bitmap *b)
   display_image(w1);
   Bitmap b2 = DrawLines(b,L4);
   Bitmap *b4 = &b2;
-  warnx("LOL");
-	  warnx("B4WIDTH%d",b4->width);
-  warnx("B4HEIGHT%d",b4->height);
   SDL_Surface *wo = BitmapToSurface(b4);
-  warnx("MDR");
   display_image(wo);
-  warnx("afterLOL");
   return L4;
   
 

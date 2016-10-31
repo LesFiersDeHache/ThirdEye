@@ -28,7 +28,7 @@ Mat* initOutputDataSet(float a, float b,
                        float c, float d);
 
 int main() {
-    
+  /*
     // #### NEURAL NETWORK #### //
 
     //INIT
@@ -67,7 +67,11 @@ int main() {
         Weight_1_To_2 = ope_MpM(Weight_1_To_2,
                                 ope_VdotV(ope_Mt(Layer_0), 
                                 L_1_Dlt));
-    }
+				}*/
+  //SDL_Surface img = load_image("wow2.bmp");
+  Bitmap b = LoadToBitmap("wow5.bmp");
+  Bitmap * bmp = &b;
+  CutAll(bmp);
 }
 
 Mat* initInputDataSet(float a1, float a2, float b1, float b2,
