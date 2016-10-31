@@ -3,47 +3,39 @@
 #include <stdio.h>
 #include <assert.h>
 
-
-typedef enum Pixel
-{
-    BLACK, /// = 0
-    WHITE /// = 1
- 
-}Pixel;
-
 typedef struct Bitmap
 {
-    unsigned short width; /// width of the picture in pixels
+    unsigned long width; /// width of the picture in pixels
  
-    unsigned short height; /// heigth of the picture in pixels
+    unsigned long height; /// heigth of the picture in pixels
  
-    Pixel *p_bitmap; /// pointer to an Pixel array which contains pixels value
+    unsigned short *p_bitmap; /// pointer to an Pixel array which contains pixels value
  
 } Bitmap;
 
-void bitmapInit(Bitmap* bm, unsigned short width, unsigned short height)
+void bitmapInit(Bitmap* bm, unsigned long width, unsigned long height)
 {
     bm->width = width;
     bm->height = height;
-    bm->p_bitmap = (Pixel*)malloc(sizeof(Pixel) * bm->width * bm->height);
+    bm->p_bitmap = (unsigned short*)malloc(sizeof(unsigned short) * bm->width * bm->height);
  
     //assert(bm->p_bitmap != NULL); // Debug
  
     for (unsigned int i = 0 ; i < width * height ; ++i)
     {
-    bm->p_bitmap[i] = BLACK; //We can also type "... = 0;"
+    bm->p_bitmap[i] =0 ; //We can also type "... = 0;"
     }
 }
  
- unsigned short getPixel(Bitmap* bm, unsigned short x, unsigned short y)
+unsigned long getPixel(Bitmap* bm, unsigned long x, unsigned long y)
 {
-   // assert(x < bm->width); // Debug
-   // assert(y < bm->height); // Debug
- 
+    assert(x < bm->width); // Debug
+    assert(y < bm->height); // Debug
+    
     return (bm->p_bitmap[(x * bm->width) + y]);
 }
  
-void setPixel(Bitmap* bm, unsigned short x, unsigned short y, Pixel px)
+void setPixel(Bitmap* bm, unsigned long x, unsigned long y, unsigned long px)
 {
     //assert(x < bm->width); // Debug
     //assert(y < bm->height); // Debug
@@ -65,7 +57,7 @@ void printBitmap(Bitmap* bm)
     printf("\n");
 }
  
-static unsigned short distBtwPts(unsigned int x, unsigned int y)
+static unsigned long distBtwPts(unsigned long x, unsigned long y)
 {
     if (x == y)
     {
@@ -92,7 +84,7 @@ static int minValue(int x, int y)
 }
 */
 
-void adjustBitmap(Bitmap* bm_in, Bitmap* bm_out, unsigned short x1, unsigned short y1, unsigned short x2, unsigned short y2)
+void adjustBitmap(Bitmap* bm_in, Bitmap* bm_out, unsigned long x1, unsigned long y1, unsigned long x2, unsigned long y2)
 {
     assert(x1 <= bm_in->width); // Debug
     assert(y1 <= bm_in->height); // Debug    
@@ -102,9 +94,9 @@ void adjustBitmap(Bitmap* bm_in, Bitmap* bm_out, unsigned short x1, unsigned sho
     bitmapInit(bm_out, distBtwPts(x1, x2) + 1, distBtwPts(y1, y2) + 1);
    
    
-    for ( unsigned short i = x1; i <= x2 ; ++i ) {
+    for ( unsigned long i = x1; i <= x2 ; ++i ) {
        
-        for ( unsigned short j = y1; j <= y2; ++j ) {
+        for ( unsigned long j = y1; j <= y2; ++j ) {
             warnx("Try to copy at (%hd,%hd).", i, j);
             int px = getPixel(bm_in, i, j);
             setPixel(bm_out, i - x1, j - y1, px);

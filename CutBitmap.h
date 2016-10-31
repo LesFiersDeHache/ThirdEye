@@ -14,5 +14,8 @@ List* Cutchars(int* tab,Bitmap* b, int PoliceSize);
 
 List* CutAll(Bitmap* b);
 
+Bitmap DrawLines(Bitmap *bmp,List *L);
+
+
 //struct list *CutAll(Bitmap *b);
 #endif

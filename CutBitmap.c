@@ -4,19 +4,23 @@
 #include "list.h"
 #include "CutBitmap.h"
 #include "err.h"
-
+#include "SDLstuff.h"
+#include "SDL/SDL_image.h"
 List* cutblockY(int *tab, Bitmap *b, int* PoliceSize)
 {
+	warnx("INCUTY\n");
 	int Threshold = 0;
-	int policeSize = 0;
 	int white = 0;
+	int policeSize = 0;
 	unsigned short yMinB = tab[2];
 	unsigned short yMaxB = tab[2];
 	int isStillBlack = 0;
 	int firstblack = 1;
 	List* res = empty_list();
+	warnx("%d",res->a);
 	for(unsigned short y = tab[2];y <= tab[3];y++)
 	{
+		//warnx("X\n");
 		for(unsigned short x = tab[0]; x <= tab[1];x++)
 		{
 			unsigned short k= getPixel(b,x,y);
@@ -42,9 +46,13 @@ List* cutblockY(int *tab, Bitmap *b, int* PoliceSize)
 				white += 1;
 				if(white>Threshold || y+1 == tab[2] - tab[3])
 				{
+					warnx("YMIN : %d\n",yMinB);
+					warnx("YMAX : %d\n",yMaxB);
+
 					yMaxB = y;
 					int newBloc[4] = {tab[0],tab[1],yMinB,yMaxB};
 				        res = push_front(newBloc,res);
+					warnx("lel%p\n", res);
 					firstblack = 1;
 					yMinB = tab[2];
 					yMaxB = tab[2];
@@ -58,14 +66,17 @@ List* cutblockY(int *tab, Bitmap *b, int* PoliceSize)
 		}
 		isStillBlack = 0;
 	}
+	*PoliceSize= policeSize; 
         return res;
 };
 
-/*
+
 
 List* cutblockX(int* tab, Bitmap *b, int* policeSize)
 {
   warnx("InCutblockX");
+  warnx("wi %d",b->width);
+  warnx("he %d",b->height);
   warnx("%d",tab[0]);
   warnx("%d",tab[1]);
 	int Threshold = 4* *policeSize;
@@ -78,10 +89,10 @@ List* cutblockX(int* tab, Bitmap *b, int* policeSize)
 	//warnx("%d",tab[0]);
 	//warnx("%d",tab[1]);
 	List* res = empty_list();
-
-	for (unsigned short x = tab[0]; x<= tab[1] ;x++)
+warnx("0");
+	for (unsigned long x = tab[0]; x<= tab[1] ;x++)
 	{
-	  //warnx("\nX");
+	 //warnx("X  %d",x);
 		for(unsigned short y = tab[2]; y<=tab[3];y++)
 		{
 			unsigned short k = getPixel(b,x,y);
@@ -135,7 +146,7 @@ List* Cutlines(int* tab,Bitmap *b)
 	 unsigned short initblock = 0;
 
 	 int height = tab[3] -1;
-
+ 	 List*res = empty_list();
 	 for(unsigned short y = tab[2]; y <= tab[3];y++)
 	 {
 	 	while(x <= tab[1] && !isblack)
@@ -167,7 +178,7 @@ List* Cutlines(int* tab,Bitmap *b)
 	 			yMaxB = y;
 
 				int newBloc[4] = {tab[0],tab[1],yMinB,yMaxB};
-				Poi = list_push_front(Poi,newBloc);
+				res =push_front(newBloc,res);
 
 				
 	 			yMinB = tab[2];
@@ -181,8 +192,8 @@ List* Cutlines(int* tab,Bitmap *b)
 	 	isStillBlack = 0;
 	 	isblack = 0;
 	 }
-	 print_list(Poi);
-	 return Poi;
+	
+	 return res;
 };
 
 
@@ -197,6 +208,7 @@ List* Cutchars(int *tab, Bitmap *b, int PoliceSize)
 
   int blackp = 0;
   int whitep = 0;
+  List* res= empty_list();
   for (unsigned short x = tab[0]; x <= tab[1];x++)
     {
       for (unsigned short y = tab[2]; y <= tab[3]; y++)
@@ -215,10 +227,10 @@ List* Cutchars(int *tab, Bitmap *b, int PoliceSize)
 	    {
 	      if (blackp == 0)//First Time we got black
 		{
-		  if (whitep > Threshold)
+		  if (whitep > Threshold+5)
 		    {
 		      int newBloc[4] = {xMinB,x,tab[2],tab[3]};
-		      Poi = list_push_front(Poi,newBloc);
+		      res = push_front(newBloc,res);
 		    }
 		  xMinB = x;
 		  whitep = 0;
@@ -232,7 +244,7 @@ List* Cutchars(int *tab, Bitmap *b, int PoliceSize)
 		  printf("TAB2 %d\n",tab[2]);
 		  printf("TAB3 %d\n",tab[3]);
 		  int newBloc[4] = {xMinB,x,tab[2],tab[3]};
-		  Poi = list_push_front(Poi,newBloc);
+		  res = push_front(newBloc,res);
 		  
 		  blackp = 0;
 		  xMinB = x;
@@ -242,49 +254,135 @@ List* Cutchars(int *tab, Bitmap *b, int PoliceSize)
 	  isStillBlack = 0;
 	}
     }
-  print_list(Poi);
-  return Poi;
+ 
+  return res;
 };
 
-
+Bitmap DrawLines(Bitmap *bmp,List *L)
+{
+  Bitmap k;
+  bitmapInit(&k, bmp->width,bmp->height);
+  k = *bmp;
+  while(!is_empty(L))
+    {
+      int tab[4] = {L->a,L->b,L->c,L->d};
+      for(int i =tab[0] ; i <tab[1];i++)
+	{
+	  setPixel(&k,i,tab[2],5);
+	  setPixel(&k,i,tab[3],5);
+	}
+      for(int i = tab[2]; i<tab[3];i++)
+	{
+	  setPixel(&k,tab[0],i,5);
+	  setPixel(&k,tab[1],i,5);
+	}
+      L = L->next;
+    }
+  return k;
+}
 
 List* CutAll(Bitmap *b)
 {
-  int tab[4] = {0, b->width - 1, 0, b->height}; //IMG SIZE
+  int tab[4] = {0, b->width - 1, 0, b->height-1}; //IMG SIZE
+  int Psize = 0;
+/*
+  List *L = empty_list();
+  L = cutblockX(tab,b,&Psize);//CA MARCHE CA
+  print_list(L);
+  int ta[4] = {L->a,L->b,L->c,L->d};
+  List *L2 = empty_list();
+  L2 = cutblockY(ta,b,&Psize);
 
+  warnx("LIST2");
+  print_list(L2);
+  
+  List* M = empty_list();
+  M = Merge(L, L2);
+  print_list(M);
 
-  // Poi1 = &list1;
-  //Poi2 = &list2;
-  
-  
-  int policeSize;
-  cutblockY(tab,b,&policeSize,point);
-  printf("%p",point);
-  warnx("Before");
-  print_list(point);
+  */
+  List *L = empty_list();
+  L = cutblockY(tab,b,&Psize);
+  List *L2 = empty_list();
+  int P[4] = {L->a,L->b,L->c,L->d};
+  L2 = cutblockX(P,b,&Psize);
+  L = L->next;
+  //List *L3 = empty_list();
+  while(!is_empty(L))
+  {
+	int T[4] = {L->a,L->b,L->c,L->d};
+	
+	L2 = Merge(L2,cutblockX(T,b,&Psize));
+	L= L->next;
+  }
+  print_list(L2);
+  List *L3 = empty_list();
+  int Q[4] = {L2->a,L2->b,L2->c,L2->d};
+  L3 = Cutlines(Q,b);
+  L2 = L2->next;
+  while(!is_empty(L2))
+  {
+	int T[4] = {L2->a,L2->b,L2->c,L2->d};
+
+	L3 = Merge(L3,Cutlines(T,b));
+	L2 = L2 -> next;
+  }
+  print_list(L3);
+  List *L4 = empty_list();
+  int Y[4] = {L3->a,L3->b,L3->c,L3->d};
+  L4 = Cutchars(Y,b,Psize);
+  L3 = L3->next;
+  while(!is_empty(L3))
+  {
+	int T[4] = {L3->a,L3->b,L3->c,L3->d};
+	L4 = Merge(L4,Cutchars(T,b,Psize));
+	L3 = L3->next;
+  }
+  print_list(L4);
+  SDL_Surface *w1 = BitmapToSurface(b);
+  display_image(w1);
+  Bitmap b2 = DrawLines(b,L4);
+  Bitmap *b4 = &b2;
+  warnx("LOL");
+	  warnx("B4WIDTH%d",b4->width);
+  warnx("B4HEIGHT%d",b4->height);
+  SDL_Surface *wo = BitmapToSurface(b4);
+  warnx("MDR");
+  display_image(wo);
+  warnx("afterLOL");
+  return L4;
   
 
-  /*int tab2[4] = {0,799,175,495};
-  Poi2 = cutblockX(tab2,b,&policeSize);
-   warnx("LOLOL%p\n",Poi2->next->next);
-   print_list(Poi2);*/
-     /*
-  struct list *Poi2 = list2;
-  print_list(list2);
-  
-  Poi1 = Poi1->next;*/
+  //MERGE THE LIST M Here
   /*
-  while(Poi1->next != 0)
+  // CA CEST TA FONCTION DAVANT GL
+  while(->next != 0)
     {
       warnx("/nIn While");
       list2 = Merge(Poi2,cutblockX(Poi1->data,b,&policeSize));
-      Poi2 = list2;
+      nes(Bitmap *bmp,struct list *L)
+{
+  while(L != 0)
+    {
+      int tab[4] = L->data;
+      for(int i =tab[0] ; i <tab[1];i++)
+	{
+	  setPixel(bmp,i,tab[2],1);
+	  setPixel(bmp,i,tab[3],1);
+	}
+      for(int i = tab[2]; i<tab[3];i++)
+	{
+	  setPixel(bmp,tab[0],i,1);
+	  setPixel(bmp,tab[1],i,1);
+	}
+      L = L->next;
+    }
+}Poi2 = list2;
       Poi1 = Poi1->next;
     }
   warnx("Wallah");
-  print_list(list2);
-  return &Poi1;
+  print_list(list2);*/
   }
-  */
+ 
 
 

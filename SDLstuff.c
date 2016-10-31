@@ -167,16 +167,21 @@ Bitmap LoadToBitmap(char *path)
 SDL_Surface* BitmapToSurface(Bitmap* bitm)
 {
   SDL_Surface *surface = SDL_CreateRGBSurface(0, bitm->width,bitm->height, 32, 0, 0, 0, 0);
-  for (int i = 0; i < bitm->width; i++)
+  for (int i = 0; i < bitm->width-1; i++)
   {
-    for (int j = 0; j < bitm->height; j++)
+    for (int j = 0; j < bitm->height-1; j++)
       {
-	int pixel = getPixel(bitm,i,j);
+	unsigned short pixel = getPixel(bitm,i,j);
 	if (pixel == 0)
 		{		 
 		 Uint32 newpixel = SDL_MapRGB(surface->format, 0, 0, 0);
 		 putpixel2(surface,i,j,newpixel);
 		}
+	else if(pixel==5)
+	  {
+	    Uint32 Pix = SDL_MapRGB(surface->format, 255, 0, 0);
+	    putpixel2(surface,i,j,Pix);
+	  }
 	else
 		{
 		  Uint32 newpixel = SDL_MapRGB(surface->format, 255, 255, 255);
@@ -184,6 +189,7 @@ SDL_Surface* BitmapToSurface(Bitmap* bitm)
 		}
       }    
   }
+  display_image(surface);
   return surface;
 
 }

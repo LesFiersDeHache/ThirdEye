@@ -25,12 +25,16 @@ float neuralTesting(NeuralNetwork* NN, Outputs* outputs,
 
 int main (int argc, char *argv[])
 {
-  Bitmap* b = LoadToBitmap("wow2.bmp");
-  int tab[4] = {0,b->width,0,b->height};
+  Bitmap b1 = LoadToBitmap("wow5.bmp");
+  Bitmap* b=  &b1;
+  warnx("w%d",b->width);
+  int tab[4] = {0,799,663,681};
   int PoliceSize = 19;
-  List * L  = cutblockY(tab,b,&PoliceSize);
-  print_list(L);
-  
+  List *L = empty_list();
+  L = CutAll(b);
+
+  warnx("ok%p",L->next);
+  warnx("MDR\n");
   // ##### INIT ##### //
   /*
   // SET RANDOM

@@ -4,6 +4,7 @@
 
 #include "list.h"
 
+/*
 typedef struct List {
 
     int a;
@@ -15,6 +16,7 @@ typedef struct List {
     List* next;
 
 } List;
+*/
 
 List* push_front(int* tab, List* next) {
     List* new_list = malloc(sizeof(List));
@@ -88,4 +90,14 @@ List* get_n(int index, List* list) {
     return list;
 }
 
-
+List* Merge(List* L1, List* L2)
+{
+	warnx("BEFORE MERGE");
+	List* new_list = empty_list();
+	new_list = L1;
+	while (new_list->next->is_end == 0) {
+		new_list = new_list -> next;
+	}
+	new_list -> next = L2;
+	return L1;
+}

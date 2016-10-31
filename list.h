@@ -9,6 +9,18 @@
 // You don't need to know what is inside
 typedef struct List List;
 
+struct List {
+
+  int a;
+  int b;
+  int c;
+  int d;
+
+  int is_end;
+  List* next;
+
+};
+
 //push_front
 //Push a new entry at the head of the list
 // - tab[4] : the 4 int you want to push
@@ -53,4 +65,6 @@ int get_coord(int index, List* list);
 //
 // return : the n-th list
 List* get_n(int index, List* list);
+
+List* Merge(List* L1, List* L2);
 #endif
