@@ -1,5 +1,0 @@
-#ifndef ONLYONCE_SDL
-#define ONLYONCE_SDL
-void wait_for_keypressed(void);
-
-#endif

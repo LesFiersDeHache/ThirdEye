@@ -2,7 +2,7 @@ TARGET = prog
 LIBS = -lm -lSDLmain -lSDL -lSDL_image
 
 CC = gcc
-CFLAGS = -g -Wall 
+CFLAGS = -g -Wall -Wextra -std=c99
 .PHONY: default all clean
 
 default: $(TARGET)

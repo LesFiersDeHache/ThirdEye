@@ -167,9 +167,9 @@ Bitmap LoadToBitmap(char *path)
 SDL_Surface* BitmapToSurface(Bitmap* bitm)
 {
   SDL_Surface *surface = SDL_CreateRGBSurface(0, bitm->width,bitm->height, 32, 0, 0, 0, 0);
-  for (int i = 0; i < bitm->width-1; i++)
+  for (unsigned long i = 0; i < bitm->width-1; i++)
   {
-    for (int j = 0; j < bitm->height-1; j++)
+    for (unsigned long j = 0; j < bitm->height-1; j++)
       {
 	unsigned short pixel = getPixel(bitm,i,j);
 	if (pixel == 0)
