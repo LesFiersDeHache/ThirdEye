@@ -35,14 +35,14 @@ typedef struct NeuralNetwork {
 
 //return a random weight
 static float randomWeight() {
-    return ((float)(rand() % 1000)) / ((float)(1000));
-    //return 0.5;
+    //return ((float)(rand() % 1000)) / ((float)(1000));
+    return 0.5;
 }
 
 //return a random biais
 static float randomBiaises() {
     //return ((float)(rand() % 1000)) / ((float)(1000));
-    return 0.0;
+    return 1.0;
 }
 
 /* initNeuralNetwork

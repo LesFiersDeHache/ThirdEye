@@ -13,55 +13,51 @@ typedef struct Mat {
 
 } Mat;
 
+//INIT
 Mat* newMat(Uint x_len, Uint y_len, float fill);
 
 Mat* newMatRandom(Uint x_len, Uint y_len, float mult, float add);
 
+//FREE
 void freeMat(Mat* mat);
 
-float getInMat(Mat* mat, Uint x, Uint y) {
-    assert(x, y, mat->x_len, mat->y_len);
-    return mat->tab[x * mat->y_len + y];
-}
+//GET / SET
+float getInMat(Mat* mat, Uint x, Uint y); 
 
-//Set value
-void setInMat(Mat* mat, Uint x, Uint y, float new_value) {
-    assert(x, y, mat->x_len, mat->y_len);
-    mat->tab[x * mat->y_len + y] = new_value;
-}
+void setInMat(Mat* mat, Uint x, Uint y, float new_value); 
 
-//Get len X
-Uint getLenXMat(Mat* mat) {
-    return mat->x_len;
-}
+Uint getLenXMat(Mat* mat);
 
-//Get len Y
-Uint getLenYMat(Mat* mat) {
-    return mat->y_len;
-}
+Uint getLenYMat(Mat* mat);
 
+//PRINT
 void printMat(Mat* mat);
 
-Mat* ope_Mcopy(Mat* mat);
+//OPERATIONS
+//All these functions does not modity the matrix in entry
+Mat* ope_Mcopy(Mat* mat); //Copy a Mat
 
-Mat* ope_MpR(Mat* mat, float r);
+Mat* ope_MpR(Mat* mat, float r); //Matrix + Real
 
-Mat* ope_MxR(Mat* mat, float r);
+Mat* ope_MxR(Mat* mat, float r); //Matrix * Real
 
-Mat* ope_MpM(Mat* mat1, Mat* mat2);
+Mat* ope_MpM(Mat* mat1, Mat* mat2); //Matrix + Matrix
 
-Mat* ope_MxM(Mat* mat1, Mat* mat2);
+Mat* ope_MxM(Mat* mat1, Mat* mat2); //Matrix * Matrix (classic mult 1 by 1)
 
-Mat* ope_MdotM(Mat* mat1, Mat* mat2);
+Mat* ope_MdotM(Mat* mat1, Mat* mat2); //Matrix dot Matrix
+                                      //(Matrix multiplication)
 
-Mat* ope_VdotM(Mat* vect, Mat* mat);
+//Vector : one dimensionnal matrix (vertical or horizontal)
+Mat* ope_VdotM(Mat* vect, Mat* mat); //Vector dot Matrix
 
-Mat* ope_VdotV(Mat* vect1, Mat* vect2);
+Mat* ope_VdotV(Mat* vect1, Mat* vect2); //Vector dot Vector
 
-Mat* ope_Mt(Mat* mat);
+Mat* ope_Mt(Mat* mat); //Matrix transpose
 
-Mat* ope_apply_sigmoid(Mat* mat);
+Mat* ope_apply_sigmoid(Mat* mat); //Apply sigmoid function to Matrix
 
-Mat* ope_apply_deriv_sigmoid(Mat* mat);
+Mat* ope_apply_deriv_sigmoid(Mat* mat); //Apply derivate sigmoid function
+                                        //to Matrix
 
 

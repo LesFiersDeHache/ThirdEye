@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <assert.h>
 #include <err.h>
+#include <time.h>
+
 #define Uint unsigned int
 #define Ulong unsigned long long
 
@@ -13,12 +15,6 @@ typedef struct Mat {
     float* tab;
 
 } Mat;
-
-//DEBUG
-
-static void checkBoundsMat(Mat* mat, Uint x, Uint y) {
-    assert(x < mat->x_len && y < mat->y_len);   
-}
 
 //INIT
 Mat* newMat(Uint x_len, Uint y_len, float fill) {
@@ -237,7 +233,9 @@ Mat* ope_MdotM(Mat* mat1, Mat* mat2) {
 Mat* ope_VdotM(Mat* vect, Mat* mat) {
 
     Mat* mat_sol;
+    
     //TODO
+
     return mat_sol;
 }
 

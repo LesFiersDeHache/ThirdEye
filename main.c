@@ -13,157 +13,88 @@
 #include "CutBitmap.h"
 #include "SDLstuff.h"
 #include "Bitmap.h"
+#include "Matrix.h"
 
 #define NB_OF_LOOPS 10000 
 #define MODE 1
 #define PRINT 0
-void neuralLearning(NeuralNetwork* NN, Outputs* outputs, 
-                    unsigned int nb_of_feeding);
 
-float neuralTesting(NeuralNetwork* NN, Outputs* outputs, 
-                   unsigned int nb_of_testing);
+#define MULT 2.0
+#define ADD -1.0
+Mat* initInputDataSet(float a1, float a2, float b1, float b2, 
+                      float c1, float c2, float d1, float d2);
+                      
+Mat* initOutputDataSet(float a, float b,
+                       float c, float d);
 
-int main (int argc, char *argv[])
-{
-  Bitmap b1 = LoadToBitmap("wow5.bmp");
-  Bitmap* b=  &b1;
-  warnx("w%d",b->width);
-  int tab[4] = {0,799,663,681};
-  int PoliceSize = 19;
-  List *L = empty_list();
-  L = CutAll(b);
+int main() {
+    
+    // #### NEURAL NETWORK #### //
 
-  warnx("ok%p",L->next);
-  warnx("MDR\n");
-  // ##### INIT ##### //
-  /*
-  // SET RANDOM
-  printf("###### LET'S BEGIN THIS! #####\n\n");
-  srand(time(NULL));
-  
-  // INIT NEURAL NETWORK
-  NeuralNetwork NN_struct;
-  NeuralNetwork* NN = &NN_struct;
+    //INIT
+    
+    //Initialize DataSets for Training
+    Mat* In_Dt_Set = initInputDataSet( 0.0,0.0,1.0,0.0,0.0,1.0,1.0,1.0 );
 
-  unsigned int nb_neurons[3] = {2, 3, 1}; 
-  
-  initNeuralNetwork(NN, 3, nb_neurons);
-  printf("#### NEURAL NETWORK ####\n\n");
-  printNeuralNetwork(NN);
-  
-  // INIT OUTPUTS
+    Mat* Ou_Dt_Set = initOutputDataSet( 0.0, 1.0, 1.0, 0.0 );
+    
+    //Set weights
+    Mat* Weight_0_To_1 = newMatRandom(3, 4, MULT, ADD); //CAN BE A MISTAKE
 
-  Outputs outputs_struct;
-  Outputs* outputs = &outputs_struct;
-  
-  // ##### EXEC ##### //
-  
-  float p = 0;
-  float q = 0;
+    Mat* Weight_1_To_2 = newMatRandom(4, 1, MULT, ADD); //CAN BE A MISTAKE
 
-  switch (MODE) {
-    case 0 :
-      neuralLearning(NN, outputs, NB_OF_LOOPS);
-      break;
-  
-    case 1 :
-      p = neuralTesting(NN, outputs, NB_OF_LOOPS);
-      neuralLearning(NN, outputs, NB_OF_LOOPS);
-      q = neuralTesting(NN, outputs, NB_OF_LOOPS);
-      printf("%f ; %f", p, q);
-      break;
+    for (unsigned int loop = 0 ; loop < NB_OF_LOOPS ; ++loop) {
 
-    default :
-      err(1, "bad argument");
-      break;
+        // L0 = X
+        Mat* Layer_0 = ope_Mcopy(In_Dt_Set);
+        // L1 = sigmoid(L0 dot wg0)
+        Mat* Layer_1 = ope_apply_sigmoid(ope_VdotM(Layer_0, Weight_0_To_1));
+        // L2 = sigmoid(L1 dot wg1)
+        Mat* Layer_2 = ope_apply_sigmoid(ope_VdotM(Layer_0, Weight_0_To_1));
+        // L2_error = Y - L2
+        Mat* L_2_Err = ope_MpM(Ou_Dt_Set, ope_MpR(Layer_2, -1.0));
+        // L2_delta = L2_error * sigmoid'(L2)
+        Mat* L_2_Dlt = ope_MxM(L_2_Err, ope_apply_deriv_sigmoid(Layer_2));
+        // L1_error = L2_delta dot wg1
+        Mat* L_1_Err = ope_VdotM(L_2_Dlt, Weight_1_To_2);
+        // L1_delta = L1_error * sigmoid'(L1)
+        Mat* L_1_Dlt = ope_MxM(L_1_Err, ope_apply_deriv_sigmoid(Layer_1));
+        // wg0 += L1.T dot L2_delta
+        Weight_0_To_1 = ope_MpM(Weight_0_To_1, 
+                                ope_VdotV(ope_Mt(Layer_1), 
+                                L_2_Dlt));
+        // wg1 += L0.T dot L1_delta
+        Weight_1_To_2 = ope_MpM(Weight_1_To_2,
+                                ope_VdotV(ope_Mt(Layer_0), 
+                                L_1_Dlt));
     }
-  */
-  return 0;
 }
 
-void neuralLearning(NeuralNetwork* NN, Outputs* outputs, 
-                    unsigned int nb_of_feeding)
-{
+Mat* initInputDataSet(float a1, float a2, float b1, float b2,
+                      float c1, float c2, float d1, float d2) {
 
-  printf("\n\n#######################\n");
-  printf("### Engage learning ###\n"); 
-  printf("#######################\n\n");
-  
-  for (unsigned int i = 0 ; i < nb_of_feeding ; ++i)
-  {
-    #if PRINT != 0  
-    printf("## ENGAGE LEARNING N°%d! ##\n", i);
-    #endif
+    Mat* mat_sol = newMat(4, 2, 0.0);
 
-    short a = rand() % 2;
-    short b = rand() % 2;
-    short expected_output = (a != b);
-    
-    #if PRINT != 0
-    printf("## Testing with : ");
-    printf("a = %d ; b = %d ; exp_out = %d ##\n", a, b, expected_output);
-    #endif
+    mat_sol->tab[0] = a1;
+    mat_sol->tab[1] = a2;
+    mat_sol->tab[2] = b1;
+    mat_sol->tab[3] = b2;
+    mat_sol->tab[4] = c1;
+    mat_sol->tab[5] = c2;
+    mat_sol->tab[6] = d1;
+    mat_sol->tab[7] = d2;
 
-    float inputs[2] = {(float)a, (float)b};
-    
-    #if PRINT != 0
-    printf("\n## FEEDING n.%d in progress... ##\n", i);
-    #endif
-    // FeedForward
-    feedForward(NN, inputs, 2, outputs);
-    
-    #if PRINT != 0   
-    printf("# Feeding n.%d over #\n", i);
-    printf("# New Outputs : #\n");
-    printOutputs(outputs, 0);
-    printf("\n## UPDATING n.%d of the neural network... ##\n", i);
-    #endif
-
-    // Update Weight
-    UpdateWeight(NN, expected_output, outputs,1.0);
-    
-    #if PRINT != 0
-    printf("# Updating n.%d over. #\n", i);
-    printf("# New Weights : \n");
-    printNeuralNetwork(NN);
-    printf("## END OF LEARNING N°%d! ##", i);
-    #endif
-  }
-  warnx("\n### Learning complete. ####");
-  printNeuralNetwork(NN);
-  printOutputs(outputs, 0);
+    return mat_sol;
 }
 
-float neuralTesting(NeuralNetwork* NN, Outputs* outputs, 
-                   unsigned int nb_of_testing)
-{
-  unsigned int nb_of_win = 0;
-  float final_output;
-  short bool_output;
-  
-  for (unsigned int i = 0 ; i < nb_of_testing ; ++i)
-  {
-    short a = rand() % 2;
-    short b = rand() % 2;
-    #if PRINT != 0
-    warnx("a = %d ; b = %d\n", a, b);
-    #endif
+Mat* initOutputDataSet(float a, float b, float c, float d) {
     
-    short expected_output = (a != b);
+    Mat* mat_sol;
 
-    float inputs[2] = {(float)a, (float)b};
+    mat_sol->tab[0] = a;
+    mat_sol->tab[1] = b;
+    mat_sol->tab[2] = c;
+    mat_sol->tab[3] = d;
 
-    feedForward(NN, inputs, 2, outputs);
-
-    final_output = getOutput(outputs, 3, 0);
-    bool_output = (final_output > 0.5);
-
-    if (bool_output == expected_output)
-    {
-      nb_of_win++;
-    }
-  }
-  
-  warnx("Percentage of win = %f", (float)nb_of_win / (float)nb_of_testing);
-  return (float)nb_of_win / (float)nb_of_testing;
+    return mat_sol;
 }
