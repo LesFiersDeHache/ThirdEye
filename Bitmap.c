@@ -37,8 +37,8 @@ unsigned long getPixel(Bitmap* bm, unsigned long x, unsigned long y)
  
 void setPixel(Bitmap* bm, unsigned long x, unsigned long y, unsigned long px)
 {
-    //assert(x < bm->width); // Debug
-    //assert(y < bm->height); // Debug
+    assert(x < bm->width); // Debug
+    assert(y < bm->height); // Debug
    
     bm->p_bitmap[(x * bm->width) + y] = px;
     //warnx("Pixel (%hd, %hd) set to %d.", x, y, px);

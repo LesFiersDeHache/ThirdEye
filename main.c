@@ -14,6 +14,7 @@
 #include "SDLstuff.h"
 #include "Bitmap.h"
 #include "Matrix.h"
+#include "resize.h"
 
 
 #define NB_OF_LOOPS 5
@@ -108,6 +109,19 @@ int main(int argc, char *argv[])
   else if(Sel==5)
     {
 	matrixTests();     
+    }
+  else if (Sel == 6)
+    {
+      Bitmap k ;
+      k = LoadToBitmap("wow.bmp");
+      Bitmap * bmp = &k;
+      List *l = CutAll(bmp);
+      l = l->next;
+      l = l->next;
+      l = l->next;
+      l = l->next;
+      AdjustChar(*l,&k);
+      
     }
   else
     {
