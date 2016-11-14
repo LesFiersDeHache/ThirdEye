@@ -1,393 +1,217 @@
+// Matrix.c //
 #include <stdlib.h>
 #include <stdio.h>
-#include <assert.h>
 #include <err.h>
+#include <assert.h>
 #include <time.h>
 #include "Sigmoid.h"
 
 #define Uint unsigned int
 #define Ulong unsigned long long
 
-// STRUCT
 typedef struct Mat {
 
-    Uint x_len;
-    Uint y_len;
     float* tab;
+    Uint xl;
+    Uint yl;
 
 } Mat;
 
-//INIT
-Mat* newMat(Uint x_len, Uint y_len, float fill) {
+//mNewFill : new matrix ('xl' x 'yl'), filled with 'fill'
+Mat* mNewFill(Uint xl, Uint yl, float fill) {
     
-    Mat* mat = malloc(sizeof(Mat));
-    if (mat == NULL) { err(1, "Mat : newMat : malloc failed (1)"); }
-    mat->x_len = x_len;
-    mat->y_len = y_len;
+    Mat* M = malloc(sizeof(Mat));
+    M->tab = malloc(sizeof(float) * xl * yl);
+    M->xl = xl;
+    M->yl = yl;
     
-    mat->tab = malloc(sizeof(float) * x_len * y_len);
-    if (mat->tab == NULL) { err(1, "Mat : newMat : malloc failed (2)"); } 
-    for (Ulong i = 0 ; i < x_len * y_len ; ++i) {
-        mat->tab[i] = fill;
+    
+    for ( Ulong i = 0 ; i < xl*yl ; ++i ) {
+        M->tab[i] = fill;
     }
 
-    return mat;
+    return M;
 }
 
-static float randomNumber() {
-    return ((float)(rand() % 1000)) / ((float)(1000));    
-}
- 
-Mat* newMatRandom(Uint x_len, Uint y_len, float mult, float add) {  
-
-    Mat* mat;        
-    mat = newMat(x_len,y_len,0.0);    
-    for (Uint i = 0; i < x_len * y_len; i++)
-    {
-        mat->tab[i] = randomNumber() * mult + add;
-    }
-    return mat;
-}
-
-//FREE
-void freeMat(Mat* mat) {
-    free(mat);   
-}
-
-//GET/SET
-
-//Get value
-float getInMat(Mat* mat, Uint x, Uint y) {
-    assert(x < mat->x_len && y < mat->y_len);
-    return mat->tab[x * mat->y_len + y];
-}
-
-//Set value
-void setInMat(Mat* mat, Uint x, Uint y, float new_value) {
-    assert(x < mat->x_len);
-    assert(y < mat->y_len);
-    mat->tab[x * mat->y_len + y] = new_value;
-}
-
-//Get len X
-Uint getLenXMat(Mat* mat) {
-    return mat->x_len;
-}
-
-//Get len Y
-Uint getLenYMat(Mat* mat) {
-    return mat->y_len;
-}
-
-//PRINT MAT
-
-void printMat(Mat* mat) {
+//mNewRand : new matrix ('xl' x 'yl'), filled with random values
+// rand = mult * [0.0 - 1.0] + add
+Mat* mNewRand(Uint xl, Uint yl, float mult, float add) {
     
-    printf("[");
-    for ( Uint x = 0 ; x < mat->x_len ; ++x ) {
-        if (x > 0) {
-            printf(" ");
-        }
+    srand(time(NULL));
+
+    Mat* M = malloc(sizeof(Mat));
+    M->tab = malloc(sizeof(float) * xl * yl);
+    M->xl = xl;
+    M->yl = yl;
+    
+    for ( Ulong i = 0 ; i < xl*yl ; ++i ) {
+        M->tab[i] = mult * rand() + add;
+    }
+
+    return M;
+}
+
+// mGet : get the value of a matrix in (x;y)
+float mGet(Mat* M, Uint x, Uint y) {
+    return M->tab[x * M->yl + y];
+}
+
+// mSet : set the value of a matrix in (x;y)
+void mSet(Mat* M, Uint x, Uint y, float set) {
+    M->tab[x * M->yl + y] = set;
+}
+
+// mPrint : print matrix
+void mPrint (Mat* M) {
+    printf("[\n");
+    for ( Uint x = 0 ; x < M->xl ; ++x ) {
         printf("[");
-        for ( Uint y = 0 ; y < mat->y_len ; ++y ) {
-            printf("%f, ", mat->tab[x * mat->y_len + y]);
+        for ( Uint y = 0 ; y < M->yl ; ++y ) {
+            printf("%f ; ", mGet(M, x, y));
         }
-        printf("]");
-        if (x < mat->x_len - 1) {
-            printf("\n");
-        }
+        printf("]\n");
     }
-    printf("]\n\n");
+    printf("]\n");
 }
 
-//OPERATIONS
+// mPrintExt : print matrix extanded with some values
+void mPrintExt(Mat* M, const char* title) {
+    printf("Matrix : '%s'\n", title);
+    printf("Dimensions : %d * %d\n", M->xl, M->yl);
+    mPrint(M);
+    printf("\n");
+}
 
-Mat* ope_Mcopy(Mat* mat) {
+//mAdd : addition of 2 matrix, per-a-per
+Mat* mAdd(Mat* M1, Mat* M2) {
+    if (M1->xl != M2->xl || M1->yl != M2->yl) {           
+        err(1, "Matrix : mAdd >>> Matrix's lengths are not equal");
+    }
+
+    Mat* MR = mNewFill(M1->xl, M1->yl, 0.0);
     
-    Mat* mat_sol = newMat(mat->x_len, mat->y_len, 0.0);
-    Ulong index = 0;
-
-    for ( Uint x = 0 ; x < mat->x_len ; ++x ) {
-        
-        for ( Uint y = 0 ; y < mat->x_len ; ++y ) {
-            
-            index = x * mat->y_len + y;
-            mat_sol->tab[index] = mat->tab[index];
-        }
-    }
-
-    return mat_sol;
-}
-
-//Matrix + Real = Other matrix
-Mat* ope_MpR(Mat* mat, float r) {
-
-    Mat* mat_sol = newMat(mat->x_len, mat->y_len, 0.0);
-
-    for ( Uint x = 0 ; x < mat->x_len ; ++x ) {
-        
-        for ( Uint y = 0 ; y < mat->y_len ; ++y ) {
-            
-            mat_sol->tab[x * mat->y_len + y] = mat->tab[x * mat->y_len + y] + r;
+    for ( Uint x = 0 ; x < M1->xl ; ++x ) {
+        for ( Uint y = 0 ; y < M1->yl ; ++y ) {
+            mSet(MR, x, y, mGet(M1, x, y) + mGet(M2, x, y));
         }
     }
-    return mat_sol;
-}
-
-//Matrix * Real = Other Matrix
-Mat* ope_MxR(Mat* mat, float r) {
-    
-    Mat* mat_sol = newMat(mat->x_len, mat->y_len, 1.0);
-
-    for ( Uint x = 0 ; x < mat->x_len ; ++x ) {
-        
-        for ( Uint y = 0 ; y < mat->y_len ; ++y ) {
-            
-            mat_sol->tab[x * mat->y_len + y] = mat->tab[x * mat->y_len + y] * r;
-        }
-    }
-    return mat_sol;
-}
-
-//Matrix + Matrix = Other Matrix
-Mat* ope_MpM(Mat* mat1, Mat* mat2) {
-
-    assert(mat1->x_len == mat2->x_len && mat1->y_len == mat2->y_len);
-    
-    Mat* mat_sol = newMat(mat1->x_len, mat1->y_len, 0.0);
-
-    for ( Uint x = 0 ; x < mat1->x_len ; ++x ) {
-        
-        for ( Uint y = 0 ; y < mat1->y_len ; ++y ) {
-            Ulong index = x * mat1->y_len + y;
-            mat_sol->tab[index] = mat1->tab[index] + mat2->tab[index];
-        }
-    }
-    
-    return mat_sol;
-}
-
-Mat* ope_MsM(Mat* mat1, Mat* mat2) {
-
-    assert(mat1->x_len == mat2->x_len && mat1->y_len == mat2->y_len);
-    
-    Mat* mat_sol = newMat(mat1->x_len, mat1->y_len, 0.0);
-
-    for ( Uint x = 0 ; x < mat1->x_len ; ++x ) {
-        
-        for ( Uint y = 0 ; y < mat1->y_len ; ++y ) {
-            Ulong index = x * mat1->y_len + y;
-            mat_sol->tab[index] = mat1->tab[index] - mat2->tab[index];
-        }
-    }
-    
-    return mat_sol;
-}
-
-//Matrix * Matrix = Other Matrix
-Mat* ope_MxM(Mat* mat1, Mat* mat2) {
-
-    assert(mat1->x_len == mat2->x_len && mat1->y_len == mat2->y_len);
-    
-    Mat* mat_sol = newMat(mat1->x_len, mat1->y_len, 1.0);
-
-    for ( Uint x = 0 ; x < mat1->x_len ; ++x ) {
-        
-        for ( Uint y = 0 ; y < mat1->y_len ; ++y ) {
-            Ulong index = x * mat1->y_len + y;
-            mat_sol->tab[index] = mat1->tab[index] * mat2->tab[index];
-        }
-    }
-    
-    return mat_sol;
-}
-
-//static : do not touch
-static float computeMult(Mat* mat1, Mat* mat2, Uint i, Uint j, Uint rmax) {
-
-    float result = 0; 
-    
-    Uint max1 = mat1->y_len;
-    Uint max2 = mat2->y_len;
-    for ( Uint r = 0 ; r < rmax ; ++r ) {
-        result += mat1->tab[i * max1 + r] * mat2->tab[r * max2 + j];
-    }
-
-    return result;
-}
-
-//Matrix dot Matrix = Other matrix
-Mat* ope_MdotM(Mat* mat1, Mat* mat2) {
-
-    Uint x_len1 = mat1->x_len;
-    Uint x_len2 = mat2->x_len;
-    Uint y_len1 = mat1->y_len;
-    Uint y_len2 = mat2->y_len;
-
-    assert(y_len1 == x_len2);
-    
-    Mat* mat_sol = newMat(x_len1, y_len2, 1.0);
-
-    for ( Uint x = 0 ; x < x_len1 ; ++x ) {
-        
-        for ( Uint y = 0 ; y < y_len2 ; ++y ) {
-            
-            mat_sol->tab[x * y_len2+y] = computeMult(mat1, mat2, x, y, y_len1);
-        }
-    }
-
-    return mat_sol;
-}
-
-//Vector (1 dimension matrix, horizontal or vertical) dot Matrix = Othr Matrix
-Mat* ope_VdotM(Mat* vect, Mat* mat) {
-
-    Mat* mat_sol = newMat(mat->x_len, 1, 0.0);
-    
-    float result = 0.0;
-
-    for ( Uint x = 0 ; x < vect->x_len ; ++x ) {
-        
-        result = 0.0;
-
-        for (Uint y = 0 ; y < mat->y_len ; ++y ) {
-            
-            result += mat->tab[x * mat->y_len + y] * vect->tab[x];
-        }
-
-        mat_sol->tab[x] = result;
-    }
-
-    return mat_sol;
-}
-
-//Vector (1 dimension matrix, horizontal or vertical) dot Vector = Other Matrix
-float ope_VdotV(Mat* vect1, Mat* vect2) {
-    
-    assert(vect1->x_len == 1);
-    assert(vect2->x_len == 1);
-    assert(vect1->y_len == vect2->y_len);
-    
-    float result;
-
-    for (Ulong i = 0 ; i < vect1->y_len ; ++i) {
-        
-        result += vect1->tab[i] * vect2->tab[i];
-    }
-
-    return result;
-}
-
-//Matrix transpose = other matrix
-Mat* ope_Mt(Mat* mat) {
-    
-    Mat* mat_sol = newMat(mat->y_len, mat->x_len, 0.0);
-    Ulong indexIn = 0;
-    Ulong indexOut = 0;
-
-    for ( Uint x = 0 ; x < mat->x_len ; ++x ) {
-         
-        for ( Uint y = 0 ; y < mat->y_len ; ++y ) {
-            
-            indexIn = x * mat->y_len + y;
-            indexOut = y * mat->x_len + x;
-            mat_sol->tab[indexOut] = mat->tab[indexIn];
-        }
-    }
-    return mat_sol;
-}
-
- 
-Mat* ope_apply_sigmoid(Mat* mat) {
    
-    Mat* mat_sol;
-    mat_sol = newMat(getLenXMat(mat),getLenYMat(mat),0);
-    for(Uint i = 0 ; i < getLenXMat(mat_sol) ; i++)
-    {
-        for(unsigned int j = 0;j<getLenYMat(mat);j++)
-        {
-            setInMat(mat_sol,i,j,sigmoid(getInMat(mat,i,j)));
-        }
-   
-    }
-    return mat_sol;
-}
- 
-Mat* ope_apply_deriv_sigmoid(Mat* mat) {
- 
-    Mat* mat_sol;
-    mat_sol = newMat(getLenXMat(mat),getLenYMat(mat),0);
-    for(unsigned int i = 0 ; i < getLenXMat(mat_sol) ; i++)
-    {
-        for(unsigned int j = 0;j<getLenYMat(mat);j++)
-        {
-            setInMat(mat_sol,i,j,dSigmoid(getInMat(mat,i,j)));
-        }
-   
-    }
-    return mat_sol;
+    return MR;
 }
 
+// mSub : substract 2 matrix, per-to-per
+Mat* mSub(Mat* M1, Mat* M2) {
+    if (M1->xl != M2->xl || M1->yl != M2->yl) {
+        err(1, "Matrix : mSub >>> Matrix's lengths are not equal");
+    }
 
-//MAIN
-
-/*
-int main() 
-{
-    //TUTORIAL :
-
-    Mat* mat = newMat(4, 6, 1.0);
-    Mat* matp = newMat(4, 6, 3.0);
-    Mat* matm1 = newMat(4, 2, 2.0);
-    Mat* matm2 = newMat(2, 3, 3.0);
-    Mat* vect1 = newMat(1, 3, 2.0);
-    Mat* vect2 = newMat(1, 3, 3.0);
-    Mat* vect3 = newMat(3, 1, 2.0);
-    warnx("Get something in a Mat : %f", getInMat(mat, 0, 0));
-    setInMat(mat, 1, 2, 5.0);
+    Mat* MR = mNewFill(M1->xl, M1->yl, 0.0);
     
-    warnx("Init matrix");
-    printMat(mat);
+    for ( Uint x = 0 ; x < M1->xl ; ++x ) {
+        for ( Uint y = 0 ; y < M1->yl ; ++y ) {
+            mSet(MR, x, y, mGet(M1, x, y) - mGet(M2, x, y));
+        }
+    }
 
-    warnx("Matrix + Real");
-    printMat(ope_MpR(mat, 1.2));
+    return MR;
+}
 
-    warnx("Matrix * Real");
-    printMat(ope_MxR(mat, 2.0));
+// mMult : mult 2 matrix, per-to-per
+Mat* mMult(Mat* M1, Mat* M2) {
+    if (M1->xl != M2->xl || M1->yl != M2->yl) {
+        err(1, "Matrix : mMult >>> Matrix's lengths are not equal");
+    }
 
-    warnx("Matrix + Matrix");
-    printMat(ope_MpM(mat, matp));
-
-    warnx("Matrix - Matrix");
-    printMat(ope_MsM(mat, matp));
-
-    warnx("Matrix * Matrix (1 per 1)");
-    printMat(ope_MxM(mat, matp));
-
-    warnx("Matrix dot Matrix (matrix multiplication)");
-    printMat(ope_MdotM(matm1, matm2));
-
-    warnx("Matrix transpose");
-    printMat(ope_Mt(mat));
+    Mat* MR = mNewFill(M1->xl, M1->yl, 0.0);
     
-    warnx("Vector dot product");
-    printf("%f\n", ope_VdotV(vect1, vect2));
+    for ( Uint x = 0; x < M1->xl ; ++x ) {
+        for ( Uint y = 0 ; y < M1->yl ; ++y ) {
+            mSet(MR, x, y, mGet(M1, x, y) * mGet(M2, x, y));
+        }
+    }
 
-    warnx("Vector dot Matrix");
-    setInMat(vect3, 2, 0, 3.0);
-    printMat(vect3);
-    printMat(ope_VdotM(vect3, mat));
+    return MR;
+}
 
-    warnx("Sigmoid");
-    printMat(ope_apply_sigmoid(matp));
-    printMat(ope_apply_sigmoid(mat));
+//mDot : dot operation between two matrix
+//The nbr of column of the first matrix must be equal to the nbr of rows
+//in the second matrix.
+Mat* mDot(Mat* M1, Mat* M2) {
+    if (M1->yl != M2->xl) {
+        err(1, "Matrix : mDot >>> Matrix length condition is not true.\n"); 
+    }
 
-    warnx("Deriv sigmoid");
-    printMat(ope_apply_deriv_sigmoid(matp));
-    printMat(ope_apply_deriv_sigmoid(mat));
+    Mat* MR = mNewFill(M1->xl, M2->yl, 0.0);
+    Uint common_len = M1->yl;
 
-    warnx("Freeeee");
-    freeMat(mat);
+    for ( Uint x = 0 ; x < M1->xl ; ++x ) {
+        for ( Uint y = 0 ; y < M2->yl ; ++y ) {
+            float sum = 0;
+            
+            for ( Uint k = 0 ; k < common_len ; ++k ) {
+                sum += mGet(M1, x, k) * mGet(M2, k, y);
+            }
 
-    return 0;
+            mSet(MR, x, y, sum);
+        }
+    }
+
+    return MR;
+}
+
+//apply sigmoid 
+Mat* mSig(Mat* M) {
+    
+    Mat* MR = mNewFill(M->xl, M->yl, 0.0);
+    
+    for ( Uint x = 0 ; x < M->xl ; ++x ) {
+        for ( Uint y = 0 ; y < M->yl ; ++y ) {
+            float value = sigmoid(mGet(M, x, y));
+            mSet(MR, x, y, value);
+        }
+    }
+
+    return MR;
+}
+
+Mat* mDSig(Mat* M) {
+
+    Mat* MR = mNewFill(M->xl, M->yl, 0.0);
+    
+    for ( Uint x = 0 ; x < M->xl ; ++x ) {
+        for ( Uint y = 0 ; y < M->yl ; ++y ) {
+            float value = dSigmoid(mGet(M, x, y));
+            mSet(MR, x, y, value);
+        }
+    }
+
+    return MR;
+}
+/* 
+int main(){
+    
+    Mat* A1 = mNewFill(4, 3, 0.0);
+    Mat* A2 = mNewFill(4, 3, 1.0);
+    Mat* A3 = mNewFill(4, 3, 2.0);
+
+    printf("ADDITIONS\n");
+    mPrintExt(mAdd(A1, A2), "A1 + A2");
+    //mPrintExt(mAdd(A1, A3), "A1 + A3"); //Error !
+    mPrintExt(mAdd(A1, mNewFill(4, 3, 2.0)), "A1 + 2.0");
+
+    printf("SUBSTRACT\n");
+    mPrintExt(mSub(A1, A2), "A1 - A2");
+    mPrintExt(mSub(A1, mNewFill(4, 3, 2.0)), "A1 - 2.0");
+
+    printf("MULTIPLY\n");
+    mPrintExt(mMult(A3, A2), "A3 * A2");
+    mPrintExt(mMult(A3, mNewFill(4, 3, 2.0)), "A3 * 2.0");
+
+    Mat* A1 = mNewFill(3, 2, 2.0);
+    Mat* A2 = mNewFill(2, 4, 3.0);
+    Mat* A3 = mNewRand(3, 3, 2, -1);
+
+    printf("DOT\n");
+    mPrintExt(mDot(A1, A2), "A1 dot A2");
+    mPrintExt(A3, "A3 rand");
 }*/

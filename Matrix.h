@@ -1,63 +1,134 @@
+// Matrix.h //
 #include <stdlib.h>
 #include <stdio.h>
-#include <assert.h>
 #include <err.h>
+#include <assert.h>
+#include <time.h>
+
 #define Uint unsigned int
 #define Ulong unsigned long long
 
+// Mat :
+// Matrix structure. 
+// tab : tab which contains all the values of the matrix
+// xl : nbr of rows 
+// yl : nbr of column
 typedef struct Mat {
 
-    Uint x_len;
-    Uint y_len;
     float* tab;
+    Uint xl;
+    Uint yl;
 
 } Mat;
 
-//INIT
-Mat* newMat(Uint x_len, Uint y_len, float fill);
+// mNewFill :
+// Create a new matrix, with 'xl' rows and 'yl' column, and fill it with 'fill'.
+//
+// xl : nbr of rows of the new matrix
+// yl : nbr of column of the new matrix
+// fill : float which what the matrix will be filled
+//
+// return : the new matrix
+Mat* mNewFill(Uint xl, Uint yl, float fill);
 
-Mat* newMatRandom(Uint x_len, Uint y_len, float mult, float add);
+// mNewRand :
+// Create a new matrix, with 'xl' rows and 'yl' column, and fill it with
+// random float values.
+//
+// xl : nbr of rows of the new matrix
+// yl : nbr of columns of the new matrix 
+// mult and add : the matrix will be filled with random float calculated with 
+//                this formula : 
+//                mult * [0.0 - 1.0] + add 
+//                with [0.0 - 1.0] a float between 0.0 and 1.0
+//
+// return : the new matrix
+Mat* mNewRand(Uint xl, Uint yl, float mult, float add);
 
-//FREE
-void freeMat(Mat* mat);
+// mGet :
+// Get a value in a matrix.
+//
+// M : matrix which we want to pick up value
+// x : row where we want to pick up the value
+// y : column where we want to pick up the value
+//
+// return : the value that we want to pick up
+float mGet(Mat* M, Uint x, Uint y);
 
-//GET / SET
-float getInMat(Mat* mat, Uint x, Uint y); 
+// mSet : 
+// Set a value in a matrix.
+//
+// M : Matrix which we want to pick up a value
+// x : row where we want to pick up the value
+// y : column where we want to pick up the value
+//
+// return : the value that we want to pick up
+void mSet(Mat* M, Uint x, Uint y);
 
-void setInMat(Mat* mat, Uint x, Uint y, float new_value); 
+// mPrint :
+// Print the values of a matrix proprely
+//
+// M : the matrix to print
+void mPrint(Mat* M);
 
-Uint getLenXMat(Mat* mat);
+// mPrintExt :
+// Print the values of a matrix proprely, with it's size and a string.
+//
+// M : the matrix to print
+// title : a string to print before the matrix
+void mPrintExt(Mat* M, const char* title);
 
-Uint getLenYMat(Mat* mat);
+// mAdd :
+// Create a new matrix equal to the sum of two given matrix.
+//
+// M1 : matrix one
+// M2 : matrix two
+//
+// return : a matrix equal to the sum of 'M1' and 'M2'
+Mat* mAdd(Mat* M1, Mat* M2);
 
-//PRINT
-void printMat(Mat* mat);
+// mSub :
+// Create a new matrix equal to the substration of two given matrix.
+//
+// M1 : matrix one
+// M2 : matrix two
+//
+// return : a matrix equal to the substration of 'M1' and 'M2'
+Mat* mSub(Mat* M1, Mat* M2);
 
-//OPERATIONS
-//All these functions does not modity the matrix in entry
-Mat* ope_Mcopy(Mat* mat); //Copy a Mat
+// mMult :
+// Create a new matrix equal to the multiplication (per-to-per) 
+// of two given matrix.
+//
+// M1 : matrix one
+// M2 : matrix two
+//
+// return : a matrix equal to the multiplication of 'M1' and 'M2'
+Mat* mMult(Mat* M1, Mat* M2);
 
-Mat* ope_MpR(Mat* mat, float r); //Matrix + Real
+// mDot :
+// Create a new matrix equal to the dot operation of two given matrix
+//
+// M1 : matrix one
+// M2 : matrix two
+//
+// return : a matrix equal to the dot operation of 'M1' and 'M2'
+Mat* mDot(Mat* M1, Mat* M2);
 
-Mat* ope_MxR(Mat* mat, float r); //Matrix * Real
+// mSig :
+// Create a new matrix where each member is equal to the sigmoid function
+// of the equivalent member in the given matrix.
+//
+// M : Matrix 
+//
+// return : the new matrix equals to sigmoid(M)
+Mat* mSig(Mat* M);
 
-Mat* ope_MpM(Mat* mat1, Mat* mat2); //Matrix + Matrix
-
-Mat* ope_MxM(Mat* mat1, Mat* mat2); //Matrix * Matrix (classic mult 1 by 1)
-
-Mat* ope_MdotM(Mat* mat1, Mat* mat2); //Matrix dot Matrix
-                                      //(Matrix multiplication)
-
-//Vector : one dimensionnal matrix (vertical or horizontal)
-Mat* ope_VdotM(Mat* vect, Mat* mat); //Vector dot Matrix
-
-float ope_VdotV(Mat* vect1, Mat* vect2); //Vector dot Vector
-
-Mat* ope_Mt(Mat* mat); //Matrix transpose
-
-Mat* ope_apply_sigmoid(Mat* mat); //Apply sigmoid function to Matrix
-
-Mat* ope_apply_deriv_sigmoid(Mat* mat); //Apply derivate sigmoid function
-                                        //to Matrix
-
-
+// mDSig :
+// Create a new matrix where each member is equal to the derivate sigmoid
+// function of the equivalent member in the given matrix.
+//
+// M : Matrix
+//
+// return : the new matrix equals to sigmoid'(M)
+Mat* mDSig(Mat* M);
