@@ -7,7 +7,8 @@
 #ifndef ONLYONCE_SIZE
 #define ONLYONCE_SIZE
 
-Bitmap AdjustChar(List l, Bitmap *b);
+Bitmap* AdjustChar(List l, Bitmap *b);
 
+Bitmap* sizeUP(Bitmap* b);
 
 #endif

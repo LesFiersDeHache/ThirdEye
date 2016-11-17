@@ -16,6 +16,31 @@
 
 int main ( int argc, char *argv[] )
 {
+
+
+	/*Bitmap* k;
+	k = malloc(sizeof(Bitmap));
+	bitmapInit(k,7,7);
+	setPixel(k,0,0,1);
+        setPixel(k,0,1,1);
+        setPixel(k,1,1,1);
+        setPixel(k,2,0,1);
+        setPixel(k,2,1,1);
+        setPixel(k,1,2,1);
+	printBitmap(k);
+	printf("\n");
+	sizeUP(k);
+
+
+      Bitmap k ;
+      k = LoadToBitmap("wow.bmp");
+      Bitmap * bmp = &k;
+      List *l = CutAll(bmp);
+      l = l->next;
+      l = l->next;
+      l = l->next;
+      AdjustChar(l,&k);
+
     warnx("Main : 1");
     
     unsigned int layers_size[] = {2, 3, 1};
@@ -54,7 +79,10 @@ int main ( int argc, char *argv[] )
     NnFree(NN);
     warnx("Main : The end");
 
-    return EXIT_SUCCESS;
+    return EXIT_SUCCESS;*/
+
+return 1;
+    
 }
 
 
