@@ -1,304 +1,250 @@
-# include <stdlib.h>
-# include <err.h>
-# include <assert.h>
-# include <stdio.h>
-# include <time.h>
-// ############################## STRUCT #####################################//
+// NeuralNetwork.c //
 
+#include <stdlib.h>
+#include <stdio.h>
+#include "Matrix.h"
+#include <assert.h>
+#include <err.h>
+#include "NeuralNetwork.h"
 
-/* struct NeuralNetwork
-A NeuralNetwork struct contains all the useful information about a neural
-network : 
-- nb_layers = the number of layers that the neural network contains (input layer
-included)
-- nb_neurons[] = tab of the number of neurons of each layers (nb_neurons[0] is
-the number of inputs of the NN)
-- weights[] = tab of the neural network's weights
-- size_of_weights = size of weights[]
-- biaises[] = tab of the neural network's biaises
-- size_of_biaises = size of biaises[]
-*/
-typedef struct NeuralNetwork {
+#define NB_L NN->nb_l
+#define GL NN->L[l]
+#define GL_NEXT NN->L[l+1]
+#define GW NN->W[l]
+#define GW_NEXT NN->WL[l+1]
+#define GB NN->B[l]
+#define GB_NEXT NN->B[l+1]
+
+// ########## STRUCT NEURAL NET ########## //
+
+typedef struct NeuralNet NeuralNet;
+
+// ########## INIT NEURAL NET ########## //
+
+NeuralNet* NnInit(short nb_layers, unsigned int layers_size[]) {
     
-    unsigned short nb_layers;
-    unsigned int* nb_neurons;
-
-    float* weights;
-    unsigned int size_of_weights;
-    float* biaises;
-    unsigned int size_of_biaises;
-
-} NeuralNetwork;
-
-// ################ CONSTRUCTION AND INITILIZATION FUNCTIONS #################//
-
-
-//return a random weight
-static float randomWeight() {
-    //return ((float)(rand() % 1000)) / ((float)(1000));
-    return 0.5;
-}
-
-//return a random biais
-static float randomBiaises() {
-    //return ((float)(rand() % 1000)) / ((float)(1000));
-    return 1.0;
-}
-
-/* initNeuralNetwork
-Initialize a new NeuralNetwork structure.
-NN = NeuralNetwork to initialize
-
-Inputs :
-- nb_layers = the number of layers that the NN has.
-- nb_neurons[] = tab of the number of neurons of each layers (nb_neurons[0] is the
-- number of inputs of the NN)
-
-Outputs :
-- void
-*/
-void initNeuralNetwork(NeuralNetwork* NN, unsigned short nb_layers, 
-unsigned int* nb_neurons) {
-
-    time_t t;
-    srand((unsigned) time(&t));
+    NeuralNet* NN = malloc(sizeof(NeuralNet));
     
-    unsigned int size_of_weights = 0;
-    unsigned int size_of_biaises = 0;
-
-    //Compute the size of the weights tab and the biaises tab
-    for ( unsigned short i = 1 ; i <= nb_layers ; ++i ) {
-        size_of_weights += nb_neurons[i-1] * nb_neurons[i];
-        size_of_biaises += nb_neurons[i];
-    }
-   
-    //Set NN variables
-    //NN->nb_layers = malloc(sizeof(unsigned short));
-    NN->nb_layers = nb_layers;
-
-    //Set nb_neurons tab
-    NN->nb_neurons = malloc(nb_layers * sizeof(unsigned int));
-    for (unsigned short i = 0 ; i < nb_layers ; ++i) {
-        NN->nb_neurons[i] = nb_neurons[i];
-    }
-
-    //Allocate memory for weights tab
-    NN->weights = malloc(sizeof(float) * size_of_weights);
-
-    if ( NN->weights == NULL ) {
-        err(0, "Allocation problem : malloc failed to initialize NN->weights");
-    }
-
-    NN->size_of_weights = size_of_weights;
+    NN->L = malloc(nb_layers * sizeof(Mat));
     
-    //Allocate memory for biaises tab
-    NN->biaises = malloc(sizeof(unsigned int) * size_of_biaises);
+    NN->nb_l = nb_layers;
     
-    if ( NN->biaises == NULL ) {
-        err(0, "Allocation problem : malloc failed to initialize NN->biaises");
-    }
+    NN->W = malloc((nb_layers - 1) * sizeof(Mat));
+    NN->B = malloc(sizeof(Mat));
     
-    NN->size_of_biaises = size_of_biaises;
-    
-    //Initialize weights tab with random weights
-    for ( unsigned int i = 0 ; i < size_of_weights ; ++i ) {
-        NN->weights[i] = randomWeight();
-    }
-
-    //Initialize biaises tab with random biaises
-    for ( unsigned int i = 0 ; i < size_of_biaises ; ++i ) {
-        float rd = randomBiaises();
-        NN->biaises[i] = rd;    
-    }
-}
-
-// ############################## LOAD NEURAL NETWORK #########################//
-
-/*void loadNeuralNetwork(NeuralNetwork* NN, char* path) {
-    //TODO
-}
-*/
-// ############################## GET/SET #####################################//
-
-
-
-//Return the number of weights of a neuron in a layer
-static unsigned int getNbOfWeights(NeuralNetwork* NN, unsigned short layer) {
-    
-    //Debug
-    assert(layer < NN->nb_layers);
-
-    return NN->nb_neurons[layer - 1];
-}
-
-//Return the global index of a weight in the weights tab 
-static unsigned int getIndex(NeuralNetwork* NN, unsigned short layer, 
-unsigned int neuron, unsigned int index_weight) { 
-
-    //Debug
-    assert(layer < NN->nb_layers);
-    assert(neuron < NN->nb_neurons[layer]);
-    assert(index_weight < NN->nb_neurons[layer - 1]);
-    
-    unsigned int index = 0;
-    
-    for ( unsigned short i = 1 ; i < layer ; ++i ) {
-        index += NN->nb_neurons[i - 1] * NN->nb_neurons[i];
-    }
-
-    index += NN->nb_neurons[layer] * neuron + index_weight;
-
-    return index;
-}
-
-/* getWeight
-Return the value a weight.
-
-Input :
-- *NN = the weight's neural network
-- layer = layer of the weight's neuron
-- neuron = weight's neuron
-- index_weight = "local" index of the weight (the n-th weight of the neuron)
-
-Output :
-- weight's value
-*/
-float getWeight(NeuralNetwork* NN, unsigned short layer, unsigned int neuron,
-unsigned int index_weight) {
-    
-    return NN->weights[getIndex(NN, layer, neuron, index_weight)];
-}
-
-/* setWeight
-Set the value of a weight.
-
-Input :
-- *NN = the weight's neural network
-- layer = layer of the weight's neuron
-- neuron = weight's neuron
-- index_weight = "local" index of the weight (the n-th weight of the neuron)
-- new_weight = new value of the weight
-
-Output :
-- void
-*/
-void setWeight(NeuralNetwork* NN, unsigned short layer, unsigned int neuron,
-unsigned int index_weight, float new_weight) {
-
-    NN->weights[getIndex(NN, layer, neuron, index_weight)] = new_weight;
-}
-
-
-void setBiais(NeuralNetwork* NN, unsigned short layer, unsigned int neuron,
-float new_biais) {
-
-    unsigned int index = 0;
-
-    for (unsigned short i = 1 ; i < layer ; ++i) {
-        index += NN->nb_neurons[i];
-    }
-    //warnx("setBiais index : %d", index + neuron);
-    NN->biaises[index + neuron] = new_biais;
-}
-
-float getBiais(NeuralNetwork* NN, unsigned short layer, unsigned int neuron) {
-
-    unsigned int index = 0;
-
-    for (unsigned short i = 1 ; i < layer ; ++i) {
-        index += NN->nb_neurons[i];
-    }
-    //warnx("getBiais index : %d", index + neuron);
-    float biais = NN->biaises[index + neuron];
-    return biais;
-}
-
-// ############################## PRINT NEURAL NET ###################################//
-
-/*
-static void printBiaises(NeuralNetwork* NN) {
-
-    warnx("Biaises : ");
-    for ( unsigned int i = 0 ; i < NN->size_of_biaises ; ++i ) {
-        warnx("Neuron n°%d : %f ; ", i, NN->biaises[i]);
-    }
-
-}
-*/
-
-void prettyPrintNeuralNetwork(NeuralNetwork* NN, unsigned short min_layer) {
-    
-    printf("### NEURAL NETWORK ###\n");
-
-    for ( unsigned short layer = min_layer ; layer < NN->nb_layers ; ++layer ) {
-        printf("\nLayer %d :\n", layer);
-
-        for ( unsigned int neuron = 0 ; neuron < NN->nb_neurons[layer] ;
-        neuron++ ) {
-            printf("|\n|__Neuron n°%d : biais : %f\n", neuron, getBiais(NN, layer, neuron));
-
-            for ( unsigned int w = 0 ; w < getNbOfWeights(NN, layer) ; ++w ) {
-                printf("|  |__w(%d) = %f\n", w, getWeight(NN, layer, neuron, w));
-            }
-        }
-    }
-    printf("\n");
-
-}
-
-void printNeuralNetwork(NeuralNetwork* NN) {
-
-    for ( short i = 1 ; i < NN->nb_layers; ++i ) {
-        printf("Layer %d\n", i);
+    for ( short l = 0 ; l < nb_layers ; ++l ) {
         
-        for ( unsigned int j = 0 ; j < NN->nb_neurons[i] ; ++j ) {
-            printf("|----Neuron n°%d : ", j);
-
-            for ( unsigned int k = 0 ; k < getNbOfWeights(NN, i); k++ ) {
-                printf("w(%d) = %f ; ", k, getWeight(NN, i, j, k));
-            }
-
-            printf("| Biais = %f |\n", getBiais(NN, i, j));
+        NN->L[l] = mNewFill(layers_size[l], 1, 0.0);
+        
+        if (l < nb_layers - 1) {
+        
+            NN->W[l] = mNewFill(layers_size[l+1], layers_size[l], 0.5);
+            NN->B[l] = mNewFill(layers_size[l+1], 1, 0.0);
+            //NN->W[l] = mNewRand(layers_size[l+1], layers_size[l], 2, -1);
+            //NN->B[l] = mNewRand(layers_size[l+1], 1, 2, -1);
         }
-        printf("\n");
+    }
+
+    return NN;
+}
+
+// ########## FREE FUNCTION ########## //
+
+void NnFree(NeuralNet* NN) {
+
+    for ( short l = 0 ; l < NB_L ; ++l ) {
+        
+        mFree(NN->L[l]);
+        
+        if (l < NB_L - 1) {
+        
+            mFree(NN->W[l]);
+            mFree(NN->B[l]);
+        }
+    }
+
+    free(NN->L);
+    free(NN->W);
+    free(NN->B);
+
+    free(NN);
+}
+
+// ########## FEEDFORWARD ########## //
+
+void NnFeedForward(NeuralNet* NN, Mat* Inputs) {
+
+    mPrintExt(NN->L[0], "Input layer");
+    mCopyAinB(Inputs, NN->L[0]);
+
+    for ( short l = 0 ; l < NB_L - 1 ; ++l ) {
+
+        Mat* D = mDot(GW, GL);
+        Mat* A = mAdd(D, GB);
+        Mat* S = mSig(A);
+        mCopyAinB(S, GL_NEXT);
+
+        mFree(S);
+        mFree(D);
+        mFree(A);
     }
 }
 
-// ############################## FREE STRUCTURE #####################################//
+// ########## BACKPROPAGATION ########## //
+ 
+// Y = wanted results (l == L) OR next layer's error (else)
+static Mat* computeCurrLayerError(NeuralNet* NN, short l, Mat* Y) {
 
-/* freeNeuralNetwork
-Free memory used by the neural network.
-Call this function on a neural network when you will not use it anymore.
+    assert(l < NN->nb_l);
+    assert(l >= 0);
 
-Input :
-- NN = Neural Network that you want to free.
+    if (l == NN->nb_l - 1) {
 
-Output :
-- void
-*/
+        Mat* D1 = mSub(GL, Y); // L - Y
+        Mat* D = mT(D1); // (D1)^T
 
-/*
-void freeNeuralNetwork(NeuralNetwork* NN) { 
-    //TODO
+        mFree(D1);
+        
+        return D;
+    }
+    else {
+        
+        mPrintExt(GW, "GW");
+        mPrintExt(Y, "Y");
+        Mat* C = mDot(GW, Y); // C = W.Y
+
+        Mat* F1 = mDSig(GL); // F1 = o'(L)
+        Mat* F = mT(F1); // F = F1^T
+
+        Mat* D = mMult(F, C); // D = F x C
+
+        mFree(C);
+        mFree(F1);
+        mFree(F);
+
+        return D;
+    }
 }
-*/
 
+static Mat* computeCurrDeltaWeight(NeuralNet* NN, short l, Mat* Prev_Err) {
 
-/*
-int main() {
+    assert(l < NN->nb_l - 1);
+    assert(l >= 0);
 
-    //warnx("1");
-    NeuralNetwork NN;
-    NeuralNetwork* nn = &NN;
+    Mat* DW1 = mDot(GL, Prev_Err);
+    //mPrintExt(Prev_Err, "Prev_Err");
+    //mPrintExt(GL, "GL");
+    //Mat* DW1 = mDot(Prev_Err, GL); // DW1 = (Prev_Err).L
+    Mat* DW2 = mT(DW1); // DW2 = DW1^T
+    mFree(DW1);
 
-    unsigned int nb_neurons[3] = {2, 3, 1} ;
-
-    initNeuralNetwork(nn, 3, nb_neurons);
+    Mat* M = mNewFill(DW2->xl, DW2->yl, - NN->learning_rate); // M = (-l_r)
     
-    //warnx("2");
+    Mat* DW = mMult(M, DW2); // DW = M x DW2
+    mFree(DW2);
+    mFree(M);
 
-    prettyPrintNeuralNetwork(nn);
+    return DW;
+}
 
-    //warnx("3");
-    return 0;
-}*/
+// Return current layer's error matrix
+static Mat* backPropagateOneLayer(NeuralNet* NN, short l, Mat* Prev_Error) {
+
+    Mat* DW = computeCurrDeltaWeight(NN, l, Prev_Error);
+    
+    Mat* New_W = mAdd(GW, DW);
+    mCopyAinB(New_W, GW);
+    mFree(New_W);
+
+    return DW;
+}
+
+void NnBackPropagation(NeuralNet* NN, Mat* Y) {
+
+    warnx("Back : 1");
+
+    Mat* Error = computeCurrLayerError(NN, NN->nb_l - 1, Y);
+
+    warnx("Back : 2");
+
+    for ( short l = NN->nb_l - 2 ; l >= 0 ; --l ) {
+
+        warnx("Back : For %d : 1", l);
+
+        Mat* New_Error = backPropagateOneLayer(NN, l, Error);
+
+        warnx("Back : For %d : 2", l);
+
+        mCopyAinB(New_Error, Error);
+
+        warnx("Back : For %d : 3", l);
+
+        mFree(New_Error);
+
+        warnx("Back : For %d : 4", l);
+    }
+}
+
+// ########## PRINTS ########## //
+
+static void NnPrintLayers(NeuralNet* NN) {
+    
+    printf("#  LAYERS  #\n");
+    
+    for ( short l = 0 ; l < NB_L; ++l ) {
+    
+        printf("|---LAYER %d---|\n", l);
+        mPrint(NN->L[l]);
+    }
+
+    printf("#  END LAYERS  #\n\n");
+}
+
+static void NnPrintOutputs(NeuralNet* NN) {
+    
+    printf("#  OUTPUTS  #\n");
+    mPrint(NN->L[NB_L - 1]);
+    printf("#  END OUTPUTS  #\n\n");
+}
+
+static void NnPrintWeights(NeuralNet* NN) {
+
+    printf("#  WEIGHTS  #\n");
+    
+    for ( short l = 0 ; l < NB_L - 1; ++l ) {
+    
+        printf("|---WEIGHTS %d TO %d---|\n", l, l+1);
+        mPrint(NN->W[l]);
+    }
+
+    printf("#  END WEIGHTS  #\n\n");
+}
+
+static void NnPrintBiases(NeuralNet* NN) {
+
+    printf("#  BIASES  #\n");
+    
+    for ( short l = 0 ; l < NB_L - 1; ++l ) {
+    
+        printf("|---BIASES %d---|\n", l);
+        mPrint(NN->B[l]);
+    }
+
+    printf("#  END WEIGHTS  #\n\n");
+}
+
+void NnPrintTotal(NeuralNet* NN) {
+
+    printf("####################\n");
+    printf("#  NEURAL NETWORK  #\n");
+    printf("####################\n\n");
+    
+    NnPrintBiases(NN);
+    NnPrintLayers(NN);
+    NnPrintWeights(NN);
+    NnPrintOutputs(NN);
+
+    printf("######################\n");
+    printf("# END NEURAL NETWORK #\n");
+    printf("######################\n");
+}

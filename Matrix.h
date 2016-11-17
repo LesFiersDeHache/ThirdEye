@@ -5,6 +5,9 @@
 #include <assert.h>
 #include <time.h>
 
+#ifndef ONLYONCE_MATRIX
+#define ONLYONCE_MATRIX
+
 #define Uint unsigned int
 #define Ulong unsigned long long
 
@@ -22,7 +25,8 @@ typedef struct Mat {
 } Mat;
 
 // mNewFill :
-// Create a new matrix, with 'xl' rows and 'yl' column, and fill it with 'fill'.
+// Create a new matrix, with 'xl' rows and 'yl' column, and fill
+// it with 'fill'.
 //
 // xl : nbr of rows of the new matrix
 // yl : nbr of column of the new matrix
@@ -132,3 +136,12 @@ Mat* mSig(Mat* M);
 //
 // return : the new matrix equals to sigmoid'(M)
 Mat* mDSig(Mat* M);
+
+// Transposee
+Mat* mT(Mat* M);
+
+Mat* mFree(Mat* M);
+
+void mCopyAinB(Mat* A, Mat* B);
+
+#endif

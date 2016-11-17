@@ -5,8 +5,6 @@
 #include <SDL/SDL_image.h>
 #include <assert.h>
 #include "NeuralNetwork.h"
-#include "FeedForward.h"
-#include "BackFeed.h"
 #include "Sigmoid.h"
 #include <time.h>
 #include "list.h"
@@ -16,7 +14,51 @@
 #include "Matrix.h"
 #include "resize.h"
 
+int main ( int argc, char *argv[] )
+{
+    warnx("Main : 1");
+    
+    unsigned int layers_size[] = {2, 3, 1};
+    
+    warnx("Main : 2");
+    
+    NeuralNet* NN = NnInit(3, layers_size);
+    
+    warnx("Main : 3");
+    
+    //NnPrintTotal(NN);
+    
+    warnx("Main : 4");
 
+    Mat* Input = mNewFill(2, 1, 0.0);
+    NnFeedForward(NN, Input);
+    mFree(Input);
+
+    warnx("Main : 5");
+
+    NnPrintTotal(NN);
+
+    warnx("Main : 6");
+
+    Mat* Y = mNewFill(1, 1, 0.0);
+    NnBackPropagation(NN, Y);
+    mFree(Y);
+
+    warnx("Main : 7");
+
+    NnPrintTotal(NN);
+
+
+
+    warnx("Main : Free");
+    NnFree(NN);
+    warnx("Main : The end");
+
+    return EXIT_SUCCESS;
+}
+
+
+/*
 #define NB_OF_LOOPS 5
 #define MODE 1
 #define PRINT 1
@@ -28,11 +70,8 @@ float neuralTesting(NeuralNetwork* NN, Outputs* outputs,
 
 
 
-
-
-void matrixTests();
-
 void NNTexts()
+
 {
 // ##### INIT ##### //
  
@@ -108,7 +147,7 @@ int main(int argc, char *argv[])
     }
   else if(Sel==5)
     {
-	matrixTests();     
+	//matrixTests();     
     }
   else if (Sel == 6)
     {
@@ -130,8 +169,8 @@ int main(int argc, char *argv[])
  
  
 }
-
-
+*/  
+/* 
 void matrixTests() {
     
     printf("####################\n");
@@ -174,7 +213,8 @@ void matrixTests() {
     printMat(ope_apply_deriv_sigmoid(m));
 
 }
-
+*/
+/*  
 void neuralLearning(NeuralNetwork* NN, Outputs* outputs,
                     unsigned int nb_of_feeding)
 {
@@ -261,4 +301,4 @@ float neuralTesting(NeuralNetwork* NN, Outputs* outputs,
   warnx("Percentage of win = %f", (float)nb_of_win / (float)nb_of_testing);
   return (float)nb_of_win / (float)nb_of_testing;
 }
-
+*/

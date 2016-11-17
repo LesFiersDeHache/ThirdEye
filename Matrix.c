@@ -45,7 +45,7 @@ Mat* mNewRand(Uint xl, Uint yl, float mult, float add) {
     M->yl = yl;
     
     for ( Ulong i = 0 ; i < xl*yl ; ++i ) {
-        M->tab[i] = mult * rand() + add;
+        M->tab[i] = mult * (rand()%1000/1000.0) + add;
     }
 
     return M;
@@ -63,13 +63,17 @@ void mSet(Mat* M, Uint x, Uint y, float set) {
 
 // mPrint : print matrix
 void mPrint (Mat* M) {
-    printf("[\n");
     for ( Uint x = 0 ; x < M->xl ; ++x ) {
         printf("[");
         for ( Uint y = 0 ; y < M->yl ; ++y ) {
-            printf("%f ; ", mGet(M, x, y));
+            float n = mGet(M, x, y);
+            if (n >= 0) { printf(" "); }
+            printf("%f ; ", n);
         }
-        printf("]\n");
+        printf("]");
+        if (x < M->xl - 1) {
+            printf("\n");
+        }
     }
     printf("]\n");
 }
@@ -186,6 +190,40 @@ Mat* mDSig(Mat* M) {
     }
 
     return MR;
+}
+
+Mat* mT(Mat* M) {
+
+    Mat* R = mNewFill(M->yl, M->xl, 0.0);
+
+    for ( Uint x = 0 ; x < M->xl ; ++x ) {
+        for ( Uint y = 0 ; y < M->yl ; ++y ) {
+            warnx("Write M[%d,%d] at R[%d,%d].", x, y, y, x);
+            mSet(R, y, x, mGet(M, x, y));
+        }
+    }
+
+    return R;
+}
+
+void mFree(Mat* M) {
+
+    free(M->tab);
+    free(M);
+}
+
+void mCopyAinB(Mat* A, Mat*B) {
+
+    if (A->xl != B->xl || A->yl != B->yl) {
+        err(1, "Matrix : mCopyAinB >>> the size of A and B are not the same."); 
+    }
+
+    for ( Uint x = 0 ; x < A->xl ; ++x ) {
+        for ( Uint y = 0 ; y < A->yl ; ++y ) {
+
+            mSet(B, x, y, mGet(A, x, y));
+        }
+    }
 }
 /* 
 int main(){

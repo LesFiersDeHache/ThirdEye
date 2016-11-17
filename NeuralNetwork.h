@@ -1,43 +1,65 @@
-# include <stdlib.h>
-# include <err.h>
-# include <assert.h>
-# include <stdio.h>
-# include <time.h>
-//TODO : documentation !
+// NeuralNetwork.h //
+
+#include <stdlib.h>
+#include <stdio.h>
+#include "Matrix.h"
+#include <assert.h>
+#include <err.h>
+
 #ifndef ONLYONCE_NEURALNETWORK
 #define ONLYONCE_NEURALNETWORK
-typedef struct NeuralNetwork {
 
-    unsigned short nb_layers;
-    unsigned int* nb_neurons;
+// ######### STRUCTURES ######### // 
 
-    float* weights;
-    unsigned int size_of_weights;
-    float* biaises;
-    unsigned int size_of_biaises;
+// Type : NeuralNet
+// Structure which contains a neural network's matrixes
+//
+// nb_l : number of layers in the neural network
+// L[] : array of layers matrixes
+// W[] : array of weights matrixes
+// B[] : array of biases matrixes
 
-} NeuralNetwork;
+typedef struct NeuralNet {
 
-// ######### "PUBLIC" FUNCTIONS ######### //
+    short nb_l;
+    float learning_rate;
 
-void initNeuralNetwork(NeuralNetwork* NN, unsigned short nb_layers, unsigned int
-* nb_neurons);
+    Mat** L;
+    Mat** W;
+    Mat** B;
 
-void loadNeuralNetwork(NeuralNetwork* NN, char* path);
+} NeuralNet;
 
-float getWeight(NeuralNetwork* NN, unsigned short layer, unsigned int neuron,
-unsigned int index_weight);
 
-void setWeight(NeuralNetwork* NN, unsigned short layer, unsigned int neuron,
-unsigned int index_weight, float new_weight);
+// ######### INIT FUNCTIONS ######### //
 
-void setBiais(NeuralNetwork* NN, unsigned short layer, unsigned int neuron,
-float new_biais);
+// NnInit :
+// Initialize an empty neural network.
+//
+// NN : an empty neural network
+// nb_layers : number of layers of the neural network
+// layers_size[] : array which contains the size
+//                 of the differents layers of the
+//                 neural network
+//
+// return : void
+NeuralNet* NnInit(short nb_layers, unsigned int layers_size[]);
 
-float getBiais(NeuralNetwork* NN, unsigned short layer, unsigned int neuron);
+// ######### FREE FUNCTION ########## //
 
-void prettyPrintNeuralNetwork(NeuralNetwork* NN, unsigned short min_layer);
-void printNeuralNetwork(NeuralNetwork* NN);
+void NnFree(NeuralNet* NN);
 
-void freeNeuralNetwork(NeuralNetwork* NN);
+// ######### FEEDFORWARD ######### //
+
+void NnFeedForward(NeuralNet* NN, Mat* Inputs);
+
+// ######### BACK PROPAGATION ######### //
+
+void NnBackPropagation(NeuralNet* NN, Mat* Y);
+
+// ######### PRINT FUNCTIONS ######### //
+
+// Pretty print of a neural network
+void NnPrintTotal(NeuralNet* NN);
+
 #endif
