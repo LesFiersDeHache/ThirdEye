@@ -29,17 +29,20 @@ int main ( int argc, char *argv[] )
         setPixel(k,1,2,1);
 	printBitmap(k);
 	printf("\n");
-	sizeUP(k);*/
+	k = sizeUP(k);
+	k = sizeDO(k);*/	
 
 
-      Bitmap k ;
+      /*Bitmap k ;
       k = LoadToBitmap("wow.bmp");
       Bitmap * bmp = &k;
       List *l = CutAll(bmp);
       l = l->next;
       l = l->next;
       l = l->next;
-      AdjustChar(*l,bmp);
+      Bitmap* result;
+      result = fromCutToNN(*l,bmp);*/
+
 
     /*warnx("Main : 1");
     
