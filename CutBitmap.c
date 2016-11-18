@@ -298,6 +298,9 @@ List* CutAll(Bitmap *b)
 	L= L->next;
   }
   print_list(L2);
+
+  freeList(L);
+
   List *L3 = empty_list();
   int Q[4] = {L2->a,L2->b,L2->c,L2->d};
   L3 = Cutlines(Q,b);
@@ -310,6 +313,9 @@ List* CutAll(Bitmap *b)
 	L2 = L2 -> next;
   }
   print_list(L3);
+
+  freeList(L2);
+
   List *L4 = empty_list();
   int Y[4] = {L3->a,L3->b,L3->c,L3->d};
   L4 = Cutchars(Y,b,Psize);
@@ -320,13 +326,34 @@ List* CutAll(Bitmap *b)
 	L4 = Merge(L4,Cutchars(T,b,Psize));
 	L3 = L3->next;
   }
+
+  freeList(L3);  
+
   print_list(L4);
-  SDL_Surface *w1 = BitmapToSurface(b);
+
+  /*List *L5 = empty_list();
+  int R[4] = {L4->a,L4->b,L4->c,L4->d};
+  L5 = Cutlines(R,b);
+  warnx("YYYYYY");
+  L4 = L4->next;
+  while(!is_empty(L4))
+  {
+	int T[4] = {L4->a,L4->b,L4->c,L4->d};
+	warnx("TTTTTTTTTTTT");
+	L5 = Merge(L5,Cutlines(T,b));
+	L4 = L4->next;
+  }
+
+  freeList(L4);
+  print_list(L5);*/
+
+
+  /*SDL_Surface *w1 = BitmapToSurface(b);
   display_image(w1);
-  //Bitmap b2 = DrawLines(b,L4);
-  //Bitmap *b4 = &b2;
-  //SDL_Surface *wo = BitmapToSurface(b4);
-  //display_image(wo);
+  Bitmap b2 = DrawLines(b,L4);
+  Bitmap *b4 = &b2;
+  SDL_Surface *wo = BitmapToSurface(b4);
+  display_image(wo);*/
   return L4;
   
 

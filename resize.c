@@ -29,7 +29,7 @@ static int GoodSize(int a, int b)
 }
 
 
-static List cutHeight(List l, Bitmap *b)     //USELESS IF LUCAS DOES WELL
+/*static List cutHeight(List l, Bitmap *b)     //USELESS IF LUCAS DOES WELL
 {
   int xMin = l.a;
   int xMax = l.b;
@@ -64,7 +64,7 @@ static List cutHeight(List l, Bitmap *b)     //USELESS IF LUCAS DOES WELL
   }
   l.d = yMax;
   return l;
-}
+}*/
 
 Bitmap* AdjustChar(List l, Bitmap *b)
 {
@@ -112,7 +112,7 @@ Bitmap* AdjustChar(List l, Bitmap *b)
 
 Bitmap* sizeUP(Bitmap* b)
 {
-	if (b->height != b->height)
+	if (b->height != b->width)
 	{
 		warnx("NOT THE SAME SIZE !");
 	}

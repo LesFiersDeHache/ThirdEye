@@ -29,7 +29,7 @@ int main ( int argc, char *argv[] )
         setPixel(k,1,2,1);
 	printBitmap(k);
 	printf("\n");
-	sizeUP(k);
+	sizeUP(k);*/
 
 
       Bitmap k ;
@@ -39,9 +39,9 @@ int main ( int argc, char *argv[] )
       l = l->next;
       l = l->next;
       l = l->next;
-      AdjustChar(l,&k);
+      AdjustChar(*l,bmp);
 
-    warnx("Main : 1");
+    /*warnx("Main : 1");
     
     unsigned int layers_size[] = {2, 3, 1};
     

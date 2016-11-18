@@ -67,4 +67,6 @@ int get_coord(int index, List* list);
 List* get_n(int index, List* list);
 
 List* Merge(List* L1, List* L2);
+
+void freeList(List* l);
 #endif

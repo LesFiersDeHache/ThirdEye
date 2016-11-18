@@ -102,3 +102,9 @@ List* Merge(List* L1, List* L2)
 	new_list -> next = L2;
 	return L1;
 }
+
+void freeList(List* l)
+{
+	free(l->next);
+	free(l);
+}
