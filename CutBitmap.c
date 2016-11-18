@@ -240,6 +240,45 @@ List* Cutchars(int *tab, Bitmap *b, int PoliceSize)
   return res;
 };
 
+void RafinedChar(List* l2,Bitmap *bmp){//remplace les coordonnées avec des mieu
+	int b= 1;
+	printf("HERE");
+	List *l = l2;
+	while(!is_empty(l))
+	{
+		for(int y = l->c; y<l->d&&b;y++){
+			
+			for(int x = l->a;x<l->b&&b;x++){
+				if(getPixel(bmp,x,y) ==0){
+					printf("%d : %d\n",l->c,y);
+					l->c = y;
+					b = 0;
+				}
+			}
+		}
+		b = 1;
+		l = l->next;
+	}
+	
+	while(!is_empty(l2))
+	{
+		printf("mdrrr"); 
+		for(int y = l2->d; y>l2->c&&b;y--){
+			
+			for(int x = l2->a;x<l2->b&&b;x++){
+				if(getPixel(bmp,x,y) ==0){
+					printf("%d : %d\n",l2->c,y);
+					l2->d = y;
+					b = 0;
+				}
+			}
+		}
+		b = 1;
+		l2 = l2->next;
+	}
+
+}
+
 Bitmap DrawLines(Bitmap *bmp,List *L)
 {
   Bitmap k;
@@ -262,6 +301,7 @@ Bitmap DrawLines(Bitmap *bmp,List *L)
     }
   return k;
 }
+
 
 List* CutAll(Bitmap *b)
 {
@@ -312,24 +352,28 @@ List* CutAll(Bitmap *b)
 	L3 = Merge(L3,Cutlines(T,b));
 	L2 = L2 -> next;
   }
-  print_list(L3);
+  //print_list(L3);
 
   freeList(L2);
 
   List *L4 = empty_list();
   int Y[4] = {L3->a,L3->b,L3->c,L3->d};
   L4 = Cutchars(Y,b,Psize);
+  RafinedChar(L4,b);
   L3 = L3->next;
   while(!is_empty(L3))
   {
 	int T[4] = {L3->a,L3->b,L3->c,L3->d};
-	L4 = Merge(L4,Cutchars(T,b,Psize));
+	struct list *l = Cutchars(T,b,Psize);
+	RafinedChar(l,b);
+	L4 = Merge(L4,l);
 	L3 = L3->next;
   }
-
+  Bitmap z = DrawLines(b,L4);
+  BitmapToSurface(&z);
   freeList(L3);  
 
-  print_list(L4);
+  //print_list(L4);
 
   /*List *L5 = empty_list();
   int R[4] = {L4->a,L4->b,L4->c,L4->d};
