@@ -112,18 +112,19 @@ Bitmap* AdjustChar(List l, Bitmap *b)
 
 Bitmap* sizeUP(Bitmap* b)
 {
+	int size = 24;
 	if (b->height != b->width)
 	{
 		warnx("NOT THE SAME SIZE !");
 	}
-	float size_mod = 24 / (float)(b->height);  // MODIFY SIZE HERE
+	float size_mod = size / (float)(b->height);  // MODIFY SIZE HERE
 	warnx("MOD %f",size_mod);
 	Bitmap *result;
 	result = malloc(sizeof(Bitmap));
-	bitmapInit(result,24,24);         //MODIFY SIZE HERE
-	for (int x = 0; x < 24; ++x)
+	bitmapInit(result,size,size);         //MODIFY SIZE HERE
+	for (int x = 0; x < size; ++x)
 	{
-		for (int y = 0; y < 24; ++y)
+		for (int y = 0; y < size; ++y)
 		{
 			setPixel(result,x,y,getPixel(b,x / size_mod, y / size_mod));
 		}
@@ -131,4 +132,48 @@ Bitmap* sizeUP(Bitmap* b)
 	printBitmap(result);
 	freeBitmap(b);
 	return result;	
+}
+
+
+Bitmap* sizeDO(Bitmap *b)
+{
+
+	int size = 24;
+	if (b->height != b->width)
+	{
+		warnx("NOT THESAME SIWE");
+	}
+	float size_mod = size / (float)(b->height);
+	warnx("MOD %f",size_mod);
+	Bitmap* result;
+	result = malloc(sizeof(Bitmap));
+	bitmapInit(result,size,size);
+	for (int x = 0; x < size; ++x)
+	{
+		for (int y = 0; y <size; ++y)
+		{
+			setPixel(result,x,y,getPixel(b,x / size_mod, y / size_mod));
+		}
+	}
+	printBitmap(result);
+	freeBitmap(b);
+	return result;
+}
+
+
+Bitmap* fromCutToNN( List l, Bitmap* b)
+{
+	Bitmap* result = AdjustChar(l, b);
+	if (result->height != 24)
+	{
+		if (result->height < 24)
+		{
+			result = sizeUP(result);
+		}
+		else
+		{
+			result = sizeDO(result);
+		}
+	}
+	return result;
 }
