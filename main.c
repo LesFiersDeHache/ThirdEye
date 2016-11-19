@@ -13,9 +13,15 @@
 #include "Bitmap.h"
 #include "Matrix.h"
 #include "resize.h"
-
+#include "save.h"
 
 int main ( int argc, char *argv[] )
 {
-    return EXIT_SUCCESS;
+	/*Mat* W0 = mNewFill(10,10,3.33);
+	Mat* W1 = mNewFill(15,15,6.666666);
+	Mat* B0 = mNewFill(5,5,1.111111);
+	Mat* B1 = mNewFill(10,10,4.44444444444);
+	
+	NnSave(W0,W1,B0,B1,"save.txt");
+	return 1;*/
 }

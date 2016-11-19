@@ -48,3 +48,4 @@ int NnGetXorOutput(Mat* w0, Mat* w1, int input0, int input1);
 void NnPrettyPrint(NeuralNet* NN);
 
 #endif
+
