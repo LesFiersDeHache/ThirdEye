@@ -7,6 +7,9 @@
 
 #include "Matrix.h"
 
+#ifndef ONLYONCE_NEURALNET
+#define ONLYONCE_NEURALNET
+
 typedef struct NeuralNet {
 
     Mat* l0;
@@ -44,5 +47,4 @@ int NnGetXorOutput(Mat* w0, Mat* w1, int input0, int input1);
 
 void NnPrettyPrint(NeuralNet* NN);
 
-
-
+#endif

@@ -99,10 +99,11 @@ static void set_l1(NeuralNet* NN) {
 
     // L1 = sigmoid(L0 . W0to1)
     Mat* tmp = mDot(L0, W0to1);
+    Mat* tmp2 = mAdd(tmp, B1);
 
     //mPrintExt(tmp, "l0 dot w0to1");
 
-    Mat* M1 = mSig(tmp);
+    Mat* M1 = mSig(tmp2);
 
     //mPrintExt(M1, "mSig (l0 dot w0to1)");
 
@@ -112,6 +113,7 @@ static void set_l1(NeuralNet* NN) {
 
     mFree(M1);
     mFree(tmp);
+    mFree(tmp2);
 
     
 }
@@ -120,10 +122,11 @@ static void set_l2(NeuralNet* NN) {
 
     // L2 = sigmoid(L1 . W1to2)
     Mat* tmp = mDot(L1, W1to2);
+    Mat* tmp2 = mAdd(tmp, B2);
 
     //mPrintExt(tmp, "l1 dot w1to2");
 
-    Mat* M2 = mSig(tmp);
+    Mat* M2 = mSig(tmp2);
 
     //mPrintExt(M2, "sig(l1 dot w1to2");
 
@@ -133,6 +136,7 @@ static void set_l2(NeuralNet* NN) {
 
     mFree(M2);
     mFree(tmp);
+    mFree(tmp2);
 }
 
 static void NnFeedForward(NeuralNet* NN) {
@@ -261,6 +265,22 @@ static void update_w0to1(NeuralNet* NN) {
     mFree(tmp3);
 }
 
+static void update_b1(NeuralNet* NN) {
+
+    Mat* tmp = mAdd(B1, L1_DELTA);
+    mCopyAinB(tmp, B1);
+
+    mFree(tmp);
+}
+
+static void update_b2(NeuralNet* NN) {
+
+    Mat* tmp = mAdd(B2, L2_DELTA);
+    mCopyAinB(tmp, B2);
+
+    mFree(tmp);
+}
+
 static void NnBackPropagation(NeuralNet* NN) {
 
     //warnx("Backprog : Begin");
@@ -282,6 +302,10 @@ static void NnBackPropagation(NeuralNet* NN) {
 
     update_w0to1(NN);
     //warnx("BP : 6");
+
+    update_b1(NN);
+
+    update_b2(NN);
 }
 
 static void NnLearn(NeuralNet* NN) {
@@ -427,20 +451,26 @@ void NnPrettyPrint(NeuralNet* NN) {
 
     printTitle("INPUT", L0->yl);
     printTitle("W0to1", W0to1->yl);
+    printTitle("B1___", B1->yl);
     printTitle("L1___", L1->yl);
     printTitle("W1to2", W1to2->yl);
+    printTitle("B2___", B2->yl);
     printTitle("OUT__", L2->yl);
     printTitle("E_OUT", OUT->yl);
     printf("\n");
 
-    unsigned int rows[6] = { L0->xl, W0to1->xl, L1->xl, W1to2->xl, L2->xl, OUT->xl };
+    unsigned int rows[8] = { L0->xl, W0to1->xl,
+                             B1->xl, L1->xl, W1to2->xl, 
+                             B2->xl, L2->xl, OUT->xl };
 
-    for ( size_t i = 0 ; i < max(rows, 6) + 1 ; ++i ) {
+    for ( size_t i = 0 ; i < max(rows, 8) + 1 ; ++i ) {
         
         printRow(L0, i);
         printRow(W0to1, i);
+        printRow(B1, i);
         printRow(L1, i);
         printRow(W1to2, i);
+        printRow(B2, i);
         printRow(L2, i);
         printRow(OUT, i);
         printf("\n");
