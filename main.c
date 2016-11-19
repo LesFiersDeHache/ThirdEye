@@ -30,18 +30,26 @@ int main ( int argc, char *argv[] )
 	printBitmap(k);
 	printf("\n");
 	k = sizeUP(k);
-	k = sizeDO(k);*/	
+	k = sizeDO(k);34*/	
 
 
       /*Bitmap k ;
       k = LoadToBitmap("wow.bmp");
       Bitmap * bmp = &k;
       List *l = CutAll(bmp);
-      l = l->next;
-      l = l->next;
-      l = l->next;
+      for (int i = 0; i < 33; ++i)
+      {
+	l = l->next;
+      }
       Bitmap* result;
+      print_list(l);
       result = fromCutToNN(*l,bmp);*/
+
+    Bitmap bmp;
+    bmp = LoadToBitmap("wow.bmp");
+    Bitmap *k = &bmp;
+    List *l = CutAll(k);
+    lettersPrettyPrint(l,k);
 
 
     /*warnx("Main : 1");

@@ -23,7 +23,7 @@ void bitmapInit(Bitmap* bm, unsigned long width, unsigned long height)
  
     for (unsigned int i = 0 ; i < width * height ; ++i)
     {
-    bm->p_bitmap[i] =0 ; //We can also type "... = 0;"
+    bm->p_bitmap[i] =1 ; //We can also type "... = 0;"
     }
 }
  
@@ -44,7 +44,7 @@ void setPixel(Bitmap* bm, unsigned long x, unsigned long y, unsigned long px)
     //warnx("Pixel (%hd, %hd) set to %d.", x, y, px);
 }
  
-void printBitmap(Bitmap* bm)
+void printBitmap2(Bitmap* bm)
 {
     for (unsigned long i = 0 ; i < bm->width * bm->height ; ++i)
     {
@@ -55,6 +55,28 @@ void printBitmap(Bitmap* bm)
     printf("%d", bm->p_bitmap[i]);
     }
     printf("\n");
+}
+
+void printBitmap(Bitmap* bm)
+{
+	for (size_t y = 0; y < bm->height; ++y)
+	{
+		//warnx("One");
+		//warnx("%d",y);
+		for (size_t x = 0; x < bm->width; ++x)
+		{
+			int pxl = getPixel(bm,x,y);
+			if (pxl == 1)
+			{
+				printf(".");	
+			}
+			else
+			{
+				printf("0");
+			}
+		}
+	printf("\n");
+	}
 }
  
 static unsigned long distBtwPts(unsigned long x, unsigned long y)
