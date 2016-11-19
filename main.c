@@ -4,7 +4,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <assert.h>
-#include "NeuralNetwork.h"
+#include "NeuralNet.h"
 #include "Sigmoid.h"
 #include <time.h>
 #include "list.h"
@@ -13,49 +13,30 @@
 #include "Bitmap.h"
 #include "Matrix.h"
 #include "resize.h"
-
+    
 int main ( int argc, char *argv[] )
 {
-    warnx("Main : 1");
-    
-    unsigned int layers_size[] = {2, 3, 1};
-    
-    warnx("Main : 2");
-    
-    NeuralNet* NN = NnInit(3, layers_size);
-    
-    warnx("Main : 3");
-    
-    //NnPrintTotal(NN);
-    
-    warnx("Main : 4");
+    return EXIT_SUCCESS;
+}			
 
-    Mat* Input = mNewFill(2, 1, 0.0);
-    NnFeedForward(NN, Input);
-    mFree(Input);
+/* 
+int main ( int argc, char *argv[] )
+{
+    NeuralNet* NN = NnGetXorNn(100000);
 
-    warnx("Main : 5");
+    NnPrettyPrint(NN);
 
-    NnPrintTotal(NN);
+    printf("Test : [0,0] = %d\n", NnGetXorOutput(NN->w0to1, NN->w1to2, 0, 0)); 
+    printf("Test : [0,1] = %d\n", NnGetXorOutput(NN->w0to1, NN->w1to2, 0, 1));
+    printf("Test : [1,0] = %d\n", NnGetXorOutput(NN->w0to1, NN->w1to2, 1, 0));
+    printf("Test : [1,1] = %d\n", NnGetXorOutput(NN->w0to1, NN->w1to2, 1, 1));
 
-    warnx("Main : 6");
-
-    Mat* Y = mNewFill(1, 1, 0.0);
-    NnBackPropagation(NN, Y);
-    mFree(Y);
-
-    warnx("Main : 7");
-
-    NnPrintTotal(NN);
-
-
-
-    warnx("Main : Free");
     NnFree(NN);
-    warnx("Main : The end");
 
     return EXIT_SUCCESS;
 }
+*/
+
 
 
 /*

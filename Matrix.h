@@ -67,7 +67,7 @@ float mGet(Mat* M, Uint x, Uint y);
 // y : column where we want to pick up the value
 //
 // return : the value that we want to pick up
-void mSet(Mat* M, Uint x, Uint y);
+void mSet(Mat* M, Uint x, Uint y, float set);
 
 // mPrint :
 // Print the values of a matrix proprely
