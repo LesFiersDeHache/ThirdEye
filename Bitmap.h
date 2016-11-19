@@ -22,4 +22,5 @@ void printBitmap(Bitmap* bm);
 
 void adjustBitmap(Bitmap* bm_in, Bitmap* bm_out, unsigned long x1, unsigned long y1, unsigned long x2, unsigned long y2);
 
+void freeBitmap(Bitmap *bmp);
 #endif

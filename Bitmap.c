@@ -103,3 +103,10 @@ void adjustBitmap(Bitmap* bm_in, Bitmap* bm_out, unsigned long x1, unsigned long
     }
    
 }
+
+
+void freeBitmap(Bitmap* bmp)
+{
+	free(bmp->p_bitmap);
+	free(bmp);
+}

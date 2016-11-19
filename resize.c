@@ -15,6 +15,8 @@ static int Max(int a, int b)
 
 static int GoodSize(int a, int b)
 {
+
+/*Set the good size of the new Bitmap*/
   int res = Max(a,b);
   if (res % 2)
     {
@@ -27,40 +29,151 @@ static int GoodSize(int a, int b)
 }
 
 
-Bitmap AdjustChar(List l, Bitmap *b)
+/*static List cutHeight(List l, Bitmap *b)     //USELESS IF LUCAS DOES WELL
 {
   int xMin = l.a;
-  printf("%d\n",xMin);
   int xMax = l.b;
   int yMin = l.c;
   int yMax = l.d;
+  int condition = 0;
+  int y = yMax;
+  int x = xMax;
+   
+
+   printf("PIXEL %d\n",getPixel(b,xMin + 3,yMin + 4));
+ 
+  while (!condition && y >= yMin) 
+  {
+	while (!condition && x >= xMin)
+	{
+		//printf("PIXEL %d\n",getPixel(b,x,y));
+		if (getPixel(b,x,y) == 0)
+		{
+			condition = 1;
+			warnx("BLACK\n");
+		}
+		--x;
+	}
+	if (!condition)
+	{
+		--yMax;
+		warnx("YMAX %d \n",yMax);
+	}
+	--y;
+	x = xMax;
+  }
+  l.d = yMax;
+  return l;
+}*/
+
+Bitmap* AdjustChar(List l, Bitmap *b)
+{
+  //l = cutHeight(l,b);
+  
+  int xMin = l.a;
+  int xMax = l.b;
+  int yMin = l.c;
+  int yMax = l.d;
+  warnx("%d\n",yMax);
 
   int width = xMax - xMin + 1;
   int height = yMax - yMin + 1;
 
   int size = GoodSize(width, height);
 
-  printf("%d\n",size);
-
-  Bitmap result;
+  Bitmap* result;
+  result = malloc(sizeof(Bitmap));
   
-  bitmapInit(&result,size,size);
+  bitmapInit(result,size,size);
 
-  int count = (size - Max(width,height)) / 2;
+  printBitmap(result);
 
-  warnx("%d",count);
-  
+  int count_width = (size - width) / 2;
+  int count_height = (size - height) / 2;
+
+  printf("COUNT%d\n",count_width);
+
   
   for (int i = 0; i < width; ++i)
     {
       for (int j = 0; j < height + 1; ++j)
 	{
-	  warnx("%d",getPixel(b, j + yMin, i + xMin));
-	  setPixel(&result,count + i,count +  j, getPixel(b,i + xMin,j + yMin));
+	  //warnx("YAAAAAAAAAAAA\n");
+	  setPixel(result,i + count_width,j + count_height, getPixel(b,i + xMin,j + yMin));
 	}
      }
 
     
-  printBitmap(&result);  
+  printBitmap(result);  
   return result;
+}
+
+
+
+Bitmap* sizeUP(Bitmap* b)
+{
+	int size = 24;
+	if (b->height != b->width)
+	{
+		warnx("NOT THE SAME SIZE !");
+	}
+	float size_mod = size / (float)(b->height);  // MODIFY SIZE HERE
+	warnx("MOD %f",size_mod);
+	Bitmap *result;
+	result = malloc(sizeof(Bitmap));
+	bitmapInit(result,size,size);         //MODIFY SIZE HERE
+	for (int x = 0; x < size; ++x)
+	{
+		for (int y = 0; y < size; ++y)
+		{
+			setPixel(result,x,y,getPixel(b,x / size_mod, y / size_mod));
+		}
+	}
+	printBitmap(result);
+	freeBitmap(b);
+	return result;	
+}
+
+
+Bitmap* sizeDO(Bitmap *b)
+{
+
+	int size = 24;
+	if (b->height != b->width)
+	{
+		warnx("NOT THESAME SIWE");
+	}
+	float size_mod = size / (float)(b->height);
+	warnx("MOD %f",size_mod);
+	Bitmap* result;
+	result = malloc(sizeof(Bitmap));
+	bitmapInit(result,size,size);
+	for (int x = 0; x < size; ++x)
+	{
+		for (int y = 0; y <size; ++y)
+		{
+			setPixel(result,x,y,getPixel(b,x / size_mod, y / size_mod));
+		}
+	}
+	printBitmap(result);
+	freeBitmap(b);
+	return result;
+}
+
+
+Bitmap* fromCutToNN( List l, Bitmap* b)
+{
+	Bitmap* result = AdjustChar(l, b);
+	if (result->height != 24)
+	{
+		if (result->height < 24)
+		{
+			result = sizeUP(result);
+		}
+		else
+		{
+			result = sizeDO(result);
+		}
+	}
+	return result;
 }
