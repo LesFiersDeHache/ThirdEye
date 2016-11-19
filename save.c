@@ -1,29 +1,46 @@
 //save.c
-
-
 # include <stdlib.h>
-//# include "NeuralNetwork.h"
+# include "NeuralNet.h"
+#include "Matrix.h"
 # include <stdio.h>
 # include <err.h>
 
-/*void floatToChar(float f, char* c) {
 
-short t = (int)f;
-
-c[0] = t;
-
-return c;
-}*/
-
-/*
-int main(int argc, char *argv[])
+static void floatToChar(float f, char* tab)
 {
-  float f = 1.110;
-  char* c [6];
-  printf("%s\n",c);
-  printf("wow");
+	snprintf(tab,10,"%f",f);
 }
-*/
+
+void NnSave(Mat* W0, char* path)
+{
+	FILE *folder = NULL;
+	folder = fopen(path, "w");
+	
+	if (folder == NULL)
+	{
+		err(0,"FOLDER FAIL");
+	}
+	else
+	{
+		//START WRITING
+		for (unsigned int y = 0; y < W0->yl; ++y)
+		{
+			for (unsigned int x = 0; x < W0->xl; ++x)
+			{
+				char tab[10];
+				floatToChar(mGet(W0,x,y),tab);
+				fputs(tab,folder);
+				fputc(' ',folder);
+			}
+		}
+		fclose(folder);
+	}
+}
+
+void NnLoad()
+{
+	//FIXM
+}
 
 /*void save(NeuralNetwork* nn, char *biaises_path, char *weights_path)
 {
