@@ -11,7 +11,7 @@ static void floatToChar(float f, char* tab)
 	snprintf(tab,10,"%f",f);
 }
 
-void NnSave(Mat* W0, char* path)
+void NnSave(Mat* W0, Mat* W1, Mat* B0, Mat* B1, char* path)
 {
 	FILE *folder = NULL;
 	folder = fopen(path, "w");
@@ -33,7 +33,52 @@ void NnSave(Mat* W0, char* path)
 				fputc(' ',folder);
 			}
 		}
+		fputc('\n',folder);
+		printf("WO COMPLETE \n");
+
+
+                for (unsigned int y = 0; y < W1->yl; ++y)
+                {
+                        for (unsigned int x = 0; x < W1->xl; ++x)
+                        {       
+                                char tab[10];
+                                floatToChar(mGet(W1,x,y),tab);
+                                fputs(tab,folder);
+                                fputc(' ',folder);
+                        }
+                }
+                fputc('\n',folder);
+                printf("W1 COMPLETE \n");
+
+                for (unsigned int y = 0; y < B0->yl; ++y)
+                {
+                        for (unsigned int x = 0; x < B0->xl; ++x)
+                        {       
+                                char tab[10];
+                                floatToChar(mGet(B0,x,y),tab);
+                                fputs(tab,folder);
+                                fputc(' ',folder);
+                        }
+                }
+                fputc('\n',folder);
+                printf("BO COMPLETE \n");
+
+
+                for (unsigned int y = 0; y < B1->yl; ++y)
+                {
+                        for (unsigned int x = 0; x < B1->xl; ++x)
+                        {
+                                char tab[10];
+                                floatToChar(mGet(B1,x,y),tab);
+                                fputs(tab,folder);
+                                fputc(' ',folder);
+                        }
+                }
+                fputc('\n',folder);
+                printf("B1 COMPLETE \n");
+
 		fclose(folder);
+		printf("\n CLOSED");
 	}
 }
 
