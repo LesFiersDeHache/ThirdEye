@@ -68,11 +68,11 @@ void printBitmap(Bitmap* bm)
 			int pxl = getPixel(bm,x,y);
 			if (pxl == 1)
 			{
-				printf(".");	
+				printf(". ");	
 			}
 			else
 			{
-				printf("0");
+				printf("0 ");
 			}
 		}
 	printf("\n");
