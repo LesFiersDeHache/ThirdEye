@@ -59,7 +59,7 @@ static void openDialog(GtkWidget *button,struct mymultiple *data){
 int Init(int argc, char *argv[])
 {
     gtk_init(&argc,&argv);
-    GtkWidget *window,*label,*button,*button2,*table,*image;
+    GtkWidget *window,*label,*button,*button2,*table,*button3,*button4;
     //gtk_window_set_default_size (GTK_WINDOW (window), 640, 480);
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size (GTK_WINDOW (window), 640, 480);
@@ -74,20 +74,28 @@ int Init(int argc, char *argv[])
     gtk_box_pack_start(GTK_BOX(hbox),button,1,1,0);
     gtk_container_add(GTK_CONTAINER(window),hbox);*/
 
-    table = gtk_table_new(2,2,0);
-    image = gtk_image_new_from_file("/home/lucas/Work/ThirdEye/ThirdEyeLogoB2.png");
-    button = gtk_button_new_with_mnemonic("_Start");
+    table = gtk_table_new(4,4,0);
+    button = gtk_button_new_with_mnemonic("_Load Text");
+    button2 = gtk_button_new_with_mnemonic("_Load Neural Network");
+    button3 = gtk_button_new_with_mnemonic("_Read");
+    button4 = gtk_button_new_with_mnemonic("_Save Text");
 
-    button2 = gtk_button_new_with_mnemonic("_ChoseImage");
     label = gtk_label_new("HIHI");
     struct mymultiple k;
     k.Pobject= window;
     k.one = label;
     g_signal_connect(button2,"clicked",G_CALLBACK(openDialog),&k);
-    gtk_table_attach(GTK_TABLE(table),label,0,2,1,2,GTK_EXPAND|GTK_FILL,GTK_EXPAND|GTK_FILL,0,0);
+
+    gtk_table_attach(GTK_TABLE(table),button,0,1,0,1,GTK_EXPAND|GTK_FILL,GTK_EXPAND|GTK_FILL,0,0);
+    gtk_table_attach(GTK_TABLE(table),button2, 0,1,1,2,GTK_EXPAND|GTK_FILL,GTK_EXPAND|GTK_FILL,0,0);
+    gtk_table_attach(GTK_TABLE(table),button3,3,4,3,4,GTK_EXPAND|GTK_FILL,GTK_EXPAND|GTK_FILL,0,0);
+    gtk_table_attach(GTK_TABLE(table),button4,0,1,2,3,GTK_EXPAND|GTK_FILL,GTK_EXPAND|GTK_FILL,0,0);
+
+    /*gtk_table_attach(GTK_TABLE(table),label,0,2,1,2,GTK_EXPAND|GTK_FILL,GTK_EXPAND|GTK_FILL,0,0);
     //gtk_table_attach(GTK_TABLE(table),image,1,2,0,1,GTK_EXPAND|GTK_SHRINK,GTK_EXPAND|GTK_SHRINK,0,0);
     gtk_table_attach(GTK_TABLE(table),button,1,2,0,1,GTK_EXPAND|GTK_FILL,GTK_EXPAND|GTK_FILL,0,0);
     gtk_table_attach(GTK_TABLE(table),button2,0,1,0,1,GTK_EXPAND|GTK_FILL,GTK_EXPAND|GTK_FILL,0,0);
+    */
     gtk_container_add(GTK_CONTAINER(window),table);
 
     
