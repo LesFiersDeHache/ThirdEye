@@ -198,7 +198,7 @@ Mat* mT(Mat* M) {
 
     for ( Uint x = 0 ; x < M->xl ; ++x ) {
         for ( Uint y = 0 ; y < M->yl ; ++y ) {
-            warnx("Write M[%d,%d] at R[%d,%d].", x, y, y, x);
+            //warnx("Write M[%d,%d] at R[%d,%d].", x, y, y, x);
             mSet(R, y, x, mGet(M, x, y));
         }
     }

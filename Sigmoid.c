@@ -9,7 +9,8 @@ float sigmoid(float z)
 
 float dSigmoid(float x)
 {
-	float sig = sigmoid(x);
-	return sig * (1 - sig);
+	//float sig = sigmoid(x);
+	//return sig * (1 - sig);
+    return x * (1 - x);
 }
 

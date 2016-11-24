@@ -28,77 +28,44 @@ static int GoodSize(int a, int b)
     }
 }
 
-
-/*static List cutHeight(List l, Bitmap *b)     //USELESS IF LUCAS DOES WELL
-{
-  int xMin = l.a;
-  int xMax = l.b;
-  int yMin = l.c;
-  int yMax = l.d;
-  int condition = 0;
-  int y = yMax;
-  int x = xMax;
-   
-
-   printf("PIXEL %d\n",getPixel(b,xMin + 3,yMin + 4));
- 
-  while (!condition && y >= yMin) 
-  {
-	while (!condition && x >= xMin)
-	{
-		//printf("PIXEL %d\n",getPixel(b,x,y));
-		if (getPixel(b,x,y) == 0)
-		{
-			condition = 1;
-			warnx("BLACK\n");
-		}
-		--x;
-	}
-	if (!condition)
-	{
-		--yMax;
-		warnx("YMAX %d \n",yMax);
-	}
-	--y;
-	x = xMax;
-  }
-  l.d = yMax;
-  return l;
-}*/
-
 Bitmap* AdjustChar(List l, Bitmap *b)
 {
   //l = cutHeight(l,b);
-  
   int xMin = l.a;
   int xMax = l.b;
   int yMin = l.c;
-  int yMax = l.d;
-  warnx("%d\n",yMax);
+  int yMax = l.d;	
+  
 
-  int width = xMax - xMin + 1;
+  printf("xMin : %d    xMax :  %d    yMin :  %d    yMax :  %d\n\n", xMin, xMax, yMin, yMax);
+  int width = xMax - xMin;
   int height = yMax - yMin + 1;
 
   int size = GoodSize(width, height);
+  /*if (height + 1 == size && height > width)
+  {
+	++height;
+  }
+  else if (width + 1 == size && width > height)
+  {
+	++width;
+  }*/
 
   Bitmap* result;
   result = malloc(sizeof(Bitmap));
   
   bitmapInit(result,size,size);
 
-  printBitmap(result);
-
   int count_width = (size - width) / 2;
+  printf("WIDTH SHIFT : %d\n", count_width);
   int count_height = (size - height) / 2;
+  printf("HEIGHT SHIFT : %d\n", count_height); 
 
-  printf("COUNT%d\n",count_width);
 
-  
   for (int i = 0; i < width; ++i)
     {
-      for (int j = 0; j < height + 1; ++j)
+      for (int j = 0; j < height; ++j)
 	{
-	  //warnx("YAAAAAAAAAAAA\n");
 	  setPixel(result,i + count_width,j + count_height, getPixel(b,i + xMin,j + yMin));
 	}
      }
@@ -117,11 +84,10 @@ Bitmap* sizeUP(Bitmap* b)
 	{
 		warnx("NOT THE SAME SIZE !");
 	}
-	float size_mod = size / (float)(b->height);  // MODIFY SIZE HERE
-	warnx("MOD %f",size_mod);
+	float size_mod = size / (float)(b->height);
 	Bitmap *result;
 	result = malloc(sizeof(Bitmap));
-	bitmapInit(result,size,size);         //MODIFY SIZE HERE
+	bitmapInit(result,size,size);
 	for (int x = 0; x < size; ++x)
 	{
 		for (int y = 0; y < size; ++y)
@@ -129,9 +95,10 @@ Bitmap* sizeUP(Bitmap* b)
 			setPixel(result,x,y,getPixel(b,x / size_mod, y / size_mod));
 		}
 	}
+        printf("\nIMAGE RESIZED UP : MOD = %f\n\n", size_mod);
 	printBitmap(result);
 	freeBitmap(b);
-	return result;	
+	return result;
 }
 
 
@@ -141,10 +108,9 @@ Bitmap* sizeDO(Bitmap *b)
 	int size = 24;
 	if (b->height != b->width)
 	{
-		warnx("NOT THESAME SIWE");
+		warnx("NOT THE SAME SIZE");
 	}
 	float size_mod = size / (float)(b->height);
-	warnx("MOD %f",size_mod);
 	Bitmap* result;
 	result = malloc(sizeof(Bitmap));
 	bitmapInit(result,size,size);
@@ -155,6 +121,7 @@ Bitmap* sizeDO(Bitmap *b)
 			setPixel(result,x,y,getPixel(b,x / size_mod, y / size_mod));
 		}
 	}
+	printf("\nIMAGE RESIZED DOWN : MOD = %f\n\n", size_mod);
 	printBitmap(result);
 	freeBitmap(b);
 	return result;
@@ -163,6 +130,7 @@ Bitmap* sizeDO(Bitmap *b)
 
 Bitmap* fromCutToNN( List l, Bitmap* b)
 {
+	printf("\nADJUSTED CHAR BEFORE RESIZING :\n");
 	Bitmap* result = AdjustChar(l, b);
 	if (result->height != 24)
 	{
@@ -177,3 +145,19 @@ Bitmap* fromCutToNN( List l, Bitmap* b)
 	}
 	return result;
 }
+
+
+void lettersPrettyPrint(List *l, Bitmap* b)
+{
+	int i = 0;
+	printf("START DISPLAY\n\n");
+	while (!is_empty(l))
+	{
+		fromCutToNN(*l,b);
+		l = l->next;
+		++i;
+	}
+	printf("END OF DISPLAY : NUMBER OF CHAR : %d\n",i);
+}
+
+
