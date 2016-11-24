@@ -4,5 +4,6 @@
 #define ONLYONCE_GRAPHICS
 
 int Init(int argc, char *argv[]);
+void ChangeTxt(char *s);
 
 #endif
