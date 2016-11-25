@@ -45,11 +45,13 @@ int main ( int argc, char *argv[] )
       List *l = CutAll(bmp);
       struct listB *res = sendList(l,bmp);
 
-	while (!is_emptyB(res))
+	/*while (!is_emptyB(res))
 	{
 		printBitmap(res->bmp);
 		res = res->next;
-	}
+	}*/
+	
+	printf("PIX : %d", getPixel(res->bmp,3,4));
 	return 1;
 //	Init(argc, argv);
 }
