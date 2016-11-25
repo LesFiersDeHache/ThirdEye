@@ -6,6 +6,8 @@
 #include "err.h"
 #include "SDLstuff.h"
 #include "SDL/SDL_image.h"
+#include "listB.h"
+
 
 static int Max(int a, int b)
 {
@@ -161,15 +163,15 @@ void lettersPrettyPrint(List *l, Bitmap* b)
 }
 
 
-ListB* sendList(List *l, Bitmap* b)
+struct listB* sendList(List *l, Bitmap* b)
 {
 	int i = 0;
-	ListB* res = empty_list();
-	push_front(fromCutToNN(*l,b),res);
+	struct listB* res = empty_listB();
+	push_frontB(fromCutToNN(*l,b),res);
 	l = l->next;
 	while (!is_empty(l))
 	{
-		push_front(fromCutToNN(*l,b), res);
+		push_frontB(fromCutToNN(*l,b), res);
 		l = l->next;
 	}
 	return res;

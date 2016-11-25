@@ -15,7 +15,7 @@
 #include "resize.h"
 #include "save.h"
 #include "Graphics.h"
-
+#include "listB.h"
 
 int main ( int argc, char *argv[] )
 {
@@ -39,13 +39,17 @@ int main ( int argc, char *argv[] )
         mPrintExt(B0, "B0 MAT");
         mPrintExt(B1, "B1 MAT");
 	*/
-	return 1;
 
-      /*Bitmap k = LoadToBitmap("wow.bmp");
+      Bitmap k = LoadToBitmap("wow.bmp");
       Bitmap * bmp = &k;
       List *l = CutAll(bmp);
-      lettersPrettyPrint(l, bmp);
-*/
+      struct listB *res = sendList(l,bmp);
 
+	while (!is_emptyB(res))
+	{
+		printBitmap(res->bmp);
+		res = res->next;
+	}
+	return 1;
 //	Init(argc, argv);
 }
