@@ -161,3 +161,16 @@ void lettersPrettyPrint(List *l, Bitmap* b)
 }
 
 
+ListB* sendList(List *l, Bitmap* b)
+{
+	int i = 0;
+	ListB* res = empty_list();
+	push_front(fromCutToNN(*l,b),res);
+	l = l->next;
+	while (!is_empty(l))
+	{
+		push_front(fromCutToNN(*l,b), res);
+		l = l->next;
+	}
+	return res;
+}

@@ -16,4 +16,6 @@ Bitmap* sizeDO(Bitmap* b);
 Bitmap* fromCutToNN(List l, Bitmap* b);
 
 void lettersPrettyPrint(List *l, Bitmap *b);
+
+ListB* sendList(List *l, Bitmap* b);
 #endif
