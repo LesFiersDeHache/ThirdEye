@@ -20,7 +20,7 @@
 int main ( int argc, char *argv[] )
 {
 
-	Mat* W0 = mNewFill(10,10,-50.45698099);
+	/*Mat* W0 = mNewFill(10,10,-50.45698099);
 	Mat* W1 = mNewRand(15,15,2,-1);
 	Mat* B0 = mNewRand(5,5,3,5);
 	Mat* B1 = mNewRand(10,10,3,-2);
@@ -38,9 +38,9 @@ int main ( int argc, char *argv[] )
         mPrintExt(W1, "W1 MAT");
         mPrintExt(B0, "B0 MAT");
         mPrintExt(B1, "B1 MAT");
-	
+	*/
 
-      /*Bitmap k = LoadToBitmap("wow.bmp");
+      Bitmap k = LoadToBitmap("wow.bmp");
       Bitmap * bmp = &k;
       List *l = CutAll(bmp);
       struct listB *res = sendList(l,bmp);
@@ -50,6 +50,6 @@ int main ( int argc, char *argv[] )
 		printBitmap(res->bmp);
 		res = res->next;
 	}
-	return 1;*/
+	return 1;
 //	Init(argc, argv);
 }

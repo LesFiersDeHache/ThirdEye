@@ -39,7 +39,7 @@ Bitmap* AdjustChar(List l, Bitmap *b)
   int yMax = l.d;	
   
 
-  printf("xMin : %d    xMax :  %d    yMin :  %d    yMax :  %d\n\n", xMin, xMax, yMin, yMax);
+  //printf("xMin : %d    xMax :  %d    yMin :  %d    yMax :  %d\n\n", xMin, xMax, yMin, yMax);
   int width = xMax - xMin;
   int height = yMax - yMin + 1;
 
@@ -59,9 +59,9 @@ Bitmap* AdjustChar(List l, Bitmap *b)
   bitmapInit(result,size,size);
 
   int count_width = (size - width) / 2;
-  printf("WIDTH SHIFT : %d\n", count_width);
+  //printf("WIDTH SHIFT : %d\n", count_width);
   int count_height = (size - height) / 2;
-  printf("HEIGHT SHIFT : %d\n", count_height); 
+  //printf("HEIGHT SHIFT : %d\n", count_height); 
 
 
   for (int i = 0; i < width; ++i)
@@ -73,7 +73,7 @@ Bitmap* AdjustChar(List l, Bitmap *b)
      }
 
     
-  printBitmap(result);  
+  //printBitmap(result);  
   return result;
 }
 
@@ -97,8 +97,8 @@ Bitmap* sizeUP(Bitmap* b)
 			setPixel(result,x,y,getPixel(b,x / size_mod, y / size_mod));
 		}
 	}
-        printf("\nIMAGE RESIZED UP : MOD = %f\n\n", size_mod);
-	printBitmap(result);
+        //printf("\nIMAGE RESIZED UP : MOD = %f\n\n", size_mod);
+	//printBitmap(result);
 	freeBitmap(b);
 	return result;
 }
@@ -123,8 +123,8 @@ Bitmap* sizeDO(Bitmap *b)
 			setPixel(result,x,y,getPixel(b,x / size_mod, y / size_mod));
 		}
 	}
-	printf("\nIMAGE RESIZED DOWN : MOD = %f\n\n", size_mod);
-	printBitmap(result);
+	//printf("\nIMAGE RESIZED DOWN : MOD = %f\n\n", size_mod);
+	//printBitmap(result);
 	freeBitmap(b);
 	return result;
 }
@@ -132,7 +132,7 @@ Bitmap* sizeDO(Bitmap *b)
 
 Bitmap* fromCutToNN( List l, Bitmap* b)
 {
-	printf("\nADJUSTED CHAR BEFORE RESIZING :\n");
+	//printf("\nADJUSTED CHAR BEFORE RESIZING :\n");
 	Bitmap* result = AdjustChar(l, b);
 	if (result->height != 24)
 	{
