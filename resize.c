@@ -165,7 +165,6 @@ void lettersPrettyPrint(List *l, Bitmap* b)
 
 struct listB* sendList(List *l, Bitmap* b)
 {
-	int i = 0;
 	struct listB* res = empty_listB();
 	push_frontB(fromCutToNN(*l,b),res);
 	l = l->next;
@@ -174,5 +173,6 @@ struct listB* sendList(List *l, Bitmap* b)
 		push_frontB(fromCutToNN(*l,b), res);
 		l = l->next;
 	}
+	freeList(l);
 	return res;
 }
