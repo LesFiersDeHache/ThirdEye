@@ -17,9 +17,9 @@
 
 static Mat* learningNNOutput()  // Create the Matrix Output for the learning
 {
-  Mat *m2 = mNewFill(5,10,0);  
+  Mat *m2 = mNewFill(94,94,0);  
   int j = 0;
-  for (int i = 0; i < 5; i++)  
+  for (int i = 0; i < 94; i++)  
     {      
       mSet(m2,i,j,1);
       j++;     
