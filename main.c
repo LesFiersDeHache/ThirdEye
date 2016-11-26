@@ -22,20 +22,23 @@ Mat* learningNN();
 
 int main ( int argc, char *argv[] )
 {
-  /*
-  Mat *m = learningNN("ascii2.bmp");
-  int i = 0;
   
-      for (int j = 0; j < 24*24; j++)
+  /*
+  Mat *m = learningNNOutput();
+  int h = 0;
+  for(int i = 0; i < 24; i++)
+    {
+      for (int j = 0; j < 24; j++)
 	{
-	  printf("%1.0f",mGet(m,0,i))
-	    if ( i == 24)
+	  printf("%1.0f ",mGet(m,i,j));
+	  h++;
+	    if ( h == 24)
 	      {
-		i = 0;
-		printf("\n")
+		h = 0;
+		printf("\n");
 	      }
-	}      
-  */
+       }      
+       }*/
   
   
   
@@ -78,9 +81,9 @@ int main ( int argc, char *argv[] )
 
 Mat* learningNNOutput()  // Create the Matrix Output for the learning
 {
-  Mat *m2 = mNewFill(5,10,0);  
+  Mat *m2 = mNewFill(94,94,0);  
   int j = 0;
-  for (int i = 0; i < 5; i++)  
+  for (int i = 0; i < 94; i++)  
     {      
       mSet(m2,i,j,1);
       j++;     
