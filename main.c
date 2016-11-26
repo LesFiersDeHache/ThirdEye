@@ -71,8 +71,9 @@ Mat* learningNNOutput()  // Create the Matrix Output for the learning
   return m2;
 }
 
-Mat* learningNN(char *path) // Create the Matrix associated to the image.   
+Mat* learningNN(char *path) // Create the Matrix associated to the image.
 {                           // It's the Path of the image
+  // /afs/cri.epita.net/user/b/be/benete_p/u/projet/ThirdEye/Archives/asciitable.bmp
   Bitmap k = LoadToBitmap(path); 
   Bitmap * bmp = &k;
   List *l = CutAll(bmp);
