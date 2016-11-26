@@ -27,9 +27,10 @@ int main ( int argc, char *argv[] )
 
     mPrintCompact(Jimmy->l0, "INPUT");
 
+    mPrintCompact(Jimmy->out, "OUTPUT");
     printf("%f\n", NnGetError(Jimmy));
 
-    JnLearn(Jimmy, 1000);
+    //JnLearn(Jimmy, 1000);
 
     printf("%f\n", NnGetError(Jimmy));
 
