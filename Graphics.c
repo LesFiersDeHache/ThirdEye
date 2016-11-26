@@ -1,8 +1,27 @@
 #include "gtk/gtk.h"
+#include <err.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
+#include <assert.h>
+#include "NeuralNet.h"
+#include "Sigmoid.h"
+#include <time.h>
+#include "list.h"
+#include "CutBitmap.h"
+#include "SDLstuff.h"
+#include "Bitmap.h"
+#include "Matrix.h"
+#include "resize.h"
+#include "save.h"
 #include "Graphics.h"
-#include "stdio.h"
+#include "listB.h"
 
-GtkWidget *textview ;
+
+
+GtkWidget *textview,*button,*button2,*button3,*button4 ;
+	char *s;
 
 struct mymultiple {
 	GtkWidget *Pobject;
@@ -11,22 +30,15 @@ struct mymultiple {
 };
 
 
-static void HELLO(GtkWidget *widget,gpointer data)
-{
-    gtk_label_set_text(GTK_LABEL(data),"you clicked it hihi");
-    g_print("clicked \n");
-}
 
-static void openDialog(GtkWidget *button,struct mymultiple *data){
-	gpointer *window = data->Pobject;
-	gpointer *label = data->one;
+static void openDialog(GtkWidget *button,gpointer *window){
 	GtkWidget *dialog;
+    (void)(button);
 	dialog = gtk_file_chooser_dialog_new("Choose a file",GTK_WINDOW(window),
 		GTK_FILE_CHOOSER_ACTION_OPEN,GTK_STOCK_OK,GTK_RESPONSE_OK,GTK_STOCK_CANCEL,
 		GTK_RESPONSE_CANCEL,NULL);
 	gtk_widget_show_all(dialog);
 	gint resp = gtk_dialog_run(GTK_DIALOG(dialog));
-	char *s = "void";
 	if(resp == GTK_RESPONSE_OK){
 
 		s = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
@@ -34,27 +46,49 @@ static void openDialog(GtkWidget *button,struct mymultiple *data){
 
 	}
 	else{
-		g_print("YOU PRESSED CANCEL IDIOT\n");
+		g_print("YOU PRESSED CANCEL\n");
 	}
 	gtk_widget_destroy(dialog);
+    if(s!= NULL){
+        //SHOWING RAW IMAGE
+        display_image(load_image(s));
+        //display Binarize Image
+        Bitmap B =  LoadToBitmap(s);
+        display_image(BitmapToSurface(&B));
+        //DISPLAY CHAR CutAll
+        List *L = CutAll(&B);
+        Bitmap b2 = DrawLines(&B,L);
+        display_image(BitmapToSurface(&b2));
+        gtk_widget_set_sensitive(button2,TRUE);
+        gtk_widget_set_sensitive(button3,TRUE);
+        gtk_widget_set_sensitive(button4,FALSE);
+        SDL_Quit();
+    }
+
 	
 }
+void ReadBut(){
+
+}
+
 void ChangeTxt(char *s){
 	GtkTextBuffer *buffer = gtk_text_buffer_new (NULL);
     const gchar *t = s;
     GtkTextIter iter;
     gtk_text_buffer_get_iter_at_offset(buffer,&iter,0);
     gtk_text_buffer_insert(GTK_TEXT_BUFFER(buffer),&iter,t,-1);
-	gtk_text_view_set_buffer(textview,buffer);
+	gtk_text_view_set_buffer(GTK_TEXT_VIEW(textview),buffer);
 }
 
 // CALLED ON CLICK
 void LoadNeuralNetwork(){
-	g_print("Give me a NeauralNet Func\n");
+	g_print("Weight and bias Loaded\n");
+    g_print("Neural Network Init");
 
+    //if success
+    gtk_widget_set_sensitive(button4,TRUE);
 }
 void Read(){
-	g_print("Give me a Read Func\n");
 
 }
 void SaveText(){
@@ -63,11 +97,10 @@ void SaveText(){
 }
 // END CALLED ON CLICK
 
-
 int Init(int argc, char *argv[])
 {
     gtk_init(&argc,&argv);
-    GtkWidget *window,*button,*button2,*table,*button3,*button4;
+    GtkWidget *window,*table;
     //gtk_window_set_default_size (GTK_WINDOW (window), 640, 480);
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size (GTK_WINDOW (window), 640, 480);
@@ -93,7 +126,7 @@ int Init(int argc, char *argv[])
     gtk_widget_set_sensitive(button4,FALSE);
 
     gtk_widget_set_sensitive(button2,FALSE);
-
+    
     
 
     GtkTextBuffer *buffer = gtk_text_buffer_new (NULL);
@@ -103,10 +136,7 @@ int Init(int argc, char *argv[])
     gtk_text_buffer_insert(GTK_TEXT_BUFFER(buffer),&iter,t,-1);
     textview = gtk_text_view_new();
     gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (textview), GTK_WRAP_WORD);
-
-    struct mymultiple k;
-    k.Pobject= window;
-    g_signal_connect(button,"clicked",G_CALLBACK(openDialog),&k);
+    g_signal_connect(button,"clicked",G_CALLBACK(openDialog),window);
 
     g_signal_connect(button2,"clicked",G_CALLBACK(LoadNeuralNetwork),NULL);
 

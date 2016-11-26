@@ -386,12 +386,6 @@ List* CutAll(Bitmap *b)
   print_list(L5);*/
 
 
-  /*SDL_Surface *w1 = BitmapToSurface(b);
-  display_image(w1);
-  Bitmap b2 = DrawLines(b,L4);
-  Bitmap *b4 = &b2;
-  SDL_Surface *wo = BitmapToSurface(b4);
-  display_image(wo);*/
   return L4;
   
 
