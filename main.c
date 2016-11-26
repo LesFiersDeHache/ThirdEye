@@ -23,6 +23,11 @@ Mat* learningNN();
 int main ( int argc, char *argv[] )
 {
 
+  //Mat *m = learningNN("ascii2.bmp");
+  
+  
+  
+  // /afs/cri.epita.net/user/b/be/benete_p/u/projet/ThirdEye/Archives/asciitable.bmp
 	/*Mat* W0 = mNewFill(10,10,-50.45698099);
 	Mat* W1 = mNewRand(15,15,2,-1);
 	Mat* B0 = mNewRand(5,5,3,5);
@@ -43,7 +48,7 @@ int main ( int argc, char *argv[] )
         mPrintExt(B1, "B1 MAT");
 	*/
 
-      Bitmap k = LoadToBitmap("wow.bmp");
+  /* Bitmap k = LoadToBitmap("wow.bmp");
       Bitmap * bmp = &k;
       List *l = CutAll(bmp);
       struct listB *res = sendList(l,bmp);
@@ -54,7 +59,7 @@ int main ( int argc, char *argv[] )
 		res = res->next;
 	}*/
 	
-	printf("PIX : %d", getPixel(res->bmp,3,4));
+ 
 	return 1;
 //	Init(argc, argv);
 }
@@ -73,15 +78,16 @@ Mat* learningNNOutput()  // Create the Matrix Output for the learning
 
 Mat* learningNN(char *path) // Create the Matrix associated to the image.
 {                           // It's the Path of the image
-  // /afs/cri.epita.net/user/b/be/benete_p/u/projet/ThirdEye/Archives/asciitable.bmp
+  // /afs/cri.epita.net/user/b/be/benete_p/u/projet/ThirdEye/Archives/asciitable.bmp  
   Bitmap k = LoadToBitmap(path); 
   Bitmap * bmp = &k;
   List *l = CutAll(bmp);
-  struct listB *res = sendList(l,bmp);     
+  struct listB *res = sendList(l,bmp);  
   Mat *m = mNewFill(94,24*24,0);
-  Bitmap *b = res->bmp;	 
+  Bitmap *b = res->bmp;  
   for (int i = 0; i < 94; i++)
-    {             
+    {
+      //printBitmap(res->bmp);
       for (int j = 0; j < 24*24; j++)
 	{	 
 	  b = res->bmp;		       
