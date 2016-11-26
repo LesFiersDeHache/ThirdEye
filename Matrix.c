@@ -86,6 +86,12 @@ void mPrintExt(Mat* M, const char* title) {
     printf("\n");
 }
 
+void mPrintDim(Mat* M, const char* title) {
+
+    printf("Matrix : '%s'\n", title);
+    printf("Dimensions : %d * %d\n", M->xl, M->yl);
+}
+
 //mAdd : addition of 2 matrix, per-a-per
 Mat* mAdd(Mat* M1, Mat* M2) {
     if (M1->xl != M2->xl || M1->yl != M2->yl) {           
