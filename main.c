@@ -16,26 +16,40 @@
 #include "save.h"
 #include "Graphics.h"
 #include "listB.h"
+#include "JimmyNeutron.h"
 
 Mat* learningNNOutput();
 Mat* learningNN();
 
 int main ( int argc, char *argv[] )
-{/*
+{
+    NeuralNet* Jimmy = JnInitJn();
 
+    NnPrettyPrint(Jimmy);
+
+
+  /*
   Mat *m = learningNN("ascii2.bmp");
   int i = 0;
+=======
+>>>>>>> 85d998541630efdc1a0c3b51f205d5c1ee810f90
   
-      for (int j = 0; j < 24*24; j++)
+  /*
+  Mat *m = learningNNOutput();
+  int h = 0;
+  for(int i = 0; i < 24; i++)
+    {
+      for (int j = 0; j < 24; j++)
 	{
-	  printf("%1.0f",mGet(m,0,i))
-	    if ( i == 24)
+	  printf("%1.0f ",mGet(m,i,j));
+	  h++;
+	    if ( h == 24)
 	      {
-		i = 0;
-		printf("\n")
+		h = 0;
+		printf("\n");
 	      }
-	}      
- */
+       }      
+       }*/
   
   
   
@@ -76,39 +90,3 @@ int main ( int argc, char *argv[] )
 //	Init(argc, argv);
 }
 
-Mat* learningNNOutput()  // Create the Matrix Output for the learning
-{
-  Mat *m2 = mNewFill(5,10,0);  
-  int j = 0;
-  for (int i = 0; i < 5; i++)  
-    {      
-      mSet(m2,i,j,1);
-      j++;     
-    }
-  return m2;
-}
-
-Mat* learningNN(char *path) // Create the Matrix associated to the image.
-{                           // It's the Path of the image
-  // /afs/cri.epita.net/user/b/be/benete_p/u/projet/ThirdEye/Archives/asciitable.bmp  
-  Bitmap k = LoadToBitmap(path); 
-  Bitmap * bmp = &k;
-  List *l = CutAll(bmp);
-  struct listB *res = sendList(l,bmp);  
-  Mat *m = mNewFill(94,24*24,0);
-  Bitmap *b = res->bmp;  
-  for (int i = 0; i < 10; i++)
-    {
-      //printBitmap(res->bmp);
-      for (int j = 0; j < 24*24; j++)
-	{	 
-	  b = res->bmp;		       
-	  if (b->p_bitmap[j] == 1)
-	    {	      
-	      mSet(m,i,j,1);
-	    }	  
-	}
-      res = res->next;
-    }
-  return m;
-  }

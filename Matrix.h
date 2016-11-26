@@ -82,6 +82,9 @@ void mPrint(Mat* M);
 // title : a string to print before the matrix
 void mPrintExt(Mat* M, const char* title);
 
+void mPrintDim(Mat* M, const char* title);
+
+void mPrintCompact(Mat* M, const char* title);
 // mAdd :
 // Create a new matrix equal to the sum of two given matrix.
 //

@@ -86,6 +86,39 @@ void mPrintExt(Mat* M, const char* title) {
     printf("\n");
 }
 
+void mPrintDim(Mat* M, const char* title) {
+
+    printf("Matrix : '%s'\n", title);
+    printf("Dimensions : %d * %d\n", M->xl, M->yl);
+}
+
+void mPrintCompact(Mat* M, const char* title) {
+
+    printf("Matrix : '%s'\n", title);
+    printf("Dimensions : %d * %d\n", M->xl, M->yl);
+
+    for ( size_t x = 0 ; x < M->xl ; ++x ) {
+        for ( size_t y = 0 ; y < M->yl ; ++y ) {
+
+            if (mGet(M, x, y) < 0.5) {
+
+                printf(".");
+            }
+            else {
+
+                printf("1");
+            }
+
+            if (y % 24 == 23) {
+
+                printf("\n");
+            }
+        }
+        printf("\n");
+    }
+}
+
+
 //mAdd : addition of 2 matrix, per-a-per
 Mat* mAdd(Mat* M1, Mat* M2) {
     if (M1->xl != M2->xl || M1->yl != M2->yl) {           

@@ -6,12 +6,64 @@
 #include "NeuralNet.h"
 #include "Matrix.h"
 #include "save.h"
+#include "Bitmap.h"
+#include "list.h"
+#include "CutBitmap.h"
+#include "SDLstuff.h"
+#include "listB.h"
+#include "resize.h"
 
 // ############ INIT ##################//
 
+static Mat* learningNNOutput()  // Create the Matrix Output for the learning
+{
+  Mat *m2 = mNewFill(94,94,0);  
+  int j = 0;
+  for (int i = 0; i < 94; i++)  
+    {      
+      mSet(m2,i,j,1);
+      j++;     
+    }
+  return m2;
+}
+
+Mat* learningNN(char *path) // Create the Matrix associated to the image.
+{                           // It's the Path of the image
+  // /afs/cri.epita.net/user/b/be/benete_p/u/projet/ThirdEye/Archives/asciitable.bmp  
+  Bitmap k = LoadToBitmap(path); 
+  Bitmap * bmp = &k;
+  List *l = CutAll(bmp);
+  struct listB *res = sendList(l,bmp);  
+  Mat *m = mNewFill(94,24*24,0);
+  Bitmap *b = res->bmp;  
+  for (int i = 0; i < 94; i++)
+    {
+      //printBitmap(res->bmp);
+      for (int j = 0; j < 24*24; j++)
+	{	 
+	  b = res->bmp;		       
+	  if (b->p_bitmap[j] == 1)
+	    {	      
+	      mSet(m,i,j,1);
+	    }	  
+	}
+      res = res->next;
+    }
+  return m;
+}
+
 static void initLearningMatrix(Mat* Input, Mat* Output) {
 
-    //FIXME
+    Mat* _In = learningNN("ascii2.bmp");
+    Mat* _Out = learningNNOutput();
+
+    mPrintDim(_Out, "Out");
+    mPrintDim(Output, "Output");
+    mCopyAinB(_In, Input);
+    mCopyAinB(_Out, Output); // NOT SAME DIM !!!
+
+    mFree(_In);
+    mFree(_Out);
 }
 
 NeuralNet* JnInitJn() {

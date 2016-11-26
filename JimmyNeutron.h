@@ -12,9 +12,9 @@ NeuralNet* JnInitJn();
 
 // #### SAVE/LOAD #### //
 
-void JnLoadWeights(JN, path);
+void JnLoadWeights(NeuralNet* JN);
 
-void JnSaveWeights(JN, path);
+void JnSaveWeights(NeuralNet* JN);
 
 // #### LEARNING #### //
 
