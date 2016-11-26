@@ -57,7 +57,7 @@ SDL_Surface* display_image(SDL_Surface *img) {
  
   // wait for a key
   wait_for_keypressed();
- 
+
   // return the screen for further uses
   return screen;
 }
@@ -189,7 +189,6 @@ SDL_Surface* BitmapToSurface(Bitmap* bitm)
 		}
       }    
   }
-  display_image(surface);
   return surface;
 
 }
