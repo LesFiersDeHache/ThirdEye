@@ -32,7 +32,7 @@ typedef struct NeuralNet NeuralNet;
 
 // ### NEURAL NET INIT ### //
 
-static NeuralNet* NnInit(Mat* X_in, Mat* Y_in,
+NeuralNet* NnInit(Mat* X_in, Mat* Y_in,
             size_t L1_size, size_t L2_size) {
     
     // Allocation
@@ -308,7 +308,7 @@ static void NnBackPropagation(NeuralNet* NN) {
     update_b2(NN);
 }
 
-static void NnLearn(NeuralNet* NN) {
+void NnLearn(NeuralNet* NN) {
 
     NnFeedForward(NN);
 
@@ -333,6 +333,11 @@ NeuralNet* NnGetXorNn( size_t loop ) {
     for ( size_t l = 0 ; l < loop ; ++l ) {
 
         NnLearn(NN);
+        
+        if (l % 1000 == 0) {
+            
+            warnx("Error : %f", NnGetError(NN));
+        }
     }
     
     mFree(Input);
@@ -477,4 +482,33 @@ void NnPrettyPrint(NeuralNet* NN) {
     }
 
     
+}
+
+static float absFloat(float f) {
+
+    if (f < 0) {
+
+        f = -f;
+    }
+
+    return f;
+}
+
+float NnGetError(NeuralNet* NN) {
+
+    Mat* Errors = mSub(NN->out, NN->l2);
+    
+    float sum = 0.0;
+
+    for ( size_t x = 0 ; x < Errors->xl ; ++x ) {
+
+        float a = mGet(Errors, x, 0);
+        a = absFloat(a);
+        sum += a;
+    }
+
+    float divide = Errors->xl;
+    mFree(Errors);
+    return sum / divide;
+
 }

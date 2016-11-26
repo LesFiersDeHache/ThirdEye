@@ -32,12 +32,12 @@ typedef struct NeuralNet {
 
 } NeuralNet;
 
-//NeuralNet* NnInit(Mat* X_in, Mat* Y_in,
-//            size_t L1_size, size_t L2_size);
+NeuralNet* NnInit(Mat* X_in, Mat* Y_in,
+            size_t L1_size, size_t L2_size);
 
 void NnFree(NeuralNet* NN);
 
-//void NnLearn(NeuralNet* NN);
+void NnLearn(NeuralNet* NN);
 
 NeuralNet* NnGetXorNn(size_t loop);
 
@@ -47,5 +47,6 @@ int NnGetXorOutput(Mat* w0, Mat* w1, int input0, int input1);
 
 void NnPrettyPrint(NeuralNet* NN);
 
+float NnGetError(NeuralNet* NN);
 #endif
 
