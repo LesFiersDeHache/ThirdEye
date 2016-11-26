@@ -25,7 +25,7 @@ int main ( int argc, char *argv[] )
 {
     NeuralNet* Jimmy = JnInitJn();
 
-    NnPrettyPrint(Jimmy);
+    mPrintCompact(Jimmy->l0, "INPUT");
 
 
   /*

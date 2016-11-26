@@ -54,7 +54,7 @@ Mat* learningNN(char *path) // Create the Matrix associated to the image.
 
 static void initLearningMatrix(Mat* Input, Mat* Output) {
 
-    Mat* _In = learningNN("ascii2.bmp");
+    Mat* _In = learningNN("ascii5.jpg");
     Mat* _Out = learningNNOutput();
 
     mPrintDim(_Out, "Out");
