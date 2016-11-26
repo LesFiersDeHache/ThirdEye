@@ -102,24 +102,18 @@ void JnLearnOneTime(NeuralNet* JN) {
 
 void JnLearn(NeuralNet* JN, size_t loop) {
 
-    JnLoadWeights(JN);
     
     for (size_t l = 0 ; l < loop ; ++l ) {
 
         JnLearnOneTime(JN);
 
-        if (l % 1000) {
+        if (l % 100 == 0) {
 
             warnx("Round : %ld -> Error : %f", l, NnGetError(JN));
-            JnSaveWeights(JN);
         }
     }
 
     warnx("#### OVER ####");
-
-    JnSaveWeights(JN);
-
-    warnx("#### SAVED ###");
 }
 
 // ######### CALC ERROR ############ //

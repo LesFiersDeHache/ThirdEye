@@ -20,6 +20,6 @@ void JnSaveWeights(NeuralNet* JN);
 
 void JnLearnOneTime(NeuralNet* JN);
 
-void JnLearn(NeuralNet* JN, const char* path, size_t loop);
+void JnLearn(NeuralNet* JN, size_t loop);
 
 

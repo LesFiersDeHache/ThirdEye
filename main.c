@@ -27,6 +27,11 @@ int main ( int argc, char *argv[] )
 
     mPrintCompact(Jimmy->l0, "INPUT");
 
+    printf("%f\n", NnGetError(Jimmy));
+
+    JnLearn(Jimmy, 1000);
+
+    printf("%f\n", NnGetError(Jimmy));
 
   /*
   Mat *m = learningNN("ascii2.bmp");
