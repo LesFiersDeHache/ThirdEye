@@ -21,8 +21,8 @@ Mat* learningNNOutput();
 Mat* learningNN();
 
 int main ( int argc, char *argv[] )
-{/*
-
+{
+  /*
   Mat *m = learningNN("ascii2.bmp");
   int i = 0;
   
@@ -35,7 +35,7 @@ int main ( int argc, char *argv[] )
 		printf("\n")
 	      }
 	}      
- */
+  */
   
   
   
@@ -97,7 +97,7 @@ Mat* learningNN(char *path) // Create the Matrix associated to the image.
   struct listB *res = sendList(l,bmp);  
   Mat *m = mNewFill(94,24*24,0);
   Bitmap *b = res->bmp;  
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < 94; i++)
     {
       //printBitmap(res->bmp);
       for (int j = 0; j < 24*24; j++)
