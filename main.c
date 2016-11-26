@@ -31,17 +31,25 @@ int main ( int argc, char *argv[] )
   /*
   Mat *m = learningNN("ascii2.bmp");
   int i = 0;
+=======
+>>>>>>> 85d998541630efdc1a0c3b51f205d5c1ee810f90
   
-      for (int j = 0; j < 24*24; j++)
+  /*
+  Mat *m = learningNNOutput();
+  int h = 0;
+  for(int i = 0; i < 24; i++)
+    {
+      for (int j = 0; j < 24; j++)
 	{
-	  printf("%1.0f",mGet(m,0,i))
-	    if ( i == 24)
+	  printf("%1.0f ",mGet(m,i,j));
+	  h++;
+	    if ( h == 24)
 	      {
-		i = 0;
-		printf("\n")
+		h = 0;
+		printf("\n");
 	      }
-	}      
-  */
+       }      
+       }*/
   
   
   
