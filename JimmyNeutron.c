@@ -29,11 +29,15 @@ static Mat* learningNNOutput()  // Create the Matrix Output for the learning
 
 Mat* learningNN(char *path) // Create the Matrix associated to the image.
 {                           // It's the Path of the image
-  // /afs/cri.epita.net/user/b/be/benete_p/u/projet/ThirdEye/Archives/asciitable.bmp  
   Bitmap k = LoadToBitmap(path); 
   Bitmap * bmp = &k;
   List *l = CutAll(bmp);
   struct listB *res = sendList(l,bmp);  
+  struct listB *print = res;
+  while (!is_emptyB(print)) {
+      printBitmap(print->bmp);
+      print = print->next;
+  }
   Mat *m = mNewFill(94,24*24,0);
   Bitmap *b = res->bmp;  
   for (int i = 0; i < 94; i++)

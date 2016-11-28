@@ -23,7 +23,9 @@ Mat* learningNN();
 
 int main ( int argc, char *argv[] )
 {
-    NeuralNet* Jimmy = JnInitJn();
+    //Init(argc, argv);
+     NeuralNet* Jimmy = JnInitJn();
+
 
     mPrintCompact(Jimmy->l0, "INPUT");
 
