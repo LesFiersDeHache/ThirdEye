@@ -29,7 +29,6 @@ List* cutblockY(int *tab, Bitmap *b, int* PoliceSize)
 			policeSize += 1;
 			if(firstblack)
 			{
-				policeSize = 1;
 				firstblack = 0;
 				yMinB = y;
 			}
@@ -51,10 +50,10 @@ List* cutblockY(int *tab, Bitmap *b, int* PoliceSize)
 					firstblack = 1;
 					yMinB = tab[2];
 					yMaxB = tab[2];
-					//policeSize = *PoliceSize;
+					policeSize = *PoliceSize;
 					isStillBlack = 0;
 					white = 0;
-					//policeSize = 0;
+					policeSize = 0;
 					Threshold = 0;
 				}
 			}
@@ -62,8 +61,7 @@ List* cutblockY(int *tab, Bitmap *b, int* PoliceSize)
 		isStillBlack = 0;
 	}
 	*PoliceSize= policeSize;
-	warnx("???????????????????%d",policeSize);
-
+	print_list(res);
         return res;
 };
 
@@ -71,7 +69,7 @@ List* cutblockY(int *tab, Bitmap *b, int* PoliceSize)
 
 List* cutblockX(int* tab, Bitmap *b, int* policeSize)
 {
-	int Threshold = 4* *policeSize;
+  int Threshold =1000; //4* *policeSize;
 	int white = 0;
 	unsigned short xMinB = tab[0];
 	unsigned short xMaxB = tab[0];
@@ -118,11 +116,10 @@ List* cutblockX(int* tab, Bitmap *b, int* policeSize)
 				}
 				isStillBlack = 0;
 			}
-
 		}
 	}
-	warnx("Police size%d",*policeSize);
         //warnx("poooii%p\n",Poi->next->next);
+	print_list(res);
 	return res;
 };
 
@@ -181,7 +178,7 @@ List* Cutlines(int* tab,Bitmap *b)
 	 	isStillBlack = 0;
 	 	isblack = 0;
 	 }
-	
+	 //print_list(res);
 	 return res;
 };
 
@@ -190,8 +187,7 @@ List* Cutchars(int *tab, Bitmap *b, int PoliceSize)
 {
   short isStillBlack = 0;
   short firstblack = 0;
-  float temp = 5;//0.3 * (float)PoliceSize;
-	warnx("Psize%f",temp);
+  float temp = 10;// 0.3 * (float)PoliceSize;
   int Threshold = (int)temp;
   unsigned short xMinB = tab[0];
   
@@ -216,7 +212,7 @@ List* Cutchars(int *tab, Bitmap *b, int PoliceSize)
 	  if (isStillBlack)
 	    {
 	      if (blackp == 0)//First Time we got black
-		{ 
+		{
 		  if (whitep > Threshold+5)
 		    {
 		      int newBloc[4] = {xMinB,x,tab[2],tab[3]};
@@ -242,7 +238,7 @@ List* Cutchars(int *tab, Bitmap *b, int PoliceSize)
 	  isStillBlack = 0;
 	}
     }
- //print_list(res);
+ 
   return res;
 };
 
@@ -308,7 +304,7 @@ Bitmap DrawLines(Bitmap *bmp,List *L)
 List* CutAll(Bitmap *b)
 {
   int tab[4] = {0, b->width - 1, 0, b->height-1}; //IMG SIZE
-  int Psize = 24;
+  int Psize = 0;
 /*
   List *L = empty_list();
   L = cutblockX(tab,b,&Psize);//CA MARCHE CA
@@ -316,14 +312,12 @@ List* CutAll(Bitmap *b)
   int ta[4] = {L->a,L->b,L->c,L->d};
   List *L2 = empty_list();
   L2 = cutblockY(ta,b,&Psize);
-
   warnx("LIST2");
   print_list(L2);
   
   List* M = empty_list();
   M = Merge(L, L2);
   print_list(M);
-
   */
   List *L = empty_list();
   L = cutblockY(tab,b,&Psize);
@@ -360,23 +354,22 @@ List* CutAll(Bitmap *b)
 
   List *L4 = empty_list();
   int Y[4] = {L3->a,L3->b,L3->c,L3->d};
-  L4 = Cutchars(Y,b,24);
+  L4 = Cutchars(Y,b,Psize);
   RafinedChar(L4,b);
-	List *lines = L3;
   L3 = L3->next;
   while(!is_empty(L3))
   {
 	int T[4] = {L3->a,L3->b,L3->c,L3->d};
-	List *l = Cutchars(T,b,24);
+	List *l = Cutchars(T,b,Psize);
 	RafinedChar(l,b);
 	L4 = Merge(L4,l);
 	L3 = L3->next;
   }
-  //freeList(L3);  
+  freeList(L3);  
 
   //print_list(L4);
-
-  /*List *L5 = empty_list();
+  /*
+  List *L5 = empty_list();
   int R[4] = {L4->a,L4->b,L4->c,L4->d};
   L5 = Cutlines(R,b);
   warnx("YYYYYY");
@@ -384,15 +377,18 @@ List* CutAll(Bitmap *b)
   while(!is_empty(L4))
   {
 	int T[4] = {L4->a,L4->b,L4->c,L4->d};
-	warnx("TTTTTTTTTTTT");
-	L5 = Merge(L5,Cutlines(T,b));
+      
+	//L5 = Merge(L5,Cutlines(T,b));
 	L4 = L4->next;
-  }
+	}*/
 
-  freeList(L4);
-  print_list(L5);*/
-	//print_list(lines);
 
+  /*SDL_Surface *w1 = BitmapToSurface(b);
+  display_image(w1);
+  Bitmap b2 = DrawLines(b,L4);
+  Bitmap *b4 = &b2;
+  SDL_Surface *wo = BitmapToSurface(b4);
+  display_image(wo);*/
   return L4;
   
 
@@ -427,5 +423,3 @@ List* CutAll(Bitmap *b)
   print_list(list2);*/
   }
  
-
-
