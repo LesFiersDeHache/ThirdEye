@@ -15,11 +15,13 @@
 
 // ############ INIT ##################//
 
-static Mat* learningNNOutput()  // Create the Matrix Output for the learning
+Mat* learningNNOutput()  // Create the Matrix Output for the learning
 {
   Mat *m2 = mNewFill(94,94,0);  
-  int j = 0;
-  for (int i = 0; i < 94; i++)  
+  int j = 2;
+  mSet(m2,0,1,1);
+  mSet(m2,1,0,1);
+  for (int i = 2; i < 94; i++)  
     {      
       mSet(m2,i,j,1);
       j++;     
@@ -42,7 +44,7 @@ Mat* learningNN(char *path) // Create the Matrix associated to the image.
   Bitmap *b = res->bmp;  
   for (int i = 0; i < 94; i++)
     {
-      //printBitmap(res->bmp);
+      printBitmap(res->bmp);
       for (int j = 0; j < 24*24; j++)
 	{	 
 	  b = res->bmp;		       

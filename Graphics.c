@@ -57,12 +57,24 @@ static void openDialog(GtkWidget *button,gpointer *window){
         display_image(BitmapToSurface(&B));
         //DISPLAY CHAR CutAll
         List *L = CutAll(&B);
-        Bitmap b2 = DrawLines(&B,L);
-        display_image(BitmapToSurface(&b2));
+	//Bitmap b2 = DrawLines(&B,L);
+	
+        //display_image(BitmapToSurface(&b2));
+	warnx("DONE");
+	
         gtk_widget_set_sensitive(button2,TRUE);
         gtk_widget_set_sensitive(button3,TRUE);
         gtk_widget_set_sensitive(button4,FALSE);
         SDL_Quit();
+	struct listB *res = sendList(L,&B);
+	int i=0;
+	while (!is_emptyB(res)&&i<20)
+	{
+		printBitmap(res->bmp);
+		printf("\n");
+		res = res->next;
+		i++;
+		}
     }
 
 	
