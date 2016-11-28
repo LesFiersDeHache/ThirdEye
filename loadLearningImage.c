@@ -33,14 +33,14 @@ Mat* learningNN(char *path) // Create the Matrix associated to the image.
   struct listB *res = sendList(l,bmp);  
   struct listB *print = res;
   while (!is_emptyB(print)) {
-      printBitmap(print->bmp);
+      //printBitmap(print->bmp);
       print = print->next;
   }
   Mat *m = mNewFill(94,24*24,0);
   Bitmap *b = res->bmp;  
   for (int i = 0; i < 94; i++)
     {
-      printBitmap(res->bmp);
+      //printBitmap(res->bmp);
       for (int j = 0; j < 24*24; j++)
 	{	 
 	  b = res->bmp;		       

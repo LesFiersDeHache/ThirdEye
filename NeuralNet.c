@@ -315,6 +315,59 @@ void NnLearn(NeuralNet* NN) {
     NnBackPropagation(NN);
 }
 
+static void matToAlt(Mat* M) {
+
+    for ( size_t y = 0 ; y < M->yl ; ++y ) {
+        for ( size_t x = 0 ; x < M->xl ; ++x ) {
+
+            if ( x % 2 == y % 2) {
+
+                mSet(M, x, y, 1.0);
+            }
+        }
+    }
+}
+
+static void matToDiag(Mat* M) {
+
+    for ( size_t y = 0 ; y < M->yl ; ++y ) {
+        for ( size_t x = 0 ; x < M->xl ; ++x ) {
+
+            if ( x == y ) {
+
+                mSet(M, x, y, 1.0);
+            }
+        }
+    }
+}
+
+NeuralNet* NnGetXorToXorNn( size_t loop ) {
+
+    Mat* Input = mNewFill(100, 100, 0.0);
+    Mat* Output = mNewFill(100, 100, 0.0);
+
+    matToAlt(Input);
+    matToDiag(Output);
+
+    NeuralNet* NN = NnInit(Input, Output, 10, 100);
+
+    for ( size_t l = 0 ; l < loop ; ++l ) {
+
+        NnLearn(NN);
+        
+        if (l % 1000 == 0) {
+            
+            warnx("Error : %f", NnGetError(NN));
+        }
+    }
+    
+    mFree(Input);
+    mFree(Output);
+
+    return NN;
+
+}
+
 NeuralNet* NnGetXorNn( size_t loop ) {
 
     Mat* Input = mNewFill(4, 2, 0.0);
@@ -482,6 +535,14 @@ void NnPrettyPrint(NeuralNet* NN) {
     }
 
     
+}
+
+void NnBigPrint(NeuralNet* NN) {
+
+    mPrintCompact(NN->w0to1, "W0TO1");
+    mPrintCompact(NN->w1to2, "W1TO2");
+    mPrintCompact(NN->l2, "L2");
+    mPrintCompact(NN->out, "OUT");
 }
 
 static float absFloat(float f) {

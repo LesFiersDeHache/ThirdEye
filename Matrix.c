@@ -100,9 +100,18 @@ void mPrintCompact(Mat* M, const char* title) {
     for ( size_t x = 0 ; x < M->xl ; ++x ) {
         for ( size_t y = 0 ; y < M->yl ; ++y ) {
 
-            if (mGet(M, x, y) < 0.5) {
+            float g = mGet(M, x, y);
+            if (g < 0.0) {
+
+                printf("-");
+            }
+            else if (g < 0.5) {
 
                 printf(".");
+            }
+            else if (g < 0.8) {
+
+                printf(":");
             }
             else {
 
@@ -111,7 +120,7 @@ void mPrintCompact(Mat* M, const char* title) {
 
             if (y % 24 == 23) {
 
-                printf("\n");
+                //printf("\n");
             }
         }
         printf("\n");
@@ -122,6 +131,8 @@ void mPrintCompact(Mat* M, const char* title) {
 //mAdd : addition of 2 matrix, per-a-per
 Mat* mAdd(Mat* M1, Mat* M2) {
     if (M1->xl != M2->xl || M1->yl != M2->yl) {           
+        mPrintDim(M1, "mAdd : Dim of M1");
+        mPrintDim(M2, "mAdd : Dim of M2");
         err(1, "Matrix : mAdd >>> Matrix's lengths are not equal");
     }
 
@@ -139,6 +150,8 @@ Mat* mAdd(Mat* M1, Mat* M2) {
 // mSub : substract 2 matrix, per-to-per
 Mat* mSub(Mat* M1, Mat* M2) {
     if (M1->xl != M2->xl || M1->yl != M2->yl) {
+        mPrintDim(M1, "mSub : Dim of M1");
+        mPrintDim(M2, "mSub : Dim of M2");
         err(1, "Matrix : mSub >>> Matrix's lengths are not equal");
     }
 
@@ -156,6 +169,8 @@ Mat* mSub(Mat* M1, Mat* M2) {
 // mMult : mult 2 matrix, per-to-per
 Mat* mMult(Mat* M1, Mat* M2) {
     if (M1->xl != M2->xl || M1->yl != M2->yl) {
+        mPrintDim(M1, "mMult : Dim of M1");
+        mPrintDim(M2, "mMult : Dim of M2");
         err(1, "Matrix : mMult >>> Matrix's lengths are not equal");
     }
 
@@ -175,6 +190,8 @@ Mat* mMult(Mat* M1, Mat* M2) {
 //in the second matrix.
 Mat* mDot(Mat* M1, Mat* M2) {
     if (M1->yl != M2->xl) {
+        mPrintDim(M1, "mDot : Dim of M1");
+        mPrintDim(M2, "mDot : Dim of M2");
         err(1, "Matrix : mDot >>> Matrix length condition is not true.\n"); 
     }
 

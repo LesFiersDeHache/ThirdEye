@@ -61,7 +61,7 @@ List* cutblockY(int *tab, Bitmap *b, int* PoliceSize)
 		isStillBlack = 0;
 	}
 	*PoliceSize= policeSize;
-	print_list(res);
+	//print_list(res);
         return res;
 };
 
@@ -119,7 +119,7 @@ List* cutblockX(int* tab, Bitmap *b, int* policeSize)
 		}
 	}
         //warnx("poooii%p\n",Poi->next->next);
-	print_list(res);
+	//print_list(res);
 	return res;
 };
 

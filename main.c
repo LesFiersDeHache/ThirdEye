@@ -17,32 +17,26 @@
 #include "Graphics.h"
 #include "listB.h"
 #include "JimmyNeutron.h"
-
-Mat* learningNNOutput();
-Mat* learningNN();
+#include "Learning.h"
 
 int main ( int argc, char *argv[] )
 {
-    //Init(argc, argv);
-     NeuralNet* Jimmy = JnInitJn();
 
+    NeuralNet* NN = NnGetXorToXorNn(10000);
+    NnBigPrint(NN);
 
-    mPrintCompact(Jimmy->l0, "INPUT");
+    /* 
+    lrnInitNeuralNet("ascii6.bmp", "save.txt");
 
-    mPrintCompact(Jimmy->out, "OUTPUT");
-    printf("%f\n", NnGetError(Jimmy));
-
-    //JnLearn(Jimmy, 1000);
-
-    printf("%f\n", NnGetError(Jimmy));
-
+    lrnStartLearning("ascii6.bmp", "save.txt", 10);
+    */
   /*
   Mat *m = learningNN("ascii2.bmp");
   int i = 0;
 =======
 >>>>>>> 85d998541630efdc1a0c3b51f205d5c1ee810f90
   
-  /*
+ 
   Mat *m = learningNNOutput();
   int h = 0;
   for(int i = 0; i < 24; i++)
@@ -87,7 +81,7 @@ int main ( int argc, char *argv[] )
       List *l = CutAll(bmp);
       struct listB *res = sendList(l,bmp);
 
-	/*while (!is_emptyB(res))
+	while (!is_emptyB(res))
 	{
 		printBitmap(res->bmp);
 		res = res->next;

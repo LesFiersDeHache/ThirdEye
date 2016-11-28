@@ -39,6 +39,7 @@ void NnFree(NeuralNet* NN);
 
 void NnLearn(NeuralNet* NN);
 
+NeuralNet* NnGetXorToXorNn(size_t loop);
 NeuralNet* NnGetXorNn(size_t loop);
 
 int NnGetXorOutput(Mat* w0, Mat* w1, int input0, int input1);
@@ -46,6 +47,8 @@ int NnGetXorOutput(Mat* w0, Mat* w1, int input0, int input1);
 //void NnPrint(NeuralNet* NN);
 
 void NnPrettyPrint(NeuralNet* NN);
+
+void NnBigPrint(NeuralNet* NN);
 
 float NnGetError(NeuralNet* NN);
 #endif
