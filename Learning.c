@@ -53,7 +53,7 @@ void lrnStartLearning(char* train_path, char* nn_path, int loops) {
         
         // Print current error 
         warnx("Learning n.%d completed.", l);
-        warnx("Error : %f", NnGetError(NN));
+        warnx("Error kek : %f", NnGetError(NN));
     }
 
     NnFree(NN);

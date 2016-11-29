@@ -22,7 +22,7 @@
 int main ( int argc, char *argv[] )
 {
 
-    NeuralNet* NN = NnGetXorToXorNn(10000);
+    NeuralNet* NN = NnGetXorToXorNn(500000);
     NnBigPrint(NN);
 
     /* 
