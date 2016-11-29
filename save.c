@@ -43,7 +43,7 @@ void NnSave(Mat* W0, Mat* W1, Mat* B0, Mat* B1, char* path)
                 {
                         for (unsigned int x = 0; x < W1->xl; ++x)
                         {       
-                                char tab[9];
+                                char tab[11];
                                 floatToChar(mGet(W1,x,y),tab);
                                 fputs(tab,folder);
                                 fputc('\0',folder);
@@ -56,7 +56,7 @@ void NnSave(Mat* W0, Mat* W1, Mat* B0, Mat* B1, char* path)
                 {
                         for (unsigned int x = 0; x < B0->xl; ++x)
                         {       
-                                char tab[9];
+                                char tab[11];
                                 floatToChar(mGet(B0,x,y),tab);
                                 fputs(tab,folder);
                                 fputc('\0',folder);
@@ -70,7 +70,7 @@ void NnSave(Mat* W0, Mat* W1, Mat* B0, Mat* B1, char* path)
                 {
                         for (unsigned int x = 0; x < B1->xl; ++x)
                         {
-                                char tab[9];
+                                char tab[11];
                                 floatToChar(mGet(B1,x,y),tab);
                                 fputs(tab,folder);
                                fputc('\0',folder);
@@ -117,7 +117,7 @@ void NnSave(Mat* W0, Mat* W1, Mat* B0, Mat* B1, char* path)
 
 static int sizeMax(Mat* M)
 {
-	return (M->yl * M->xl) * 2 * 13;
+	return (M->yl * M->xl) * 11;
 }
 
 
@@ -134,12 +134,13 @@ void NnLoad(Mat* W0, Mat* W1, Mat* B0, Mat* B1, char* path)
 		printf("WEIGHTS AND BIAISES LOADING PROGRAM STARTED\n");
 		printf("%s FOLDER OPENNED\n",path);
 		//Beginning the read
-		char line[10000];
+		size_t len = sizeMax(W0);
+		char *line = malloc(sizeof (char) * len);
 		char current[13];
 		int i = 0;
 		int count = 0;
-		fgets(line, sizeMax(W0), folder);
-		printf("LOADING OF W0 MATRIX\n");
+		fgets(line, len, folder);
+		warnx("LOADING OF W0 MATRIX\n");
 		
 		for (unsigned int y = 0; y < W0->yl; ++y)             //W0
 		{
@@ -159,7 +160,14 @@ void NnLoad(Mat* W0, Mat* W1, Mat* B0, Mat* B1, char* path)
 		}
 		count = 0;
 		printf("MATRIX W0 LOADED\n");
-              fgets(line, sizeMax(W1), folder);
+
+
+		free(line);
+		len = sizeMax(W1);
+		line = malloc(sizeof (char) * len);
+
+
+              fgets(line, len, folder);
               printf("LOADING OF W1 MATRIX\n");
               for (unsigned int y = 0; y < W1->yl; ++y)             //W1
                {
@@ -179,7 +187,13 @@ void NnLoad(Mat* W0, Mat* W1, Mat* B0, Mat* B1, char* path)
                 }
 		count = 0;
 		printf("MATRIX W1 LOADED\n");
-		fgets(line,sizeMax(B0),folder);
+
+
+                free(line);
+                len = sizeMax(B0);
+                line = malloc(sizeof (char) * len);
+
+		fgets(line,len,folder);
                 printf("LOADING OF B0 MATRIX\n");
 
                 for (unsigned int y = 0; y < B0->yl; ++y)         //B0
@@ -200,7 +214,13 @@ void NnLoad(Mat* W0, Mat* W1, Mat* B0, Mat* B1, char* path)
                 }
 		count = 0;
                 printf("MATRIX B0 LOADED\n");
-		fgets(line,sizeMax(B1),folder);
+
+
+                free(line);
+                len = sizeMax(B1);
+                line = malloc(sizeof (char) * len);
+
+		fgets(line,len,folder);
                 printf("LOADING OF B1 MATRIX\n");
                 for (unsigned int y = 0; y < B1->yl; ++y)     //B1
                 {
