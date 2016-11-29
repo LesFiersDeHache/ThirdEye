@@ -343,13 +343,13 @@ static void matToDiag(Mat* M) {
 
 NeuralNet* NnGetXorToXorNn( size_t loop ) {
 
-    Mat* Input = mNewFill(100, 100, 0.0);
-    Mat* Output = mNewFill(100, 100, 0.0);
+    Mat* Input = mNewFill(50, 50, 0.0);
+    Mat* Output = mNewFill(50, 50, 0.0);
 
-    matToAlt(Input);
+    matToDiag(Input);
     matToDiag(Output);
 
-    NeuralNet* NN = NnInit(Input, Output, 10, 100);
+    NeuralNet* NN = NnInit(Input, Output, 10, 50);
 
     for ( size_t l = 0 ; l < loop ; ++l ) {
 
@@ -539,6 +539,7 @@ void NnPrettyPrint(NeuralNet* NN) {
 
 void NnBigPrint(NeuralNet* NN) {
 
+    mPrintCompact(NN->l0, "INPUT");
     mPrintCompact(NN->w0to1, "W0TO1");
     mPrintCompact(NN->w1to2, "W1TO2");
     mPrintCompact(NN->l2, "L2");
