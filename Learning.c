@@ -8,7 +8,7 @@
 # include "loadLearningImage.h"
 
 #define NB_OF_CHAR 94
-#define NB_NEURONS_L1 30
+#define NB_NEURONS_L1 10
 
 static void lrnSaveNeuralNet(NeuralNet* NN, char* path);
 
@@ -21,6 +21,7 @@ void lrnStartLearning(char* train_path, char* nn_path, int loops) {
     warnx("####################");
     warnx("# LEARNING STARTED #");
     warnx("####################");
+
     // Init Input/Output
     Mat* Input = mNewFill(NB_OF_CHAR, 24*24, 0.0);
     Mat* Output = mNewFill(NB_OF_CHAR, NB_OF_CHAR, 0.0);
@@ -43,19 +44,21 @@ void lrnStartLearning(char* train_path, char* nn_path, int loops) {
     // Begin learning
     for ( int l = 0 ; l < loops ; ++l ) {
 
-        warnx("Learning n.%d just began.", l);
-
         // Learn
         NnLearn(NN);
 
         // Save NeuralNet
-        lrnSaveNeuralNet(NN, nn_path);
-        
-        // Print current error 
-        warnx("Learning n.%d completed.", l);
-        warnx("Error kek : %f", NnGetError(NN));
+        if (l % 1000 == 0) {
+            
+            float per = ((float)l / (float)loops) * 100.0;
+            warnx("%f percent > Error : %.15f", per, NnGetError(NN));
+            lrnSaveNeuralNet(NN, nn_path);            
+        }
     }
 
+    lrnSaveNeuralNet(NN, nn_path);
+
+    NnBigPrint(NN);
     NnFree(NN);
 }
 

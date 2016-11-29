@@ -22,9 +22,10 @@
 int main ( int argc, char *argv[] )
 {
 
-    lrnStartLearning("ascii6.bmp", "save.txt", 1000);
-    //NeuralNet* NN = NnGetXorToXorNn(500000);
-    //NnBigPrint(NN);
+    //lrnInitNeuralNet("ascii6.bmp", "save.txt");
+    //lrnStartLearning("ascii6.bmp", "save.txt", 100000);
+    NeuralNet* NN = NnGetXorToXorNn(50000);
+    NnBigPrint(NN);
 
     /* 
     lrnInitNeuralNet("ascii6.bmp", "save.txt");
