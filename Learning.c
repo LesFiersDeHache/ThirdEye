@@ -49,7 +49,7 @@ void lrnStartLearning(char* train_path, char* nn_path, int loops) {
         NnLearn(NN);
 
         // Save NeuralNet
-        //lrnSaveNeuralNet(NN, nn_path);
+        lrnSaveNeuralNet(NN, nn_path);
         
         // Print current error 
         warnx("Learning n.%d completed.", l);
