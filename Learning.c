@@ -47,17 +47,6 @@ void lrnStartLearning(char* train_path, char* nn_path, int loops) {
         // Learn
         NnLearn(NN);
 
-        // Save NeuralNet
-<<<<<<< HEAD
-        lrnSaveNeuralNet(NN, nn_path);
-        
-        // Print current error 
-        warnx("Learning n.%d completed.", l);
-        warnx("Error : %f", NnGetError(NN));
-    }
-
-    lrnSaveNeuralNet(NN, nn_path);
-=======
         if (l % 1000 == 0) {
             
             float per = ((float)l / (float)loops) * 100.0;
@@ -67,8 +56,6 @@ void lrnStartLearning(char* train_path, char* nn_path, int loops) {
     }
 
     lrnSaveNeuralNet(NN, nn_path);
-
->>>>>>> a600222d10264eaeaae97bcf2e130a9091528ab6
     NnBigPrint(NN);
     NnFree(NN);
 }
