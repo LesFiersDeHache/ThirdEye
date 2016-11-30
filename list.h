@@ -65,7 +65,7 @@ int get_coord(int index, List* list);
 //
 // return : the n-th list
 List* get_n(int index, List* list);
-
+int cmpList(List *a,List *b);
 List* Merge(List* L1, List* L2);
 
 void freeList(List* l);

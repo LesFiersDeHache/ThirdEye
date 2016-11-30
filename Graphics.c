@@ -51,30 +51,17 @@ static void openDialog(GtkWidget *button,gpointer *window){
 	gtk_widget_destroy(dialog);
     if(s!= NULL){
         //SHOWING RAW IMAGE
-        display_image(load_image(s));
+        //display_image(load_image(s));
         //display Binarize Image
         Bitmap B =  LoadToBitmap(s);
-        display_image(BitmapToSurface(&B));
-        //DISPLAY CHAR CutAll
-        List *L = CutAll(&B);
-	//Bitmap b2 = DrawLines(&B,L);
-	
-        //display_image(BitmapToSurface(&b2));
-	warnx("DONE");
-	
+        //display_image(BitmapToSurface(&B));
+        DoAll(&B);
+        //CutAll(&B);
         gtk_widget_set_sensitive(button2,TRUE);
         gtk_widget_set_sensitive(button3,TRUE);
         gtk_widget_set_sensitive(button4,FALSE);
         SDL_Quit();
-	struct listB *res = sendList(L,&B);
-	int i=0;
-	while (!is_emptyB(res)&&i<20)
-	{
-		printBitmap(res->bmp);
-		printf("\n");
-		res = res->next;
-		i++;
-		}
+	//struct listB *res = sendList(L,&B);
     }
 
 	

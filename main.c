@@ -25,11 +25,20 @@ int main ( int argc, char *argv[] )
     NeuralNet* NN = NnGetXorToXorNn(0);
     NnBigPrint(NN);
 
+/*
     //lrnSaveNeuralNet(NN, "save.txt");
+    //lrnInitNeuralNet("ascii6.bmp", "save.txt");
+    //lrnStartLearning("ascii6.bmp", "save.txt", 100000);
+    //NeuralNet* NN = NnGetXorToXorNn(50000);
+    //NnBigPrint(NN);
+    Init(argc,argv);
+    /* 
+    lrnInitNeuralNet("ascii6.bmp", "save.txt");
+>>>>>>> a600222d10264eaeaae97bcf2e130a9091528ab6
 
     //lrnLoadNeuralNet(NN2, "save.txt");
      
-
+*/
     
     
   /*
@@ -58,24 +67,24 @@ int main ( int argc, char *argv[] )
   
   
   // /afs/cri.epita.net/user/b/be/benete_p/u/projet/ThirdEye/Archives/asciitable.bmp
-	/*Mat* W0 = mNewFill(10,10,-50.45698099);
-	Mat* W1 = mNewRand(15,15,2,-1);
-	Mat* B0 = mNewRand(5,5,3,5);
-	Mat* B1 = mNewRand(10,10,3,-2);
+	/*Mat* W0 = mNewFill(5,1,6.91919191562165);
+	Mat* W1 = mNewRand(1,5,2,-1);
+	Mat* B0 = mNewRand(5,1,3,5);
+	Mat* B1 = mNewRand(5,1,3,-2);
 	
 	NnSave(W0,W1,B0,B1,"save.txt");
 
-	W0 = mNewFill(10,10,0);
-        W1 = mNewFill(15,15,0);
-        B0 = mNewFill(5,5,0);
-        B1 = mNewFill(10,10,0);
+	W0 = mNewFill(5,1,0);
+        W1 = mNewFill(5,1,0);
+        B0 = mNewFill(5,1,0);
+        B1 = mNewFill(5,1,0);
 
 	NnLoad(W0,W1,B0,B1,"save.txt");
 	
-	mPrintExt(W0, "W0 MAT");
-        mPrintExt(W1, "W1 MAT");
-        mPrintExt(B0, "B0 MAT");
-        mPrintExt(B1, "B1 MAT");
+	//mPrintExt(W0, "W0 MAT");
+       // mPrintExt(W1, "W1 MAT");
+        //mPrintExt(B0, "B0 MAT");
+        //mPrintExt(B1, "B1 MAT");
 	*/
 
   /* Bitmap k = LoadToBitmap("wow.bmp");
