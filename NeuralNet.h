@@ -44,7 +44,7 @@ NeuralNet* NnGetXorNn(size_t loop);
 
 int NnGetXorOutput(Mat* w0, Mat* w1, int input0, int input1);
 
-//void NnPrint(NeuralNet* NN);
+void NnPrint(NeuralNet* NN);
 
 void NnPrettyPrint(NeuralNet* NN);
 

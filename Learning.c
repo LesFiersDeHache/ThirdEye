@@ -8,7 +8,7 @@
 # include "loadLearningImage.h"
 
 #define NB_OF_CHAR 94
-#define NB_NEURONS_L1 30
+#define NB_NEURONS_L1 3
 
 static void lrnSaveNeuralNet(NeuralNet* NN, char* path);
 
@@ -34,7 +34,7 @@ void lrnStartLearning(char* train_path, char* nn_path, int loops) {
     mFree(Output);
 
     // Load weights and bias
-    //lrnLoadNeuralNet(NN, nn_path);
+    lrnLoadNeuralNet(NN, nn_path);
 
     warnx("Let's start the leraning !");
 
@@ -49,13 +49,15 @@ void lrnStartLearning(char* train_path, char* nn_path, int loops) {
         NnLearn(NN);
 
         // Save NeuralNet
-        //lrnSaveNeuralNet(NN, nn_path);
+        lrnSaveNeuralNet(NN, nn_path);
         
         // Print current error 
         warnx("Learning n.%d completed.", l);
         warnx("Error : %f", NnGetError(NN));
     }
 
+    lrnSaveNeuralNet(NN, nn_path);
+    NnBigPrint(NN);
     NnFree(NN);
 }
 
@@ -70,7 +72,9 @@ void lrnInitNeuralNet(char* train_path, char* nn_path) {
 
     mPrintDim(NN->w0to1, "Debug : lrnInitNN : W0TO1");
     mPrintDim(NN->w1to2, "Debug : lrnInitNN : W1TO2");
-    //lrnSaveNeuralNet(NN, nn_path);
+    lrnSaveNeuralNet(NN, nn_path);
+
+    NnBigPrint(NN);
 }
 
 static void lrnSaveNeuralNet(NeuralNet* NN, char* path) {
