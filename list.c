@@ -81,6 +81,18 @@ int get_coord(int index, List* list) {
     }
 }
 
+int cmpList(List *a,List *b){
+    int boo = 1;
+    while(is_empty(a)&&boo){
+        if(a->a == b->a && a->b == b->b && a->c == b->c && a->d == b->d){
+            a++;
+            b++;
+        }
+        else boo = 0;
+    }
+    return boo || a->next == b->next;
+}
+
 List* get_n(int index, List* list) {
     while (list->is_end == 0 && index > 0) {
         index--;
@@ -96,6 +108,9 @@ List* Merge(List* L1, List* L2)
 {
 	List* new_list = empty_list();
 	new_list = L1;
+    if(new_list->next== NULL){
+        return L2;
+    }
 	while (new_list->next->is_end == 0) {
 		new_list = new_list -> next;
 	}

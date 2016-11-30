@@ -299,7 +299,59 @@ Bitmap DrawLines(Bitmap *bmp,List *L)
     }
   return k;
 }
+static char *givemechar(int *tab, Bitmap *b){
+	return 'A';
+}
 
+char* DoAll(Bitmap *b){
+	char *s ;
+	int tab[4] = {0, b->width - 1, 0, b->height-1}; //IMG SIZE
+  int Psize = 0;
+	List *L = empty_list();
+  L = cutblockY(tab,b,&Psize);
+	List *L2 = empty_list();
+  int P[4] = {L->a,L->b,L->c,L->d};
+  L2 = cutblockX(P,b,&Psize);
+	FILE *f = fopen("OutPut","w");
+	print_list(L);
+
+	List * L3 = empty_list();
+	List * L4 = empty_list();
+	while(!is_empty(L2)){
+		// GETTING THE LINES
+		int T[4] = {L2->a,L2->b,L2->c,L2->d};
+		L3 = Cutlines(T,b);
+		L2 = L2 -> next;
+		
+	
+		while(!is_empty(L3)){
+			//Getting the chars
+			int T[4] = {L3->a,L3->b,L3->c,L3->d};
+			List *l = Cutchars(T,b,Psize);
+			RafinedChar(l,b);
+			L3 = L3->next;
+			//END OF GETTING THE CHARS
+			//Adding char
+			while(!is_empty(l)){
+				int T[4] = {L4->a,L4->b,L4->c,L4->d};
+				char *s = givemechar(T,b);
+				fprintf(f,"A");
+				l = l->next;
+			}
+			warnx("done adding chars");
+
+			fprintf(f,"\n");
+		}
+		//END OF GETTING THE LINES
+
+
+		fprintf(f,"\n\n ");
+	}
+	fclose(f);
+
+
+	return s;
+}
 
 List* CutAll(Bitmap *b)
 {
@@ -338,13 +390,10 @@ List* CutAll(Bitmap *b)
   freeList(L);
 
   List *L3 = empty_list();
-  int Q[4] = {L2->a,L2->b,L2->c,L2->d};
-  L3 = Cutlines(Q,b);
-  L2 = L2->next;
+
   while(!is_empty(L2))
   {
 	int T[4] = {L2->a,L2->b,L2->c,L2->d};
-
 	L3 = Merge(L3,Cutlines(T,b));
 	L2 = L2 -> next;
   }
