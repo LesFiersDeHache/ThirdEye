@@ -22,8 +22,8 @@
 int main ( int argc, char *argv[] )
 {
 
-    NeuralNet* NN = NnGetXorToXorNn(0);
-    NnBigPrint(NN);
+    //lrnInitNeuralNet("ascii6.bmp", "save.txt");
+    lrnStartLearning("ascii6.bmp", "save.txt", 0);
 
 /*
     //lrnSaveNeuralNet(NN, "save.txt");
