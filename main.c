@@ -23,7 +23,7 @@ int main ( int argc, char *argv[] )
 {
 
     //lrnInitNeuralNet("ascii6.bmp", "save.txt");
-    lrnStartLearning("ascii6.bmp", "save.txt", 0);
+    lrnStartLearning("ascii6.bmp", "save.txt", 10000);
 
 /*
     //lrnSaveNeuralNet(NN, "save.txt");
