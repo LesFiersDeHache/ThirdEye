@@ -14,4 +14,6 @@ void lrnStartLearning(char* train_path, char* nn_path, int loops);
 
 void lrnInitNeuralNet(char* train_path, char* nn_path);
 
+char* getCharFromMat(Mat* I);
+
 #endif

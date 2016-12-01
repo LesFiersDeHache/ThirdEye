@@ -23,7 +23,11 @@ int main ( int argc, char *argv[] )
 {
 
     //lrnInitNeuralNet("ascii6.bmp", "save.txt");
-    lrnStartLearning("ascii6.bmp", "save.txt", 10000);
+
+    Mat* M = mNewFill(94, 24*24, 0.0);
+    char* s = getCharFromMat(M);
+    printf("%s", s);
+    //lrnStartLearning("ascii6.bmp", "save.txt", 10000);
 
 /*
     //lrnSaveNeuralNet(NN, "save.txt");

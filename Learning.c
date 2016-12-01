@@ -76,6 +76,75 @@ void lrnInitNeuralNet(char* train_path, char* nn_path) {
     NnBigPrint(NN);
 }
 
+char* getCharFromMat(Mat* I) {
+
+    char* result = malloc(sizeof(char) * I->xl);
+
+    Mat* P_Out = mNewFill(I->xl, 94, 0.0);
+
+    warnx("getCharFromMat : 1");
+
+    //lrnLoadTrainingMatrix(I, P_Out, "ascii6.bmp");
+
+    warnx("getCharFromMat : 2");
+
+    NeuralNet* NN = NnInit(I, P_Out, NB_NEURONS_L1, I->xl);
+
+    warnx("getCharFromMat : 2");
+
+    NnLoad(NN->w0to1, NN->w1to2, NN->b1, NN->b2, "save.txt");
+
+    warnx("getCharFromMat : 3");
+
+    NnFeedForward(NN);
+
+    warnx("getCharFromMat : 4");
+
+    Mat* R = NN->l2;
+    mPrintCompact(R, "R");
+
+    for ( size_t x = 0 ; x < R->xl ; ++x ) {
+        
+        size_t i = 0;
+
+        while (i < R->yl && mGet(R, x, i) < 0.7) {
+
+            i++;
+        }
+
+        if (i >= R->yl || i == 1) {
+
+            result[i] = ' ';
+        }
+        else if (i == 0) {
+
+            result[i] = '!';
+        }
+        else {
+
+            result[i] = 33 + i;
+        }
+
+        warnx("getCharFromMat : %ld = %c", i, result[i]);
+    }
+
+    warnx("getCharFromMat : e");
+  
+    NnFree(NN);
+  
+    warnx("getCharFromMat : 1.e");
+
+    warnx("getCharFromMat : 2.e");
+
+    mFree(P_Out);
+    
+    warnx("getCharFromMat : 3.e");
+
+    return result;
+}
+
+// #########################################################
+
 static void lrnSaveNeuralNet(NeuralNet* NN, char* path) {
 
     warnx("Saving Neural Network...");
