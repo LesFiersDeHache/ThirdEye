@@ -11,4 +11,8 @@ Mat* learningNNOutput();
 
 Mat* learningNN(char *path);
 
+Mat* bitmapToMat(Bitmap *b);
+
+Mat* listbmpToMat(struct listB *res);
+
 #endif

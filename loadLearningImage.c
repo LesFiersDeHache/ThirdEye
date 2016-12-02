@@ -53,3 +53,34 @@ Mat* learningNN(char *path) // Create the Matrix associated to the image.
     }
   return m;
 }
+
+
+		      
+Mat* listbmpToMat(struct listB *res) // Create the Matrix associated to the image.
+{   
+  int len = 0;
+  struct listB *print = res;
+  while (!is_emptyB(print))
+  {
+      //printBitmap(print->bmp);
+    print = print->next;
+    len++;	   
+  }
+  Mat *m = mNewFill(len,24*24,0);
+  Bitmap *b = res->bmp;  
+  for (int i = 0; i < len; i++)
+    {
+      //printBitmap(res->bmp);
+      for (int j = 0; j < 24*24; j++)
+	{	 
+	  b = res->bmp;		       
+	  if (b->p_bitmap[j] == 1)
+	    {	      
+	      mSet(m,i,j,1);
+	    }	  
+	}
+      res = res->next;
+    }
+  return m;
+}	      
+	      
