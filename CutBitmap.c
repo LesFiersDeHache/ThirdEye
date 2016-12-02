@@ -67,7 +67,7 @@ List* cutblockY(int *tab, Bitmap *b, List ** Psize)
 		isStillBlack = 0;
 	}
 	//*PoliceSize= policeSize;
-	warnx("Psize%d",policeSize);
+	//warnx("Psize%d",policeSize);
 	//print_list(res);
         return res;
 };
@@ -76,7 +76,7 @@ List* cutblockY(int *tab, Bitmap *b, List ** Psize)
 
 List* cutblockX(int* tab, Bitmap *b, int policeSize)
 {
-	warnx("In Cut X");
+	//warnx("In Cut X");
   int Threshold = 1.2* policeSize;
 	int white = 0;
 	unsigned short xMinB = tab[0];
@@ -84,8 +84,8 @@ List* cutblockX(int* tab, Bitmap *b, int policeSize)
 	unsigned short isStillBlack = 0;
 	unsigned short firstblack = 1;
 
-	warnx("lel%d",tab[0]);
-	warnx("%d",tab[1]);
+	//warnx("lel%d",tab[0]);
+	//warnx("%d",tab[1]);
 	List* res = empty_list();
 	for (int x = tab[0]; x<= tab[1] ;x++)
 	{
@@ -128,7 +128,7 @@ List* cutblockX(int* tab, Bitmap *b, int policeSize)
 	}
         //warnx("poooii%p\n",Poi->next->next);
 	//print_list(res);
-	warnx("End of cutx");
+	//warnx("End of cutx");
 	return res;
 };
 
@@ -310,8 +310,9 @@ Bitmap DrawLines(Bitmap *bmp,List *L)
     }
   return k;
 }
-static char *givemechar(int *tab, Bitmap *b){
-	return 'A';
+char *givemechar(List* coord, Bitmap *b){
+	//PLACE HOLDER
+	return "AAAAA"; // DONT ADD THE /n I ADD IT IN THE DoALL fun
 }
 
 char* DoAll(Bitmap *b){
@@ -323,7 +324,6 @@ char* DoAll(Bitmap *b){
 	//warnx("psize list");
 	List* PsizeL = *PsizeL2;
 	//print_list(PsizeL); SURTOUT NE PAS PRINT CETTE PUTAIN DE LISTE
-	warnx("whatt");
 	if(is_empty(L)){
 		return NULL;
 	}
@@ -334,10 +334,10 @@ char* DoAll(Bitmap *b){
 	{
 		int Psize = PsizeL->a;
 		PsizeL = PsizeL->next;
-	List *L2 = empty_list();
-  int P[4] = {L->a,L->b,L->c,L->d};
-  L2 = cutblockX(P,b,Psize);
-	print_list(L2);
+		List *L2 = empty_list();
+  	int P[4] = {L->a,L->b,L->c,L->d};
+  	L2 = cutblockX(P,b,Psize);
+		//print_list(L2);
 	
 	L = L->next;
 	List * L3 = empty_list();
@@ -357,15 +357,9 @@ char* DoAll(Bitmap *b){
 			L3 = L3->next;
 			//END OF GETTING THE CHARS
 			//Adding char
-			while(!is_empty(l)){
-				int T[4] = {L4->a,L4->b,L4->c,L4->d};
-				char *s = givemechar(T,b);
-				fprintf(f,"A");
-				l = l->next;
-			}
+			char *s = givemechar(L3,b);
+			fprintf(f,"%s\n",s);
 			//warnx("done adding chars");
-
-			fprintf(f,"\n");
 		}
 		//END OF GETTING THE LINES
 

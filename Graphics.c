@@ -50,6 +50,8 @@ static void openDialog(GtkWidget *button,gpointer *window){
 	}
 	gtk_widget_destroy(dialog);
     if(s!= NULL){
+        // HERE YOU DO WHAT YOU WANT AFTER THE FILE EXPLORER CLOSE
+        // YOU SHOULD LOAD THE IMAGE 
         //SHOWING RAW IMAGE
         //display_image(load_image(s));
         //display Binarize Image
@@ -66,11 +68,10 @@ static void openDialog(GtkWidget *button,gpointer *window){
 
 	
 }
-void ReadBut(){
 
-}
 
 void ChangeTxt(char *s){
+    // Call This func to Change the Text in THe texview.
 	GtkTextBuffer *buffer = gtk_text_buffer_new (NULL);
     const gchar *t = s;
     GtkTextIter iter;
@@ -82,12 +83,13 @@ void ChangeTxt(char *s){
 // CALLED ON CLICK
 void LoadNeuralNetwork(){
 	g_print("Weight and bias Loaded\n");
-    g_print("Neural Network Init");
+    g_print("Neural Network Init\n");
 
     //if success
     gtk_widget_set_sensitive(button4,TRUE);
 }
 void Read(){
+    g_print("ReadBut LOL\n");
 
 }
 void SaveText(){
