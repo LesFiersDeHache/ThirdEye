@@ -4,9 +4,9 @@
 #ifndef ONLYONCE_CUTBITMAP
 #define ONLYONCE_CUTBITMAP
 
-List* cutblockY(int* tab, Bitmap *b, int* policeSize);
+List* cutblockY(int* tab, Bitmap *b, List** Psize);
 
-List* cutblockX(int* tab, Bitmap *b, int* policeSize);
+List* cutblockX(int* tab, Bitmap *b, int policeSize);
 
 List* Cutlines(int* tab,Bitmap* b);
 

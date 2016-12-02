@@ -142,8 +142,8 @@ Bitmap LoadToBitmap(char *path)
   {
     for (int j = 0; j < height; j++)
       {
-	Uint32 pixel = getpixelSurface(surface,i,j);
-	SDL_GetRGB(pixel, surface->format, &r, &g, &b);
+	      Uint32 pixel = getpixelSurface(surface,i,j);
+      	SDL_GetRGB(pixel, surface->format, &r, &g, &b);
        	float lum = (0.3*r + 0.59*g + 0.11*b);
 	if (lum > 120)
 	  {
