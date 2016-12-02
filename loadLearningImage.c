@@ -57,17 +57,14 @@ Mat* learningNN(char *path) // Create the Matrix associated to the image.
 Mat* bitmapToMat(Bitmap *b) // for one Char
 {                          
  
-  Mat *m = mNewFill(b->height,b->width,0);  
-  for (int i = 0; i < b->height; i++)
+  Mat *m = mNewFill(1,b->width * b->height,0);  
+  for (int i = 0; i < b->height * b->width; i++)
     {
-      //printBitmap(res->bmp);
-      for (int j = 0; j < b->width; j++)
-	{		       
-	  if (b->p_bitmap[(i * b->width) + j] == 1)
+      if (b->p_bitmap[(i] == 1)
 	    {	      
-	      mSet(m,i,j,1);
-	    }	  
-	}   
+	      mSet(m,0,i,1);
+	    }	
+      //printBitmap(res->bmp);      
     }
   return m;
 }
