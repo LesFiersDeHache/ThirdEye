@@ -11,4 +11,6 @@ Mat* learningNNOutput();
 
 Mat* learningNN(char *path);
 
+Mat* bitmapToMat(Bitmap *b);
+
 #endif
