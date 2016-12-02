@@ -53,3 +53,22 @@ Mat* learningNN(char *path) // Create the Matrix associated to the image.
     }
   return m;
 }
+
+Mat* learningNN(Bitmap *b) // Create the Matrix associated to the image.
+{                          // It's the Path of the image (ascii6.bmp)
+ 
+  Mat *m = mNewFill(b->height,b->width,0);  
+  for (int i = 0; i < b->height; i++)
+    {
+      //printBitmap(res->bmp);
+      for (int j = 0; j < b->width; j++)
+	{		       
+	  if (b->p_bitmap[(i * b->width) + j] == 1)
+	    {	      
+	      mSet(m,i,j,1);
+	    }	  
+	}   
+    }
+  return m;
+}
+
