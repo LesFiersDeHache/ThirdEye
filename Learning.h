@@ -7,12 +7,13 @@
 #include "NeuralNet.h"
 #include "loadLearningImage.h"
 
-#ifndef ONLYONCE_LEARNING
-#define ONLYONCE_LEARNING
+#ifndef ONLYONCE_LEARNING_X
+#define ONLYONCE_LEARNING_X
 
 void lrnStartLearning(char* train_path, char* nn_path, int loops);
 
 void lrnInitNeuralNet(char* train_path, char* nn_path);
 
+char* getCharFromMat(Mat* I);
 
 #endif

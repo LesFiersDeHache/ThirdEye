@@ -275,6 +275,25 @@ void mCopyAinB(Mat* A, Mat*B) {
         }
     }
 }
+
+Mat* mExtractLine(Mat* M, Uint line) {
+
+    if (line >= M->xl) {
+
+        warnx("Matrix : mExtractLine : line >= M->xl");
+        err(1, "Assert not respected");
+    }
+
+    Mat* R = mNewFill(1, M->yl, 0.0);
+
+    for ( Uint y = 0 ; y < M->yl ; ++y ) {
+
+        mSet(R, 0, y, mGet(M, line, y));
+    }
+
+    return R;
+}
+
 /* 
 int main(){
     

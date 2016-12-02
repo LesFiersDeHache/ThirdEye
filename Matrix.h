@@ -147,4 +147,6 @@ Mat* mFree(Mat* M);
 
 void mCopyAinB(Mat* A, Mat* B);
 
+Mat* mExtractLine(Mat* M, Uint line);
+
 #endif

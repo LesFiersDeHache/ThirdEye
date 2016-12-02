@@ -139,7 +139,7 @@ static void set_l2(NeuralNet* NN) {
     mFree(tmp2);
 }
 
-static void NnFeedForward(NeuralNet* NN) {
+void NnFeedForward(NeuralNet* NN) {
 
     set_l1(NN);
 

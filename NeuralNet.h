@@ -39,6 +39,8 @@ void NnFree(NeuralNet* NN);
 
 void NnLearn(NeuralNet* NN);
 
+void NnFeedForward(NeuralNet* NN);
+
 NeuralNet* NnGetXorToXorNn(size_t loop);
 NeuralNet* NnGetXorNn(size_t loop);
 

@@ -23,15 +23,28 @@ int main ( int argc, char *argv[] )
 {
 
     //lrnInitNeuralNet("ascii6.bmp", "save.txt");
+
+    Mat* M = mNewFill(94, 24*24, 0.0);
+    char* s = getCharFromMat(M);
+    printf("%s", s);
+    //lrnStartLearning("ascii6.bmp", "save.txt", 10000);
+
+/*
+    //lrnSaveNeuralNet(NN, "save.txt");
+    //lrnInitNeuralNet("ascii6.bmp", "save.txt");
     //lrnStartLearning("ascii6.bmp", "save.txt", 100000);
     //NeuralNet* NN = NnGetXorToXorNn(50000);
     //NnBigPrint(NN);
     Init(argc,argv);
     /* 
     lrnInitNeuralNet("ascii6.bmp", "save.txt");
+>>>>>>> a600222d10264eaeaae97bcf2e130a9091528ab6
 
-    lrnStartLearning("ascii6.bmp", "save.txt", 10);
-    */
+    //lrnLoadNeuralNet(NN2, "save.txt");
+     
+*/
+    
+    
   /*
   Mat *m = learningNN("ascii2.bmp");
   int i = 0;
