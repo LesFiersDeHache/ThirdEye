@@ -54,23 +54,9 @@ Mat* learningNN(char *path) // Create the Matrix associated to the image.
   return m;
 }
 
-Mat* bitmapToMat(Bitmap *b) // for one Char
-{                          
- 
-  Mat *m = mNewFill(1,b->width * b->height,0);  
-  for (int i = 0; i < b->height * b->width; i++)
-    {
-      if (b->p_bitmap[(i] == 1)
-	    {	      
-	      mSet(m,0,i,1);
-	    }	
-      //printBitmap(res->bmp);      
-    }
-  return m;
-}
 
 		      
-Mat* learningNN(struct listB *res) // Create the Matrix associated to the image.
+Mat* listbmpToMat(struct listB *res) // Create the Matrix associated to the image.
 {   
   int len = 0;
   struct listB *print = res;
