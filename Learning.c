@@ -1,6 +1,8 @@
 # include <stdlib.h>
 # include <err.h>
 # include <assert.h>
+# include <SDL/SDL.h>
+# include <SDL/SDL_image.h>
 
 # include "NeuralNet.h"
 # include "Matrix.h"
@@ -27,7 +29,7 @@ void lrnStartLearning(char* train_path, char* nn_path, int loops) {
     Mat* Output = mNewFill(NB_OF_CHAR, NB_OF_CHAR, 0.0);
 
     warnx("loading matrix");
-    lrnLoadTrainingMatrix(Input, Output, train_path);
+    //lrnLoadTrainingMatrix(Input, Output, train_path);
     
     warnx("init nn");
     // Init NeuralNet
@@ -68,7 +70,7 @@ void lrnInitNeuralNet(char* train_path, char* nn_path) {
     Mat* Output = mNewFill(NB_OF_CHAR, NB_OF_CHAR, 0.0);
 
     warnx("INIT : loading training matrix");
-    lrnLoadTrainingMatrix(Input, Output, train_path);
+    //lrnLoadTrainingMatrix(Input, Output, train_path);
 
     NeuralNet* NN = NnInit(Input, Output, NB_NEURONS_L1, NB_OF_CHAR);
 
@@ -172,6 +174,92 @@ static void lrnLoadNeuralNet(NeuralNet* NN, char* path) {
     warnx("Neural Network Loaded.");
 }
 
+// ####################
+// LOAD IMAGE FOR THE LUCAS BREAKDOWN
+// ####################
+
+/* 
+static void init_sdl(void) {
+
+    if (SDL_Init(SDL_INIT_VIDEO) == -1) {
+
+        errx(1, "Could not init SDL: %s.\n", SDL_GetError());
+    }
+}
+
+static SDL_Surface* load_image(char* path) {
+
+    SDL_Surface* img = IMG_Load(path);
+
+    if (!img) {
+
+        errx(3, "cant load %s: %s", path, IMG_GetError());
+    }
+
+    return img;
+}
+
+static inline Uint8* pixelref(SDL_Surface* surface, unsigned x, unsigned y) {
+
+    int bpp = surface->format->BytesPerPixel;
+    return (Uint8*)surface->pixels + y * surface->pitch + x * bpp;
+}
+
+static Uint32 getpixelSurface(SDL_Surface *surface, unsigned x, unsigned y) {
+
+    Uint8 *p = pixelref(surface, x, y);
+    switch (surface->format->BytesPerPixel) {
+
+        case 1:
+            return *p;
+        case 2:
+            return *(Uint16 *)p;
+        case 3:
+            if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+                return p[0] << 16 | p[1] << 8 | p[2];
+            else
+                return p[0] | p[1] << 8 | p[2] << 16;
+        case 4:
+            return *(Uint32 *)p;
+    }
+
+    return 0;
+}
+
+static loadToMatrix(Mat* M, char *path, unsigned int line) {
+
+    init_sdl();
+    SDL_Surface *surface = load_image(path);
+    Uint8 r, g, b;
+    size_t i = 0;
+    for ( int w = 0 ; w < surface->w ; ++w ) {
+
+        for ( int h = 0 ; h < surface->h ; ++h ) {
+            
+            Uint32 pixel = getpixelSurface(surface, w, h);
+            SDL_GetRGB(pixel, surface->format, &r, &g, &b);
+            float lum = (0.3 * r + 0.59 * g + 0.11 * b);
+
+            if (lum > 120) 
+                mSet(M, line, i, 1.0);
+            else 
+                mSet(M, line, i, 0.0);
+
+            ++i;
+        }
+    }
+}
+
+static void lrnLoadBigTM(Mat* Input, Mat* Output) {
+
+    init_sdl(); 
+         
+
+}
+*/
+
+
+  
 static void lrnLoadTrainingMatrix(Mat* Input, Mat* Output, char* path) {
 
     warnx("Loading Training Matrix...");
