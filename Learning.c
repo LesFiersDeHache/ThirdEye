@@ -26,8 +26,10 @@ void lrnStartLearning(char* train_path, char* nn_path, int loops) {
     Mat* Input = mNewFill(NB_OF_CHAR, 24*24, 0.0);
     Mat* Output = mNewFill(NB_OF_CHAR, NB_OF_CHAR, 0.0);
 
+    warnx("loading matrix");
     lrnLoadTrainingMatrix(Input, Output, train_path);
-
+    
+    warnx("init nn");
     // Init NeuralNet
     NeuralNet* NN = NnInit(Input, Output, NB_NEURONS_L1, NB_OF_CHAR);
 
@@ -65,6 +67,7 @@ void lrnInitNeuralNet(char* train_path, char* nn_path) {
     Mat* Input = mNewFill(NB_OF_CHAR, 24*24, 0.0);
     Mat* Output = mNewFill(NB_OF_CHAR, NB_OF_CHAR, 0.0);
 
+    warnx("INIT : loading training matrix");
     lrnLoadTrainingMatrix(Input, Output, train_path);
 
     NeuralNet* NN = NnInit(Input, Output, NB_NEURONS_L1, NB_OF_CHAR);
@@ -173,8 +176,11 @@ static void lrnLoadTrainingMatrix(Mat* Input, Mat* Output, char* path) {
 
     warnx("Loading Training Matrix...");
 
+    warnx("1");
     Mat* I = learningNN(path);
+    warnx("2");
     Mat* O = learningNNOutput();
+    warnx("end");
 
     mPrintDim(I, "Loaded Input");
     mPrintDim(Input, "NN Input");

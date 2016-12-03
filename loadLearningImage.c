@@ -27,6 +27,7 @@ Mat* learningNNOutput()  // Create the Matrix Output for the learning
 
 Mat* learningNN(char *path) // Create the Matrix associated to the image.
 {                           // It's the Path of the image (ascii6.bmp)
+
   Bitmap k = LoadToBitmap(path); 
   Bitmap * bmp = &k;
   List *l = CutAll(bmp);

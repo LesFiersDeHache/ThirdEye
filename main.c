@@ -22,9 +22,9 @@
 int main ( int argc, char *argv[] )
 {
 
-    NeuralNet* NN = NnGetXorNn(10000);
-    NnPrettyPrint(NN);
 
+    lrnInitNeuralNet("ascii6.bmp", "save.txt");
+    lrnStartLearning("ascii6.bmp", "save.txt", 1000);
     //lrnInitNeuralNet("ascii6.bmp", "save.txt");
 
     //Mat* M = mNewFill(94, 24*24, 0.0);
