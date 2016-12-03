@@ -124,13 +124,16 @@ static void set_l2(NeuralNet* NN) {
 
     // L2 = sigmoid(L1 . W1to2)
     Mat* tmp = mDot(L1, W1to2);
+    mPrintDim(L1, "L1");
+    mPrintDim(W1to2, "W1to2");
+    mPrintDim(tmp, "L1 . W1to2");
     Mat* tmp2 = mAddLineByLine(tmp, B2);
 
     //mPrintExt(tmp, "l1 dot w1to2");
 
     Mat* M2 = mSig(tmp2);
 
-    //mPrintExt(M2, "sig(l1 dot w1to2");
+    mPrintDim(M2, "sig(l1 dot w1to2)");
 
     mCopyAinB(M2, L2);
 
@@ -143,9 +146,11 @@ static void set_l2(NeuralNet* NN) {
 
 void NnFeedForward(NeuralNet* NN) {
 
+    warnx("KEK : 1");
     set_l1(NN);
-
+    warnx("KEK : 2");
     set_l2(NN);
+    warnx("KEK : 3");
 }
 
 static void set_l2_Error(NeuralNet* NN) {

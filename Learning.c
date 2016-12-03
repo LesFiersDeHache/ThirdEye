@@ -97,9 +97,9 @@ char* getCharFromMat(Mat* I) {
 
     warnx("getCharFromMat : 2");
 
-    NeuralNet* NN = NnInit(I, P_Out, NB_NEURONS_L1, I->xl);
+    NeuralNet* NN = NnInit(I, P_Out, NB_NEURONS_L1, 94);
 
-    mPrintDim(NN->l0, "GET CHAR : 2");
+    mPrintDim(NN->w1to2, "GET CHAR : 2");
 
     warnx("getCharFromMat : 2");
 

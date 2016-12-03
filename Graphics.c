@@ -57,8 +57,10 @@ static void openDialog(GtkWidget *button,gpointer *window){
         //display Binarize Image
         Bitmap B =  LoadToBitmap(s);
         //display_image(BitmapToSurface(&B));
-        DoAll(&B);
-        //CutAll(&B);
+        //DoAll(&B);
+        List * K = CutAll(&B);
+	Bitmap Kline = DrawLines(&B,K);
+	display_image(BitmapToSurface(&Kline));
         gtk_widget_set_sensitive(button2,TRUE);
         gtk_widget_set_sensitive(button3,TRUE);
         gtk_widget_set_sensitive(button4,FALSE);
