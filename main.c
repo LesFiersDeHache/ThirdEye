@@ -24,10 +24,11 @@ int main ( int argc, char *argv[] )
 
     //lrnInitNeuralNet("ascii6.bmp", "save.txt");
 
-    Mat* M = mNewFill(94, 24*24, 0.0);
-    char* s = getCharFromMat(M);
-    printf("%s", s);
+    //Mat* M = mNewFill(94, 24*24, 0.0);
+    //char* s = getCharFromMat(M);
+    //printf("%s", s);
     //lrnStartLearning("ascii6.bmp", "save.txt", 10000);
+    
 
 /*
     //lrnSaveNeuralNet(NN, "save.txt");
@@ -67,7 +68,7 @@ int main ( int argc, char *argv[] )
        }      
        }*/
   
-  
+  Init(argc,argv);
   
   // /afs/cri.epita.net/user/b/be/benete_p/u/projet/ThirdEye/Archives/asciitable.bmp
 	/*Mat* W0 = mNewFill(5,1,6.91919191562165);
@@ -90,9 +91,10 @@ int main ( int argc, char *argv[] )
         //mPrintExt(B1, "B1 MAT");
 	*/
 
-  /* Bitmap k = LoadToBitmap("wow.bmp");
-      Bitmap * bmp = &k;
-      List *l = CutAll(bmp);
+      //Bitmap k = LoadToBitmap("Test8x8.bmp");
+      //Bitmap * bmp = &k;
+      //DoAll(bmp);
+      /*List *l = CutAll(bmp);
       struct listB *res = sendList(l,bmp);
 
 	while (!is_emptyB(res))

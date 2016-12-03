@@ -53,6 +53,6 @@ struct listB* MergeB(struct listB* L1, struct listB* L2)
 
 void freeB(struct listB* B)
 {
-    free(LB->bmp);
+    free(B->bmp);
     free(B);
 } 

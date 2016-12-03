@@ -78,9 +78,13 @@ void lrnInitNeuralNet(char* train_path, char* nn_path) {
 
 char* getCharFromMat(Mat* I) {
 
+    mPrintDim(I, "GET CHAR : I");
+
     char* result = malloc(sizeof(char) * I->xl);
 
     Mat* P_Out = mNewFill(I->xl, 94, 0.0);
+
+    mPrintDim(P_Out, "GET CHAR : P_Out");
 
     warnx("getCharFromMat : 1");
 
@@ -89,6 +93,8 @@ char* getCharFromMat(Mat* I) {
     warnx("getCharFromMat : 2");
 
     NeuralNet* NN = NnInit(I, P_Out, NB_NEURONS_L1, I->xl);
+
+    mPrintDim(NN->l0, "GET CHAR : 2");
 
     warnx("getCharFromMat : 2");
 
