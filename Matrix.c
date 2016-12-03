@@ -294,6 +294,21 @@ Mat* mExtractLine(Mat* M, Uint line) {
     return R;
 }
 
+Mat* mAddLineByLine(Mat* M, Mat* M_one_line) {
+
+    Mat* R = mNewFill(M->xl, M->yl, 0.0);
+
+    for ( Uint x = 0 ; x < M->xl ; ++x ) {
+
+        for ( Uint y = 0 ; y < M->yl ; ++y ) {
+
+            mSet(R, x, y, (mGet(M, x, y) + mGet(M_one_line, 0, y)));
+        }
+    }
+
+    return R;
+}
+
 /* 
 int main(){
     

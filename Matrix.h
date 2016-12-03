@@ -149,4 +149,6 @@ void mCopyAinB(Mat* A, Mat* B);
 
 Mat* mExtractLine(Mat* M, Uint line);
 
+Mat* mAddLineByLine(Mat* M, Mat* M_one_line);
+
 #endif
