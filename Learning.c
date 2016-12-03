@@ -28,10 +28,8 @@ void lrnStartLearning(char* train_path, char* nn_path, int loops) {
     Mat* Input = mNewFill(NB_OF_CHAR, 24*24, 0.0);
     Mat* Output = mNewFill(NB_OF_CHAR, NB_OF_CHAR, 0.0);
 
-    warnx("loading matrix");
-    //lrnLoadTrainingMatrix(Input, Output, train_path);
+    lrnLoadTrainingMatrix(Input, Output, train_path);
     
-    warnx("init nn");
     // Init NeuralNet
     NeuralNet* NN = NnInit(Input, Output, NB_NEURONS_L1, NB_OF_CHAR);
 
@@ -54,13 +52,13 @@ void lrnStartLearning(char* train_path, char* nn_path, int loops) {
         if (l % 1000 == 0) {
             
             float per = ((float)l / (float)loops) * 100.0;
-            warnx("%f percent > Error : %.15f", per, NnGetError(NN));
+            warnx("%f percent > Error : %.50f", per, NnGetError(NN));
             lrnSaveNeuralNet(NN, nn_path);            
         }
     }
 
     lrnSaveNeuralNet(NN, nn_path);
-    NnBigPrint(NN);
+    //NnBigPrint(NN);
     NnFree(NN);
 }
 
@@ -70,7 +68,7 @@ void lrnInitNeuralNet(char* train_path, char* nn_path) {
     Mat* Output = mNewFill(NB_OF_CHAR, NB_OF_CHAR, 0.0);
 
     warnx("INIT : loading training matrix");
-    //lrnLoadTrainingMatrix(Input, Output, train_path);
+    lrnLoadTrainingMatrix(Input, Output, train_path);
 
     NeuralNet* NN = NnInit(Input, Output, NB_NEURONS_L1, NB_OF_CHAR);
 
@@ -83,37 +81,21 @@ void lrnInitNeuralNet(char* train_path, char* nn_path) {
 
 char* getCharFromMat(Mat* I) {
 
-    mPrintDim(I, "GET CHAR : I");
-
     char* result = malloc(sizeof(char) * I->xl);
 
     Mat* P_Out = mNewFill(I->xl, 94, 0.0);
 
-    mPrintDim(P_Out, "GET CHAR : P_Out");
-
-    warnx("getCharFromMat : 1");
-
-    //lrnLoadTrainingMatrix(I, P_Out, "ascii6.bmp");
-
-    warnx("getCharFromMat : 2");
+    lrnLoadTrainingMatrix(I, P_Out, "ascii6.bmp");
 
     NeuralNet* NN = NnInit(I, P_Out, NB_NEURONS_L1, 94);
 
-    mPrintDim(NN->w1to2, "GET CHAR : 2");
-
-    warnx("getCharFromMat : 2");
-
     NnLoad(NN->w0to1, NN->w1to2, NN->b1, NN->b2, "save.txt");
-
-    warnx("getCharFromMat : 3");
 
     NnFeedForward(NN);
 
-    warnx("getCharFromMat : 4");
-
     Mat* R = NN->l2;
-    mPrintCompact(R, "R");
 
+    mPrintCompact(R, "R");
     for ( size_t x = 0 ; x < R->xl ; ++x ) {
         
         size_t i = 0;
@@ -125,32 +107,23 @@ char* getCharFromMat(Mat* I) {
 
         if (i >= R->yl || i == 1) {
 
-            result[i] = ' ';
+            result[x] = ' ';
         }
         else if (i == 0) {
 
-            result[i] = '!';
+            result[x] = '!';
         }
         else {
 
-            result[i] = 33 + i;
+            result[x] = 33 + i;
         }
 
-        warnx("getCharFromMat : %ld = %c", i, result[i]);
+        warnx("getCharFromMat : %ld = %d", i, result[i]);
     }
 
-    warnx("getCharFromMat : e");
-  
     NnFree(NN);
-  
-    warnx("getCharFromMat : 1.e");
-
-    warnx("getCharFromMat : 2.e");
-
     mFree(P_Out);
     
-    warnx("getCharFromMat : 3.e");
-
     return result;
 }
 
@@ -158,20 +131,12 @@ char* getCharFromMat(Mat* I) {
 
 static void lrnSaveNeuralNet(NeuralNet* NN, char* path) {
 
-    warnx("Saving Neural Network...");
-
     NnSave(NN->w0to1, NN->w1to2, NN->b1, NN->b2, path);
-
-    warnx("Neural Network Saved.");
 }
 
 static void lrnLoadNeuralNet(NeuralNet* NN, char* path) {
 
-    warnx("Loading Neural Network...");
-
     NnLoad(NN->w0to1, NN->w1to2, NN->b1, NN->b2, path);
-
-    warnx("Neural Network Loaded.");
 }
 
 // ####################
@@ -264,16 +229,8 @@ static void lrnLoadTrainingMatrix(Mat* Input, Mat* Output, char* path) {
 
     warnx("Loading Training Matrix...");
 
-    warnx("1");
     Mat* I = learningNN(path);
-    warnx("2");
     Mat* O = learningNNOutput();
-    warnx("end");
-
-    mPrintDim(I, "Loaded Input");
-    mPrintDim(Input, "NN Input");
-    mPrintDim(O, "Loaded Output");
-    mPrintDim(Output, "NN Output");
 
     mCopyAinB(I, Input);
     mCopyAinB(O, Output);

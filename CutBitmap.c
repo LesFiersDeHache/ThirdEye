@@ -64,7 +64,7 @@ List* cutblockY(int *tab, Bitmap *b, List ** Psize)
 					firstblack = 1;
 					yMinB = tab[2];
 					yMaxB = tab[2];
-					warnx("POLICE SIZE %d...... ",policeSize);
+					//warnx("POLICE SIZE %d...... ",policeSize);
 					newBloc[0] = policeSize;
 					policeSize = 0;
 					*Psize = push_front(newBloc,*Psize);
@@ -80,8 +80,8 @@ List* cutblockY(int *tab, Bitmap *b, List ** Psize)
 	}
 	//*PoliceSize= policeSize;
 	//warnx("Psize%d",policeSize);
-	warnx("CUT Y");
-	print_list(res);
+	//warnx("CUT Y");
+	//print_list(res);
         return res;
 };
 
@@ -91,6 +91,8 @@ List* cutblockX(int* tab, Bitmap *b, int policeSize)
 {
   warnx("In Cut X %d",policeSize); 
 	int Threshold = 1* policeSize;
+  //warnx("In Cut X %d",policeSize); 
+	int Threshold = 1.5* policeSize;
 	int white = 0;
 	unsigned short xMinB = tab[0];
 	unsigned short xMaxB = tab[0];
@@ -145,8 +147,8 @@ List* cutblockX(int* tab, Bitmap *b, int policeSize)
 		}
 	}
         //warnx("poooii%p\n",Poi->next->next);
-	print_list(res);
-	warnx("End of cutx");
+	//print_list(res);
+	//warnx("End of cutx");
 	return res;
 };
 
@@ -206,7 +208,7 @@ List* Cutlines(int* tab,Bitmap *b)
 	 	isblack = 0;
 	 }
 	 //print_list(res);
-	 warnx("CutLine");
+	 //warnx("CutLine");
 	 return res;
 	 
 };
@@ -385,7 +387,7 @@ char* DoAll(Bitmap *b){
 		    int T[4] = {L2->a,L2->b,L2->c,L2->d};
 		    L3 = Cutlines(T,b);
 		    L2 = L2 -> next;
-		    print_list(L3);
+		    //print_list(L3);
 		    while(!is_empty(L3))
             {
 			    //Getting the chars
@@ -396,16 +398,16 @@ char* DoAll(Bitmap *b){
 			    //END OF GETTING THE CHARS
 			    //Adding char
 			    char *s = givemechar(l,b);
-                 warnx("RES %s",s);
+                 //warnx("RES %s",s);
 			    fprintf(f,"%s\n",s);
-			    warnx("done adding charsi %d", i);
+			    //warnx("done adding charsi %d", i);
 	    	}
 		//END OF GETTING THE LINES
 	    }
 	    fprintf(f,"\n\n ");
 	}
 	fclose(f);
-    warnx("WOWO");
+    //warnx("WOWO");
 	return s;
 }
 List* CutAll(Bitmap *b)

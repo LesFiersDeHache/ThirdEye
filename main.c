@@ -18,19 +18,21 @@
 #include "listB.h"
 #include "JimmyNeutron.h"
 #include "Learning.h"
+#include "loadLearningImage.h"
 
 int main ( int argc, char *argv[] )
 {
 
-    //NeuralNet* NN = NnGetXorNn(10000);
-    //NnPrettyPrint(NN);
+    NeuralNet* NN = NnGetXorToXorNn(300000);
+    NnBigPrint(NN);
 
     //lrnInitNeuralNet("ascii6.bmp", "save.txt");
 
-    //Mat* M = mNewFill(94, 24*24, 0.0);
+    //Mat* M = learningNN("ascii6.bmp");
+
     //char* s = getCharFromMat(M);
-    //printf("%s", s);
-    //lrnStartLearning("ascii6.bmp", "save.txt", 10000);
+    //printf("THING %s", s);
+    //lrnStartLearning("ascii6.bmp", "save.txt", 100000);
     
 
 /*

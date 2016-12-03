@@ -26,6 +26,8 @@
 
 #define OUT NN->out
 
+#define CST_OF_LRN 1
+
 // ### STRUCT NEURAL NET ### //
 
 typedef struct NeuralNet NeuralNet;
@@ -35,8 +37,6 @@ typedef struct NeuralNet NeuralNet;
 NeuralNet* NnInit(Mat* X_in, Mat* Y_in,
             size_t L1_size, size_t L2_size) {
     
-    mPrintDim(X_in, "X_in");
-
     // Allocation
     NeuralNet* NN = malloc(sizeof(NeuralNet));
 
@@ -124,16 +124,11 @@ static void set_l2(NeuralNet* NN) {
 
     // L2 = sigmoid(L1 . W1to2)
     Mat* tmp = mDot(L1, W1to2);
-    mPrintDim(L1, "L1");
-    mPrintDim(W1to2, "W1to2");
-    mPrintDim(tmp, "L1 . W1to2");
     Mat* tmp2 = mAddLineByLine(tmp, B2);
 
     //mPrintExt(tmp, "l1 dot w1to2");
 
     Mat* M2 = mSig(tmp2);
-
-    mPrintDim(M2, "sig(l1 dot w1to2)");
 
     mCopyAinB(M2, L2);
 
@@ -146,11 +141,8 @@ static void set_l2(NeuralNet* NN) {
 
 void NnFeedForward(NeuralNet* NN) {
 
-    warnx("KEK : 1");
     set_l1(NN);
-    warnx("KEK : 2");
     set_l2(NN);
-    warnx("KEK : 3");
 }
 
 static void set_l2_Error(NeuralNet* NN) {
@@ -234,8 +226,9 @@ static void update_w1to2(NeuralNet* NN) {
     Mat* tmp2 = mDot(tmp1, L2_DELTA);
 
     //mPrintExt(tmp2, "l1.T dot l2_delta");
-
-    Mat* tmp3 = mAdd(W1to2, tmp2);
+    Mat* K = mNewFill(tmp2->xl, tmp2->yl, CST_OF_LRN);
+    Mat* tK = mMult(K, tmp2);
+    Mat* tmp3 = mAdd(W1to2, tK);
 
     //mPrintExt(tmp3, "w1to2 + l1.T dot l2_delta");
 
@@ -246,6 +239,8 @@ static void update_w1to2(NeuralNet* NN) {
     mFree(tmp1);
     mFree(tmp2);
     mFree(tmp3);
+    mFree(tK);
+    mFree(K);
 }
 
 static void update_w0to1(NeuralNet* NN) {
@@ -258,8 +253,9 @@ static void update_w0to1(NeuralNet* NN) {
     Mat* tmp2 = mDot(tmp1, L1_DELTA);
 
     //mPrintExt(tmp2, "l1.T dot l1_delta");
-    
-    Mat* tmp3 = mAdd(W0to1, tmp2);
+    Mat* K = mNewFill(tmp2->xl, tmp2->yl, CST_OF_LRN);
+    Mat* tK = mMult(K, tmp2); 
+    Mat* tmp3 = mAdd(W0to1, tK);
 
     //mPrintExt(tmp3, "w0to1 + (l1.T dot l1_delta)");
 
@@ -270,6 +266,8 @@ static void update_w0to1(NeuralNet* NN) {
     mFree(tmp1);
     mFree(tmp2);
     mFree(tmp3);
+    mFree(tK);
+    mFree(K);
 }
 
 static void update_b1(NeuralNet* NN) {
@@ -350,14 +348,17 @@ static void matToDiag(Mat* M) {
 
 NeuralNet* NnGetXorToXorNn( size_t loop ) {
 
-    size_t t = 50;
-    Mat* Input = mNewFill(94, 24*24, 0.0);
-    Mat* Output = mNewFill(94, 94, 0.0);
+    size_t t = 30;
+    Mat* Input = mNewFill(t, t, 0.0);
+    Mat* Output = mNewFill(t, t, 0.0);
 
     matToDiag(Input);
     matToDiag(Output);
 
-    NeuralNet* NN = NnInit(Input, Output, 3, 94);
+    NeuralNet* NN = NnInit(Input, Output, 3, t);
+
+    float prev = 0;
+    float next = 0;
 
     for ( size_t l = 0 ; l < loop ; ++l ) {
 
@@ -365,8 +366,14 @@ NeuralNet* NnGetXorToXorNn( size_t loop ) {
         
         if (l % 1000 == 0) {
             
-            warnx("%.1f percent >>> Error : %.15f", ((float)l / (float)loop) * 100.0, NnGetError(NN));
+	    next = NnGetError(NN);
+            warnx("%4.1f percent >>> Error : %16.15f >>> delta : %7.4f", ((float)l / (float)loop) * 100.0, next, next - prev);
+            prev = next;
         }
+	if (l % 10000 == 0) {
+	    
+            mPrintCompact(NN->l2, "L2");
+	} 
     }
     
     mFree(Input);

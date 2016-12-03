@@ -23,8 +23,8 @@ void NnSave(Mat* W0, Mat* W1, Mat* B0, Mat* B1, char* path)
 	else
 	{
 		//START WRITING
-		printf("WEIGHTS AND BIASES SAVING PROGRAM\n");
-		printf("%s FOLDER OPENNED\n", path);
+		//printf("WEIGHTS AND BIASES SAVING PROGRAM\n");
+		//printf("%s FOLDER OPENNED\n", path);
 		for (unsigned int y = 0; y < W0->yl; ++y)
 		{
 			for (unsigned int x = 0; x < W0->xl; ++x)
@@ -36,7 +36,7 @@ void NnSave(Mat* W0, Mat* W1, Mat* B0, Mat* B1, char* path)
 			}
 		}
 		fputc('\n',folder);
-		printf("WO SAVED \n");
+		//printf("WO SAVED \n");
 
 
                 for (unsigned int y = 0; y < W1->yl; ++y)
@@ -50,7 +50,7 @@ void NnSave(Mat* W0, Mat* W1, Mat* B0, Mat* B1, char* path)
                         }
                 }
                 fputc('\n',folder);
-                printf("W1 SAVED \n");
+                //printf("W1 SAVED \n");
 
                 for (unsigned int y = 0; y < B0->yl; ++y)
                 {
@@ -63,7 +63,7 @@ void NnSave(Mat* W0, Mat* W1, Mat* B0, Mat* B1, char* path)
                         }
                 }
                 fputc('\n',folder);
-                printf("BO SAVED \n");
+                //printf("BO SAVED \n");
 
 
                 for (unsigned int y = 0; y < B1->yl; ++y)
@@ -77,11 +77,11 @@ void NnSave(Mat* W0, Mat* W1, Mat* B0, Mat* B1, char* path)
                         }
                 }
                 fputc('\n',folder);
-                printf("B1 SAVED \n");
+                //printf("B1 SAVED \n");
 
 		fclose(folder);
-		printf("%s FOLDER CLOSED\n", path);
-		printf("COMPLETE\n");
+		//printf("%s FOLDER CLOSED\n", path);
+		//printf("COMPLETE\n");
 	}
 }
 
