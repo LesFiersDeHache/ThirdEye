@@ -321,12 +321,13 @@ char *givemechar(List* coord, Bitmap *b)
 {
 	struct listB* bmp_list = sendList(coord, b);
     struct listB* test = bmp_list;
-    while (!is_emptyB(test))
+    /*while (!is_emptyB(test))
     {
         printBitmap(test->bmp);
         test = test->next;
-    }
+    }*/
     Mat* matrix =  listbmpToMat(bmp_list);
+
     //mPrintCompact(matrix,"GIVE ME CHAR");
     //freeB(bmp_list);
     char* res = getCharFromMat(matrix);
@@ -351,6 +352,7 @@ char* DoAll(Bitmap *b){
 
 	//print_list(L);
 	FILE *f = fopen("OutPut","w");
+    int i = 0;
 	while(!is_empty(L))
 	{
         int Psize = PsizeL->a;
@@ -373,6 +375,7 @@ char* DoAll(Bitmap *b){
 	        print_list(L3);
 		    while(!is_empty(L3))
             {
+                ++i;
 			    //Getting the chars
 			    int T[4] = {L3->a,L3->b,L3->c,L3->d};
 			    List *l = Cutchars(T,b,Psize);
@@ -380,25 +383,25 @@ char* DoAll(Bitmap *b){
 			    L3 = L3->next;
 			    //END OF GETTING THE CHARS
 			    //Adding char
-			    char *s =  "0";//givemechar(l,b);
+			    char *s = givemechar(l,b);
+                 warnx("RES %s",s);
 			    fprintf(f,"%s\n",s);
-			    //warnx("done adding chars");
+			    warnx("done adding charsi %d", i);
 	    	}
 		//END OF GETTING THE LINES
 	    }
 	    fprintf(f,"\n\n ");
 	}
 	fclose(f);
+    warnx("WOWO");
 	return s;
 }
 
 List* CutAll(Bitmap *b)
 {
-	return NULL;
-}
 
- // int tab[4] = {0, b->width - 1, 0, b->height-1}; //IMG SIZE
-  //int Psize = 0;
+  int tab[4] = {0, b->width - 1, 0, b->height-1}; //IMG SIZE
+  int Psize = 0;
 /*
   List *L = empty_list();
   L = cutblockX(tab,b,&Psize);//CA MARCHE CA
@@ -412,8 +415,7 @@ List* CutAll(Bitmap *b)
   List* M = empty_list();
   M = Merge(L, L2);
   print_list(M);
-  */
-	/*
+ */
   List *L = empty_list();
   L = cutblockY(tab,b,&Psize);
   List *L2 = empty_list();
@@ -458,10 +460,10 @@ List* CutAll(Bitmap *b)
 	L3 = L3->next;
   }
   freeList(L3);  
+  print_list(L4);
+  return L4;
 
-  //print_list(L4);
-  /*
-  List *L5 = empty_list();
+  /*List *L5 = empty_list();
   int R[4] = {L4->a,L4->b,L4->c,L4->d};
   L5 = Cutlines(R,b);
   warnx("YYYYYY");
@@ -472,7 +474,7 @@ List* CutAll(Bitmap *b)
       
 	//L5 = Merge(L5,Cutlines(T,b));
 	L4 = L4->next;
-	}*/
+  }*/
 
 
   /*SDL_Surface *w1 = BitmapToSurface(b);
