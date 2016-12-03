@@ -35,6 +35,8 @@ typedef struct NeuralNet NeuralNet;
 NeuralNet* NnInit(Mat* X_in, Mat* Y_in,
             size_t L1_size, size_t L2_size) {
     
+    mPrintDim(X_in, "X_in");
+
     // Allocation
     NeuralNet* NN = malloc(sizeof(NeuralNet));
 

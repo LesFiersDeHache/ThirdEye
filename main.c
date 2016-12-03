@@ -31,6 +31,7 @@ int main ( int argc, char *argv[] )
     //char* s = getCharFromMat(M);
     //printf("%s", s);
     //lrnStartLearning("ascii6.bmp", "save.txt", 10000);
+    
 
 /*
     //lrnSaveNeuralNet(NN, "save.txt");
@@ -39,7 +40,6 @@ int main ( int argc, char *argv[] )
     //NeuralNet* NN = NnGetXorToXorNn(50000);
     //NnBigPrint(NN);
     Init(argc,argv);
-    /* 
     lrnInitNeuralNet("ascii6.bmp", "save.txt");
 >>>>>>> a600222d10264eaeaae97bcf2e130a9091528ab6
 
@@ -71,7 +71,7 @@ int main ( int argc, char *argv[] )
        }      
        }*/
   
-  
+  Init(argc,argv);
   
   // /afs/cri.epita.net/user/b/be/benete_p/u/projet/ThirdEye/Archives/asciitable.bmp
 	/*Mat* W0 = mNewFill(5,1,6.91919191562165);
@@ -94,9 +94,10 @@ int main ( int argc, char *argv[] )
         //mPrintExt(B1, "B1 MAT");
 	*/
 
-  /* Bitmap k = LoadToBitmap("wow.bmp");
-      Bitmap * bmp = &k;
-      List *l = CutAll(bmp);
+      //Bitmap k = LoadToBitmap("Test8x8.bmp");
+      //Bitmap * bmp = &k;
+      //DoAll(bmp);
+      /*List *l = CutAll(bmp);
       struct listB *res = sendList(l,bmp);
 
 	while (!is_emptyB(res))

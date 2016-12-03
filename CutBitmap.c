@@ -4,15 +4,20 @@
 #include "list.h"
 #include "CutBitmap.h"
 #include <err.h>
+#include "listB.h"
 #include "SDLstuff.h"
+#include "Matrix.h"
 #include "SDL/SDL_image.h"
+#include "loadLearningImage.h"
+#include "Learning.h"
+
 List* cutblockY(int *tab, Bitmap *b, List ** Psize)
 {
 	int Threshold = 0;
 	int white = 0;
 	int policeSize = 0;
 	unsigned short yMinB = tab[2];
-	unsigned short yMaxB = tab[2];
+    unsigned short yMaxB = tab[2];
 	int isStillBlack = 0;
 	int firstblack = 1;
 	List* res = empty_list();
@@ -142,7 +147,7 @@ List* Cutlines(int* tab,Bitmap *b)
 	 unsigned short isblack = 0;
 	 unsigned short initblock = 0;
 
-	 int height = tab[3] -1;
+     int height = tab[3] -1;
  	 List*res = empty_list();
 	 for(unsigned short y = tab[2]; y <= tab[3];y++)
 	 {
@@ -310,67 +315,80 @@ Bitmap DrawLines(Bitmap *bmp,List *L)
     }
   return k;
 }
-char *givemechar(List* coord, Bitmap *b){
-	//PLACE HOLDER
-	return "AAAAA"; // DONT ADD THE /n I ADD IT IN THE DoALL fun
+
+
+char *givemechar(List* coord, Bitmap *b)
+{
+	struct listB* bmp_list = sendList(coord, b);
+    struct listB* test = bmp_list;
+    while (!is_emptyB(test))
+    {
+        printBitmap(test->bmp);
+        test = test->next;
+    }
+    Mat* matrix =  listbmpToMat(bmp_list);
+    //mPrintCompact(matrix,"GIVE ME CHAR");
+    //freeB(bmp_list);
+    char* res = getCharFromMat(matrix);
+    mFree(matrix);
+    return res;
+	//return "AAAAA"; // DONT ADD THE /n I ADD IT IN THE DoALL fun
 }
 
 char* DoAll(Bitmap *b){
 	char *s ;
 	int tab[4] = {0, b->width - 1, 0, b->height-1}; //IMG SIZE
-  List** PsizeL2 = empty_list();
+    List** PsizeL2 = empty_list();
 	List *L = empty_list();
-  L = cutblockY(tab,b,PsizeL2);
+     L = cutblockY(tab,b,PsizeL2);
 	//warnx("psize list");
 	List* PsizeL = *PsizeL2;
 	//print_list(PsizeL); SURTOUT NE PAS PRINT CETTE PUTAIN DE LISTE
-	if(is_empty(L)){
+	if(is_empty(L))
+    {
 		return NULL;
 	}
-	
-	print_list(L);
+
+	//print_list(L);
 	FILE *f = fopen("OutPut","w");
 	while(!is_empty(L))
 	{
-		int Psize = PsizeL->a;
+        int Psize = PsizeL->a;
 		PsizeL = PsizeL->next;
+  	    int P[4] = {L->a,L->b,L->c,L->d};
+
 		List *L2 = empty_list();
-  	int P[4] = {L->a,L->b,L->c,L->d};
-  	L2 = cutblockX(P,b,Psize);
+  	    L2 = cutblockX(P,b,Psize);
 		//print_list(L2);
-	
-	L = L->next;
-	List * L3 = empty_list();
-	List * L4 = empty_list();
-	while(!is_empty(L2)){
-		// GETTING THE LINES
-		int T[4] = {L2->a,L2->b,L2->c,L2->d};
-		L3 = Cutlines(T,b);
-		L2 = L2 -> next;
-		
-	
-		while(!is_empty(L3)){
-			//Getting the chars
-			int T[4] = {L3->a,L3->b,L3->c,L3->d};
-			List *l = Cutchars(T,b,Psize);
-			RafinedChar(l,b);
-			L3 = L3->next;
-			//END OF GETTING THE CHARS
-			//Adding char
-			char *s = givemechar(L3,b);
-			fprintf(f,"%s\n",s);
-			//warnx("done adding chars");
-		}
+
+	    L = L->next;
+        
+	    List * L3 = empty_list();
+	    while(!is_empty(L2))
+        {
+		    // GETTING THE LINES
+		    int T[4] = {L2->a,L2->b,L2->c,L2->d};
+		    L3 = Cutlines(T,b);
+		    L2 = L2 -> next;
+	        print_list(L3);
+		    while(!is_empty(L3))
+            {
+			    //Getting the chars
+			    int T[4] = {L3->a,L3->b,L3->c,L3->d};
+			    List *l = Cutchars(T,b,Psize);
+			    RafinedChar(l,b);
+			    L3 = L3->next;
+			    //END OF GETTING THE CHARS
+			    //Adding char
+			    char *s =  "0";//givemechar(l,b);
+			    fprintf(f,"%s\n",s);
+			    //warnx("done adding chars");
+	    	}
 		//END OF GETTING THE LINES
-
-
-		
-	}
-	fprintf(f,"\n\n ");
+	    }
+	    fprintf(f,"\n\n ");
 	}
 	fclose(f);
-
-
 	return s;
 }
 

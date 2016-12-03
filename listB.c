@@ -50,3 +50,9 @@ struct listB* MergeB(struct listB* L1, struct listB* L2)
 	new_list -> next = L2;
 	return L1;
 }
+
+void freeB(struct listB* B)
+{
+    free(B->bmp);
+    free(B);
+} 
