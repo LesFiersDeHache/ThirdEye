@@ -21,7 +21,7 @@ List* cutblockY(int *tab, Bitmap *b, List ** Psize)
 	int isStillBlack = 0;
 	int firstblack = 1;
 	List* res = empty_list();
-	
+	int ContinuePsize = 1;
 	for(unsigned short y = tab[2];y <= tab[3];y++)
 	{
 		for(unsigned short x = tab[0]; x <= tab[1];x++)
@@ -35,7 +35,9 @@ List* cutblockY(int *tab, Bitmap *b, List ** Psize)
 		}
 		if(isStillBlack)
 		{
-			policeSize += 1;
+		  if(ContinuePsize){
+		    policeSize += 1;
+		  }
 			if(firstblack)
 			{
 				firstblack = 0;
@@ -45,8 +47,11 @@ List* cutblockY(int *tab, Bitmap *b, List ** Psize)
 		else
 		{
 		  	
-			if(policeSize > 3 && Threshold == 0)
+		  if(policeSize > 3 && Threshold == 0){
 				Threshold =4*policeSize;
+				warnx("PoliceSize = %d    Y %d",policeSize,y);
+				ContinuePsize = 0;
+		  }
 			if(Threshold!=0)
 			{
 				white += 1;
@@ -61,11 +66,13 @@ List* cutblockY(int *tab, Bitmap *b, List ** Psize)
 					yMaxB = tab[2];
 					warnx("POLICE SIZE %d...... ",policeSize);
 					newBloc[0] = policeSize;
+					policeSize = 0;
 					*Psize = push_front(newBloc,*Psize);
 					isStillBlack = 0;
 					white = 0;
 					policeSize = 0;
 					Threshold = 0;
+					ContinuePsize = 1;
 				}
 			}
 		}
@@ -83,7 +90,7 @@ List* cutblockY(int *tab, Bitmap *b, List ** Psize)
 List* cutblockX(int* tab, Bitmap *b, int policeSize)
 {
   warnx("In Cut X %d",policeSize); 
-	int Threshold = 1.5* policeSize;
+	int Threshold = 1* policeSize;
 	int white = 0;
 	unsigned short xMinB = tab[0];
 	unsigned short xMaxB = tab[0];
@@ -122,7 +129,7 @@ List* cutblockX(int* tab, Bitmap *b, int policeSize)
 				//warnx("White %d",white);
 				if(white > Threshold)
 				{
-				  //warnx("Adding Element Threshold: %d",Threshold);
+				  warnx("Adding Element Threshold: %d",Threshold);
 					xMaxB =x ;
 					int newBloc[4] = {xMinB,xMaxB,tab[2],tab[3]};
 				        res = push_front(newBloc,res);
