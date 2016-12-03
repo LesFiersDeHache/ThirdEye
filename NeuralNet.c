@@ -59,8 +59,8 @@ NeuralNet* NnInit(Mat* X_in, Mat* Y_in,
     mCopyAinB(Y_in, OUT);
 
     // Biases init (to random values)
-    B1 = mNewRand(L1->xl, L1->yl, 2, -1);
-    B2 = mNewRand(L2->xl, L2->yl, 2, -1);
+    B1 = mNewRand(1, L1->yl, 2, -1);
+    B2 = mNewRand(1, L2->yl, 2, -1);
 
     // Error and delta of L1 matrix init
     L1_ERR = mNewFill(Y_in->xl, W1to2->xl, 0.0);
@@ -99,7 +99,7 @@ static void set_l1(NeuralNet* NN) {
 
     // L1 = sigmoid(L0 . W0to1)
     Mat* tmp = mDot(L0, W0to1);
-    Mat* tmp2 = mAdd(tmp, B1);
+    Mat* tmp2 = mAddLineByLine(tmp, B1);
 
     //mPrintExt(tmp, "l0 dot w0to1");
 
@@ -122,7 +122,7 @@ static void set_l2(NeuralNet* NN) {
 
     // L2 = sigmoid(L1 . W1to2)
     Mat* tmp = mDot(L1, W1to2);
-    Mat* tmp2 = mAdd(tmp, B2);
+    Mat* tmp2 = mAddLineByLine(tmp, B2);
 
     //mPrintExt(tmp, "l1 dot w1to2");
 
@@ -267,7 +267,7 @@ static void update_w0to1(NeuralNet* NN) {
 
 static void update_b1(NeuralNet* NN) {
 
-    Mat* tmp = mAdd(B1, L1_DELTA);
+    Mat* tmp = mAddAllLines(B1, L1_DELTA);
     mCopyAinB(tmp, B1);
 
     mFree(tmp);
@@ -275,7 +275,7 @@ static void update_b1(NeuralNet* NN) {
 
 static void update_b2(NeuralNet* NN) {
 
-    Mat* tmp = mAdd(B2, L2_DELTA);
+    Mat* tmp = mAddAllLines(B2, L2_DELTA);
     mCopyAinB(tmp, B2);
 
     mFree(tmp);

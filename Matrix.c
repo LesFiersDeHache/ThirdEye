@@ -309,6 +309,22 @@ Mat* mAddLineByLine(Mat* M, Mat* M_one_line) {
     return R;
 }
 
+Mat* mAddAllLines(Mat* M_one_line, Mat* M) {
+
+    Mat* R = mNewFill(M_one_line->xl, M_one_line->yl, 0.0);
+    mCopyAinB(M_one_line, R);
+
+    for ( Uint x = 0 ; x < M->xl ; ++x ) {
+
+        for ( Uint y = 0 ; y < M->yl ; ++y ) {
+
+            float add = mGet(R, 0, y) + mGet(M, x, y);
+            mSet(R, 0, y, add);
+        }
+    }
+
+    return R;
+}
 /* 
 int main(){
     

@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <err.h>
-
+#include "Bitmap.h"
 
 #ifndef ONLYONCE_loadLearningImage
 #define ONLYONCE_loadLearningImage

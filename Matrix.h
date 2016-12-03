@@ -151,4 +151,6 @@ Mat* mExtractLine(Mat* M, Uint line);
 
 Mat* mAddLineByLine(Mat* M, Mat* M_one_line);
 
+Mat* mAddAllLines(Mat* M_one_line, Mat* M);
+
 #endif
