@@ -19,4 +19,6 @@ int is_emptyB(struct listB* list);
 
 struct listB* get_nB(int index, struct listB* list);
 struct listB* MergeB(struct listB* L1, struct listB* L2);
+
+void freeB(struct listB* B);
 #endif

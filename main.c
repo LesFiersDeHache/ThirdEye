@@ -36,7 +36,6 @@ int main ( int argc, char *argv[] )
     //NeuralNet* NN = NnGetXorToXorNn(50000);
     //NnBigPrint(NN);
     Init(argc,argv);
-    /* 
     lrnInitNeuralNet("ascii6.bmp", "save.txt");
 >>>>>>> a600222d10264eaeaae97bcf2e130a9091528ab6
 

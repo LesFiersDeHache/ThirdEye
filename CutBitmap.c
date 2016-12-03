@@ -5,7 +5,10 @@
 #include "CutBitmap.h"
 #include <err.h>
 #include "SDLstuff.h"
+#include "Matrix.h"
 #include "SDL/SDL_image.h"
+#include "loadLearningImage.h"
+
 List* cutblockY(int *tab, Bitmap *b, List ** Psize)
 {
 	int Threshold = 0;
@@ -311,8 +314,13 @@ Bitmap DrawLines(Bitmap *bmp,List *L)
   return k;
 }
 char *givemechar(List* coord, Bitmap *b){
-	//PLACE HOLDER
-	return "AAAAA"; // DONT ADD THE /n I ADD IT IN THE DoALL fun
+	struct listB* bmp_list = sendList(coord, b);
+    Mat* matrix =  listBmpToMat(bmp_list);
+    freeB(bmp_list);
+    char* res = getCharFromMat(matrix);
+    mFree(res);
+    return res;
+	//return "AAAAA"; // DONT ADD THE /n I ADD IT IN THE DoALL fun
 }
 
 char* DoAll(Bitmap *b){
@@ -362,9 +370,6 @@ char* DoAll(Bitmap *b){
 			//warnx("done adding chars");
 		}
 		//END OF GETTING THE LINES
-
-
-		
 	}
 	fprintf(f,"\n\n ");
 	}
