@@ -10,6 +10,7 @@
 #include "SDL/SDL_image.h"
 #include "loadLearningImage.h"
 #include "Learning.h"
+#include "string.h"
 
 List* cutblockY(int *tab, Bitmap *b, List ** Psize)
 {
@@ -352,10 +353,13 @@ char *givemechar(List* coord, Bitmap *b)
 	//return "AAAAA"; // DONT ADD THE /n I ADD IT IN THE DoALL fun
 }
 
+
 char* DoAll(Bitmap *b){
-	char *s ;
+	char tz = malloc(4);
+	char *s = &tz;
 	int tab[4] = {0, b->width - 1, 0, b->height-1}; //IMG SIZE
-    List** PsizeL2 = empty_list();
+	List* TmpSize = empty_list();
+  List** PsizeL2 = &TmpSize;
 	List *L = empty_list();
      L = cutblockY(tab,b,PsizeL2);
 	//warnx("psize list");
@@ -368,7 +372,6 @@ char* DoAll(Bitmap *b){
 
 	//print_list(L);
 	FILE *f = fopen("OutPut","w");
-    int i = 0;
 	while(!is_empty(L))
 	{
         int Psize = PsizeL->a;
@@ -398,9 +401,13 @@ char* DoAll(Bitmap *b){
 			    L3 = L3->next;
 			    //END OF GETTING THE CHARS
 			    //Adding char
+					while(!is_empty(l)){
+						fprintf(f,"A");
+						l = l->next;
+					}
 			    //char *s = givemechar(l,b);
-                 //warnx("RES %s",s);
-			    fprintf(f,"%s\n",s);
+          //warnx("RES %s",s);
+			    fprintf(f,"\n");
 			    //warnx("done adding charsi %d", i);
 	    	}
 		//END OF GETTING THE LINES
@@ -411,11 +418,12 @@ char* DoAll(Bitmap *b){
     //warnx("WOWO");
 	return s;
 }
+
 List* CutAll(Bitmap *b)
 {
-	char *s ;
 	int tab[4] = {0, b->width - 1, 0, b->height-1}; //IMG SIZE
-	List** PsizeL2 = empty_list();
+	List* TmpSize = empty_list();
+	List** PsizeL2 = &TmpSize;
 	List *L = empty_list();
 	L = cutblockY(tab,b,PsizeL2);
 	//warnx("psize list");
@@ -474,125 +482,3 @@ List* CutAll(Bitmap *b)
 	return TOT;
 }
 
-/*
-List* CutAll(Bitmap *b)
-{
-
-  int tab[4] = {0, b->width - 1, 0, b->height-1}; //IMG SIZE
-  int Psize = 0;
-/*
-  List *L = empty_list();
-  L = cutblockX(tab,b,&Psize);//CA MARCHE CA
-  print_list(L);
-  int ta[4] = {L->a,L->b,L->c,L->d};
-  List *L2 = empty_list();
-  L2 = cutblockY(ta,b,&Psize);
-  warnx("LIST2");
-  print_list(L2);
-  
-  List* M = empty_list();
-  M = Merge(L, L2);
-  print_list(M);
- */
-/*
-  List *L = empty_list();
-  L = cutblockY(tab,b,&Psize);
-  List *L2 = empty_list();
-  int P[4] = {L->a,L->b,L->c,L->d};
-  L2 = cutblockX(P,b,&Psize);
-  L = L->next;
-  //List *L3 = empty_list();
-  while(!is_empty(L))
-  {
-	int T[4] = {L->a,L->b,L->c,L->d};
-	
-	L2 = Merge(L2,cutblockX(T,b,&Psize));
-	L= L->next;
-  }
-  //print_list(L2);
-
-  freeList(L);
-
-  List *L3 = empty_list();
-
-  while(!is_empty(L2))
-  {
-	int T[4] = {L2->a,L2->b,L2->c,L2->d};
-	L3 = Merge(L3,Cutlines(T,b));
-	L2 = L2 -> next;
-  }
-  //print_list(L3);
-
-  freeList(L2);
-
-  List *L4 = empty_list();
-  int Y[4] = {L3->a,L3->b,L3->c,L3->d};
-  L4 = Cutchars(Y,b,Psize);
-  RafinedChar(L4,b);
-  L3 = L3->next;
-  while(!is_empty(L3))
-  {
-	int T[4] = {L3->a,L3->b,L3->c,L3->d};
-	List *l = Cutchars(T,b,Psize);
-	RafinedChar(l,b);
-	L4 = Merge(L4,l);
-	L3 = L3->next;
-  }
-  freeList(L3);  
-  print_list(L4);
-  return L4;
-
-  /*List *L5 = empty_list();
-  int R[4] = {L4->a,L4->b,L4->c,L4->d};
-  L5 = Cutlines(R,b);
-  warnx("YYYYYY");
-  L4 = L4->next;
-  while(!is_empty(L4))
-  {
-	int T[4] = {L4->a,L4->b,L4->c,L4->d};
-      
-	//L5 = Merge(L5,Cutlines(T,b));
-	L4 = L4->next;
-  }*/
-
-
-  /*SDL_Surface *w1 = BitmapToSurface(b);
-  display_image(w1);
-  Bitmap b2 = DrawLines(b,L4);
-  Bitmap *b4 = &b2;
-  SDL_Surface *wo = BitmapToSurface(b4);
-  display_image(wo);*/
-  //return L4;
-  
-
-  //MERGE THE LIST M Here
-  /*
-  // CA CEST TA FONCTION DAVANT GL
-  while(->next != 0)
-    {
-      warnx("/nIn While");
-      list2 = Merge(Poi2,cutblockX(Poi1->data,b,&policeSize));
-      nes(Bitmap *bmp,struct list *L)
-{
-  while(L != 0)
-    {
-      int tab[4] = L->data;
-      for(int i =tab[0] ; i <tab[1];i++)
-	{
-	  setPixel(bmp,i,tab[2],1);
-	  setPixel(bmp,i,tab[3],1);
-	}
-      for(int i = tab[2]; i<tab[3];i++)
-	{
-	  setPixel(bmp,tab[0],i,1);
-	  setPixel(bmp,tab[1],i,1);
-	}
-      L = L->next;
-    }
-}Poi2 = list2;
-      Poi1 = Poi1->next;
-    }
-  warnx("Wallah");
-  print_list(list2);*/
-  //}
- 

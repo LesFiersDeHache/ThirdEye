@@ -116,7 +116,7 @@ void Read(GtkWidget *button,gpointer *window){
     if(s!= NULL){
         Bitmap B =  LoadToBitmap(s);
         char* result = DoAll(&B);
-        ChangeTxt(result);
+        //ChangeTxt(result);
     }
 
 }
@@ -124,7 +124,7 @@ void SaveText(){
 	g_print("Give me a Save Text Func\n");
     if(BP!= NULL){
         char* result = DoAll(BP);
-        ChangeTxt(result);
+        //ChangeTxt(result);
     }
 
 }
