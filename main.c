@@ -23,8 +23,8 @@
 int main ( int argc, char *argv[] )
 {
 
-    NeuralNet* NN = NnGetXorToXorNn(300000);
-    NnBigPrint(NN);
+    //NeuralNet* NN = NnGetXorToXorNn(500000);
+    //NnBigPrint(NN);
 
     //lrnInitNeuralNet("ascii6.bmp", "save.txt");
 
@@ -32,7 +32,7 @@ int main ( int argc, char *argv[] )
 
     //char* s = getCharFromMat(M);
     //printf("THING %s", s);
-    //lrnStartLearning("ascii6.bmp", "save.txt", 100000);
+    lrnStartLearning("ascii6.bmp", "save.txt", 100000);
     
 
 /*

@@ -44,6 +44,8 @@ void lrnStartLearning(char* train_path, char* nn_path, int loops) {
     warnx("Begin error : %f", NnGetError(NN));
 
     // Begin learning
+    float prev = 0.0;
+    float next = 0.0;
     for ( int l = 0 ; l < loops ; ++l ) {
 
         // Learn
@@ -51,8 +53,10 @@ void lrnStartLearning(char* train_path, char* nn_path, int loops) {
 
         if (l % 1000 == 0) {
             
+            next = NnGetError(NN);
             float per = ((float)l / (float)loops) * 100.0;
-            warnx("%f percent > Error : %.50f", per, NnGetError(NN));
+            warnx("%5.1f percent > Error : %50.50f > Delta : %50.50f", per, next, next-prev);
+            prev = next;
             lrnSaveNeuralNet(NN, nn_path);            
         }
     }

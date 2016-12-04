@@ -348,7 +348,7 @@ static void matToDiag(Mat* M) {
 
 NeuralNet* NnGetXorToXorNn( size_t loop ) {
 
-    size_t t = 30;
+    size_t t = 400;
     Mat* Input = mNewFill(t, t, 0.0);
     Mat* Output = mNewFill(t, t, 0.0);
 
@@ -367,7 +367,7 @@ NeuralNet* NnGetXorToXorNn( size_t loop ) {
         if (l % 1000 == 0) {
             
 	    next = NnGetError(NN);
-            warnx("%4.1f percent >>> Error : %16.15f >>> delta : %7.4f", ((float)l / (float)loop) * 100.0, next, next - prev);
+            warnx("%4.1f percent >>> Error : %25.25f >>> delta : %25.25f", ((float)l / (float)loop) * 100.0, next, next - prev);
             prev = next;
         }
 	if (l % 10000 == 0) {
