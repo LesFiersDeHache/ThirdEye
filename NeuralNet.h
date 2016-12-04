@@ -52,6 +52,6 @@ void NnPrettyPrint(NeuralNet* NN);
 
 void NnBigPrint(NeuralNet* NN);
 
-float NnGetError(NeuralNet* NN);
+double NnGetError(NeuralNet* NN);
 #endif
 

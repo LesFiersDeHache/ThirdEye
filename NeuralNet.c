@@ -348,7 +348,7 @@ static void matToDiag(Mat* M) {
 
 NeuralNet* NnGetXorToXorNn( size_t loop ) {
 
-    size_t t = 400;
+    size_t t = 200;
     Mat* Input = mNewFill(t, t, 0.0);
     Mat* Output = mNewFill(t, t, 0.0);
 
@@ -367,7 +367,7 @@ NeuralNet* NnGetXorToXorNn( size_t loop ) {
         if (l % 1000 == 0) {
             
 	    next = NnGetError(NN);
-            warnx("%4.1f percent >>> Error : %25.25f >>> delta : %25.25f", ((float)l / (float)loop) * 100.0, next, next - prev);
+            warnx("%5.1f percent >>> Error : %50.50f >>> delta : %50.50f", ((float)l / (float)loop) * 100.0, next, next - prev);
             prev = next;
         }
 	if (l % 10000 == 0) {
@@ -376,6 +376,7 @@ NeuralNet* NnGetXorToXorNn( size_t loop ) {
 	} 
     }
     
+    mPrintCompact(NN->l2, "L2");
     mFree(Input);
     mFree(Output);
 
@@ -561,7 +562,7 @@ void NnBigPrint(NeuralNet* NN) {
     mPrintCompact(NN->out, "OUT");
 }
 
-static float absFloat(float f) {
+static double absFloat(double f) {
 
     if (f < 0) {
 
@@ -571,20 +572,20 @@ static float absFloat(float f) {
     return f;
 }
 
-float NnGetError(NeuralNet* NN) {
+double NnGetError(NeuralNet* NN) {
 
     Mat* Errors = mSub(NN->out, NN->l2);
     
-    float sum = 0.0;
+    double sum = 0.0;
 
     for ( size_t x = 0 ; x < Errors->xl ; ++x ) {
 
-        float a = mGet(Errors, x, 0);
+        double a = mGet(Errors, x, 0);
         a = absFloat(a);
         sum += a;
     }
 
-    float divide = Errors->xl;
+    double divide = Errors->xl;
     mFree(Errors);
     return sum / divide;
 
