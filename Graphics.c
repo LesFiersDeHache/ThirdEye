@@ -182,7 +182,6 @@ int Init(int argc, char *argv[])
     
 
     gtk_widget_show_all(window);
-    MegaPrint("WOOOOOOOOOOOOOOOOOOOO");
     gtk_main();
     return 0;
 }
