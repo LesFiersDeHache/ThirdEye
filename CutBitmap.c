@@ -91,7 +91,8 @@ List* cutblockY(int *tab, Bitmap *b, List ** Psize)
 List* cutblockX(int* tab, Bitmap *b, int policeSize)
 {
   warnx("In Cut X %d",policeSize); 
-  //warnx("In Cut X %d",policeSize); 
+  //warnx("In Cut X %d",policeSize);
+	int Threshold = 1.5*policeSize; 
 	int white = 0;
 	unsigned short xMinB = tab[0];
 	unsigned short xMaxB = tab[0];
