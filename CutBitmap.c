@@ -334,6 +334,7 @@ Bitmap DrawLines(Bitmap *bmp,List *L)
 
 char *givemechar(List* coord, Bitmap *b)
 {
+	return 'A';
 	struct listB* bmp_list = sendList(coord, b);
     struct listB* test = bmp_list;
     /*while (!is_emptyB(test))
@@ -397,7 +398,7 @@ char* DoAll(Bitmap *b){
 			    L3 = L3->next;
 			    //END OF GETTING THE CHARS
 			    //Adding char
-			    char *s = givemechar(l,b);
+			    //char *s = givemechar(l,b);
                  //warnx("RES %s",s);
 			    fprintf(f,"%s\n",s);
 			    //warnx("done adding charsi %d", i);

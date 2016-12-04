@@ -21,7 +21,8 @@
 
 
 GtkWidget *textview,*button,*button2,*button3,*button4 ;
-	char *s;
+char *s;
+Bitmap *BP;
 
 struct mymultiple {
 	GtkWidget *Pobject;
@@ -47,23 +48,25 @@ static void openDialog(GtkWidget *button,gpointer *window){
 	}
 	else{
 		g_print("YOU PRESSED CANCEL\n");
+        s = NULL;
 	}
 	gtk_widget_destroy(dialog);
     if(s!= NULL){
         // HERE YOU DO WHAT YOU WANT AFTER THE FILE EXPLORER CLOSE
         // YOU SHOULD LOAD THE IMAGE 
         //SHOWING RAW IMAGE
-        //display_image(load_image(s));
+        display_image(load_image(s));
         //display Binarize Image
         Bitmap B =  LoadToBitmap(s);
-        display_image(BitmapToSurface(&B));
+        BP = &B;
+        display_image(BitmapToSurface(BP));
         //display_image(BitmapToSurface(&B));
         //DoAll(&B);
-        List * K = CutAll(&B);
-	Bitmap Kline = DrawLines(&B,K);
-	display_image(BitmapToSurface(&Kline));
+        List * K = CutAll(BP);
+	    Bitmap Kline = DrawLines(BP,K);
+	    display_image(BitmapToSurface(&Kline));
         gtk_widget_set_sensitive(button2,TRUE);
-        gtk_widget_set_sensitive(button3,TRUE);
+        //gtk_widget_set_sensitive(button3,TRUE);
         gtk_widget_set_sensitive(button4,FALSE);
         SDL_Quit();
 	//struct listB *res = sendList(L,&B);
@@ -91,12 +94,38 @@ void LoadNeuralNetwork(){
     //if success
     gtk_widget_set_sensitive(button4,TRUE);
 }
-void Read(){
-    g_print("ReadBut LOL\n");
+void Read(GtkWidget *button,gpointer *window){
+    GtkWidget *dialog;
+    (void)(button);
+	dialog = gtk_file_chooser_dialog_new("Choose a file",GTK_WINDOW(window),
+		GTK_FILE_CHOOSER_ACTION_OPEN,GTK_STOCK_OK,GTK_RESPONSE_OK,GTK_STOCK_CANCEL,
+		GTK_RESPONSE_CANCEL,NULL);
+	gtk_widget_show_all(dialog);
+	gint resp = gtk_dialog_run(GTK_DIALOG(dialog));
+	if(resp == GTK_RESPONSE_OK){
+
+		s = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+		g_print("%s\n",s);
+
+	}
+	else{
+		g_print("YOU PRESSED CANCEL\n");
+        s = NULL;
+	}
+	gtk_widget_destroy(dialog);
+    if(s!= NULL){
+        Bitmap B =  LoadToBitmap(s);
+        char* result = DoAll(&B);
+        ChangeTxt(result);
+    }
 
 }
 void SaveText(){
 	g_print("Give me a Save Text Func\n");
+    if(BP!= NULL){
+        char* result = DoAll(BP);
+        ChangeTxt(result);
+    }
 
 }
 // END CALLED ON CLICK
@@ -140,7 +169,7 @@ int Init(int argc, char *argv[])
     button3 = gtk_button_new_with_mnemonic("_Read");
     button4 = gtk_button_new_with_mnemonic("_Save Text");
 
-    gtk_widget_set_sensitive(button3,FALSE);
+    //gtk_widget_set_sensitive(button3,FALSE);
 
     gtk_widget_set_sensitive(button4,FALSE);
 
@@ -159,7 +188,7 @@ int Init(int argc, char *argv[])
 
     g_signal_connect(button2,"clicked",G_CALLBACK(LoadNeuralNetwork),NULL);
 
-    g_signal_connect(button3,"clicked",G_CALLBACK(Read),NULL);
+    g_signal_connect(button3,"clicked",G_CALLBACK(Read),window);
 
     g_signal_connect(button4,"clicked",G_CALLBACK(SaveText),NULL);
 
