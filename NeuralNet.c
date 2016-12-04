@@ -333,7 +333,7 @@ static void matToAlt(Mat* M) {
     }
 }
 
-static void matToDiag(Mat* M) {
+void matToDiag(Mat* M) {
 
     for ( size_t y = 0 ; y < M->yl ; ++y ) {
         for ( size_t x = 0 ; x < M->xl ; ++x ) {
@@ -348,7 +348,7 @@ static void matToDiag(Mat* M) {
 
 NeuralNet* NnGetXorToXorNn( size_t loop ) {
 
-    size_t t = 200;
+    size_t t = 20;
     Mat* Input = mNewFill(t, t, 0.0);
     Mat* Output = mNewFill(t, t, 0.0);
 
@@ -364,19 +364,14 @@ NeuralNet* NnGetXorToXorNn( size_t loop ) {
 
         NnLearn(NN);
         
-        if (l % 1000 == 0) {
+        if (l % 10000 == 0) {
             
 	    next = NnGetError(NN);
-            warnx("%5.1f percent >>> Error : %50.50f >>> delta : %50.50f", ((float)l / (float)loop) * 100.0, next, next - prev);
+            warnx("%5.1f percent >>> Error : %10.5f >>> delta : %10.5f", ((float)l / (float)loop) * 100.0, next, next - prev);
             prev = next;
         }
-	if (l % 10000 == 0) {
-	    
-            mPrintCompact(NN->l2, "L2");
-	} 
     }
     
-    mPrintCompact(NN->l2, "L2");
     mFree(Input);
     mFree(Output);
 
@@ -589,4 +584,60 @@ double NnGetError(NeuralNet* NN) {
     mFree(Errors);
     return sum / divide;
 
+}
+
+static void testMatrix(NeuralNet* NN, Mat* M) {
+
+    printf("%1.1f XOR %1.1f = ", mGet(M, 0, 0), mGet(M, 0, 1));
+    NN->l0 = M;
+    NnFeedForward(NN);
+    printf("%f ", mGet(NN->l2, 0, 0));
+    if ( mGet(NN->l2, 0, 0) > 0.5 ) 
+        printf("= 1");
+    else
+        printf("= 0");    
+    
+    printf("\n\n");
+}
+
+void THE_TEST_NN_01() {
+
+    printf("NEURAL NETWORK :\n\n");
+    
+    printf("###### I. Xor Neural Network :\n\n");
+    printf("### 1. Learning :\n\n");
+    NeuralNet* NN = NnGetXorNn(50000);
+    NnPrettyPrint(NN);
+    printf("### 2. Testing :\n\n");
+    Mat* T1 = mNewFill(4, 2, 0.0);
+    Mat* T2 = mNewFill(4, 2, 0.0);
+    mSet(T2, 0, 0, 1.0);
+    Mat* T3 = mNewFill(4, 2, 0.0);
+    mSet(T3, 0, 1, 1.0);
+    Mat* T4 = mNewFill(4, 2, 1.0);
+    testMatrix(NN, T1);
+    testMatrix(NN, T2);
+    testMatrix(NN, T3);
+    testMatrix(NN, T4);
+}
+
+void THE_TEST_NN_02() {
+
+    printf("II. Bigger Neural Network :\n\n");
+    printf("1. Learning :\n\n");
+    Mat* M = mNewFill(20, 20, 0.0);
+    matToDiag(M);
+    mPrintCompact(M, "Training Input");
+    mPrintCompact(M, "Expected Output");
+    printf("Start learning :\n\n");
+    NeuralNet* NN2 = NnGetXorToXorNn(50000);
+    printf("Learning Complete.\n\n");
+    mPrintCompact(NN2->l2, "Actual Neural Network Output");
+
+    printf("2. Testing :\n\n");
+    mMirrorInPlace(M);
+    mPrintCompact(M, "Testing matrix");
+    NN2->l0 = M;
+    NnFeedForward(NN2);
+    mPrintCompact(NN2->l2, "Actual Neural Network Output");
 }
