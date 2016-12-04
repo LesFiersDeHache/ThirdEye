@@ -69,6 +69,7 @@ static void openDialog(GtkWidget *button,gpointer *window){
         //gtk_widget_set_sensitive(button3,TRUE);
         gtk_widget_set_sensitive(button4,FALSE);
         SDL_Quit();
+	showResize(BP);
 	//struct listB *res = sendList(L,&B);
     }
 

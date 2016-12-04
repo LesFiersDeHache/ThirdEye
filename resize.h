@@ -20,4 +20,6 @@ Bitmap* fromCutToNN(List l, Bitmap* b);
 void lettersPrettyPrint(List *l, Bitmap *b);
 
 struct listB* sendList(List *l, Bitmap* b);
+
+void showResize(Bitmap* b);
 #endif

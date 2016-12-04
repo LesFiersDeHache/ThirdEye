@@ -32,8 +32,8 @@ int main ( int argc, char *argv[] )
 
     //char* s = getCharFromMat(M);
     //printf("THING %s", s);
-    lrnStartLearning("ascii6.bmp", "save.txt", 1000000);
-    //Init(argc,argv);
+    //lrnStartLearning("ascii6.bmp", "save.txt", 1000000);
+    Init(argc,argv);
 
 /*
     //lrnSaveNeuralNet(NN, "save.txt");
@@ -96,11 +96,12 @@ int main ( int argc, char *argv[] )
         //mPrintExt(B1, "B1 MAT");
 	*/
 
-      Bitmap k = LoadToBitmap("Test8x8.bmp");
+      /*Bitmap k = LoadToBitmap("Test8x8.bmp");
       Bitmap * bmp = &k;
+      showResize(bmp);*/
       //DoAll(bmp);
-      List *l = CutAll(bmp);
-      struct listB *res = sendList(l,bmp);
+      //List *l = CutAll(bmp);
+      //struct listB *res = sendList(l,bmp);
 
 	/*while (!is_emptyB(res))
 	{
