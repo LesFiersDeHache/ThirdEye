@@ -31,6 +31,7 @@ List* cutblockY(int *tab, Bitmap *b, List ** Psize)
 			if(k==0)
 			  {isStillBlack = 1;
 				//warnx("B: X%hu : Y%hu",x,y);
+				white = 0;
 				}
 		}
 		if(isStillBlack)
@@ -48,8 +49,8 @@ List* cutblockY(int *tab, Bitmap *b, List ** Psize)
 		{
 		  	
 		  if(policeSize > 3 && Threshold == 0){
-				Threshold =4*policeSize;
-				warnx("PoliceSize = %d    Y %d",policeSize,y);
+				Threshold =2*policeSize; //4
+				//warnx("PoliceSize = %d    Y %d",policeSize,y);
 				ContinuePsize = 0;
 		  }
 			if(Threshold!=0)
@@ -57,14 +58,14 @@ List* cutblockY(int *tab, Bitmap *b, List ** Psize)
 				white += 1;
 				if(white>Threshold || y+1 == tab[2] - tab[3])
 				{
-
+					//warnx("WHITETHRESHHHH : W %d    T %d",white,Threshold);
 					yMaxB = y;
 					int newBloc[4] = {tab[0],tab[1],yMinB,yMaxB};
 				  res = push_front(newBloc,res);
 					firstblack = 1;
 					yMinB = tab[2];
 					yMaxB = tab[2];
-					//warnx("POLICE SIZE %d...... ",policeSize);
+					//warnx("POLICE SIZE %d...... +%d",policeSize,y);
 					newBloc[0] = policeSize;
 					policeSize = 0;
 					*Psize = push_front(newBloc,*Psize);
@@ -81,7 +82,7 @@ List* cutblockY(int *tab, Bitmap *b, List ** Psize)
 	//*PoliceSize= policeSize;
 	//warnx("Psize%d",policeSize);
 	//warnx("CUT Y");
-	//print_list(res);
+	print_list(res);
         return res;
 };
 
@@ -90,7 +91,6 @@ List* cutblockY(int *tab, Bitmap *b, List ** Psize)
 List* cutblockX(int* tab, Bitmap *b, int policeSize)
 {
   warnx("In Cut X %d",policeSize); 
-	int Threshold = 1* policeSize;
   //warnx("In Cut X %d",policeSize); 
 	int Threshold = 1.5* policeSize;
 	int white = 0;
@@ -244,7 +244,7 @@ List* Cutchars(int *tab, Bitmap *b, int PoliceSize)
 	    {
 	      if (blackp == 0)//First Time we got black
 		{
-		  if (whitep > Threshold+5)
+		  if (whitep >= Threshold)
 		    {
 		      int newBloc[4] = {xMinB,x,tab[2],tab[3]};
 		      res = push_front(newBloc,res);

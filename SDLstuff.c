@@ -139,25 +139,25 @@ Bitmap LoadToBitmap(char *path)
   Bitmap BitM;
   bitmapInit(&BitM, width, height);
   for (int i = 0; i < width; i++)
-  {
+  { 
     for (int j = 0; j < height; j++)
       {
 	      Uint32 pixel = getpixelSurface(surface,i,j);
       	SDL_GetRGB(pixel, surface->format, &r, &g, &b);
        	float lum = (0.3*r + 0.59*g + 0.11*b);
-	if (lum > 120)
-	  {
-	    setPixel(&BitM, i, j, 1);
-	    lum = 255;
-	  }
-	else
-	  {
-	    setPixel(&BitM, i, j, 0);
-	    lum = 0;
-	  }
-	pixel = SDL_MapRGB(surface->format, lum, lum, lum);
+      if (lum > 165)
+        {
+          setPixel(&BitM, i, j, 1);
+          lum = 255;
+        }
+      else
+        {
+          setPixel(&BitM, i, j, 0);
+          lum = 0;
+        }
+	//pixel = SDL_MapRGB(surface->format, lum, lum, lum);
 
-	putpixel2(surface,i,j,pixel); 
+	//putpixel2(surface,i,j,pixel); 
       }
   }  
   printf("image Loaded and retruned\n");

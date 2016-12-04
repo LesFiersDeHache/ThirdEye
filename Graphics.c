@@ -56,6 +56,7 @@ static void openDialog(GtkWidget *button,gpointer *window){
         //display_image(load_image(s));
         //display Binarize Image
         Bitmap B =  LoadToBitmap(s);
+        display_image(BitmapToSurface(&B));
         //display_image(BitmapToSurface(&B));
         //DoAll(&B);
         List * K = CutAll(&B);
