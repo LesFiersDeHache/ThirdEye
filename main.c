@@ -32,8 +32,8 @@ int main ( int argc, char *argv[] )
 
     //char* s = getCharFromMat(M);
     //printf("THING %s", s);
-    lrnStartLearning("ascii6.bmp", "save.txt", 100000);
-    
+    //lrnStartLearning("ascii6.bmp", "save.txt", 100000);
+      Init(argc,argv);
 
 /*
     //lrnSaveNeuralNet(NN, "save.txt");

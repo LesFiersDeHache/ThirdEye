@@ -100,7 +100,22 @@ void SaveText(){
 
 }
 // END CALLED ON CLICK
+void MegaPrint(char *s){
+    GtkWidget *window;
+    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_default_size (GTK_WINDOW (window), 1000, 1000);
+    g_signal_connect(window,"delete_event",G_CALLBACK(gtk_window_iconify),NULL);
+    GtkTextBuffer *buffer = gtk_text_buffer_new (NULL);
+    GtkTextIter iter;
+    gtk_text_buffer_get_iter_at_offset(buffer,&iter,0);
+    gtk_text_buffer_insert(GTK_TEXT_BUFFER(buffer),&iter,s,-1);
+    textview = gtk_text_view_new();
+    gtk_text_view_set_buffer(GTK_TEXT_VIEW(textview),buffer);
+    gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (textview), GTK_WRAP_WORD);
 
+    gtk_container_add(GTK_CONTAINER(window),textview);
+    gtk_widget_show_all(window);
+}
 int Init(int argc, char *argv[])
 {
     gtk_init(&argc,&argv);
@@ -167,6 +182,7 @@ int Init(int argc, char *argv[])
     
 
     gtk_widget_show_all(window);
+    MegaPrint("WOOOOOOOOOOOOOOOOOOOO");
     gtk_main();
     return 0;
 }

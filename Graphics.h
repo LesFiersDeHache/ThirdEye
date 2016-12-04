@@ -5,5 +5,6 @@
 
 int Init(int argc, char *argv[]);
 void ChangeTxt(char *s);
+void MegaPrint(char *s);
 
 #endif
