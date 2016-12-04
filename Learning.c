@@ -99,7 +99,6 @@ char* getCharFromMat(Mat* I) {
 
     Mat* R = NN->l2;
 
-    mPrintCompact(R, "R");
     for ( size_t x = 0 ; x < R->xl ; ++x ) {
         
         size_t i = 0;
@@ -121,8 +120,6 @@ char* getCharFromMat(Mat* I) {
 
             result[x] = 33 + i;
         }
-
-        warnx("getCharFromMat : %ld = %d", i, result[i]);
     }
 
     NnFree(NN);
