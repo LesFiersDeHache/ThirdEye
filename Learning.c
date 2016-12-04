@@ -62,7 +62,7 @@ void lrnStartLearning(char* train_path, char* nn_path, int loops) {
     }
 
     lrnSaveNeuralNet(NN, nn_path);
-    //NnBigPrint(NN);
+    NnBigPrint(NN);
     NnFree(NN);
 }
 
