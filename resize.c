@@ -73,7 +73,7 @@ Bitmap* AdjustChar(List l, Bitmap *b)
      }
 
     
-  //printBitmap(result);  
+  printBitmap(result);  
   return result;
 }
 

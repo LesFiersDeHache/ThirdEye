@@ -58,6 +58,7 @@ static void openDialog(GtkWidget *button,gpointer *window){
         display_image(load_image(s));
         //display Binarize Image
         Bitmap B =  LoadToBitmap(s);
+	Bitmap Resize = LoadToBitmap(s);
         BP = &B;
         display_image(BitmapToSurface(BP));
         //display_image(BitmapToSurface(&B));
@@ -69,7 +70,7 @@ static void openDialog(GtkWidget *button,gpointer *window){
         //gtk_widget_set_sensitive(button3,TRUE);
         gtk_widget_set_sensitive(button4,FALSE);
         SDL_Quit();
-	showResize(BP);
+	showResize(&Resize);
 	//struct listB *res = sendList(L,&B);
     }
 
