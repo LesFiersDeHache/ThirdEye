@@ -26,7 +26,7 @@
 
 #define OUT NN->out
 
-#define CST_OF_LRN 2
+#define CST_OF_LRN 1
 
 // ### STRUCT NEURAL NET ### //
 
