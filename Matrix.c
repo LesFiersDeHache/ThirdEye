@@ -325,6 +325,19 @@ Mat* mAddAllLines(Mat* M_one_line, Mat* M) {
 
     return R;
 }
+
+void mMirrorInPlace(Mat* M) {
+
+    for ( Uint x = 0 ; x < M->xl ; ++x ) {
+
+        for ( Uint y = 0 ; y < M->yl / 2 ; ++y ) {
+        
+            float tmp = mGet(M, x, y);
+            mSet(M, x, y, mGet(M, x, M->yl - y - 1));
+            mSet(M, x, M->yl - y - 1, tmp);
+        }
+    }
+}
 /* 
 int main(){
     

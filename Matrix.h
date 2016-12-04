@@ -153,4 +153,6 @@ Mat* mAddLineByLine(Mat* M, Mat* M_one_line);
 
 Mat* mAddAllLines(Mat* M_one_line, Mat* M);
 
+void mMirrorInPlace(Mat* M);
+
 #endif
