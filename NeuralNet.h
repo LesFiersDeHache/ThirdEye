@@ -39,6 +39,8 @@ void NnFree(NeuralNet* NN);
 
 void NnLearn(NeuralNet* NN);
 
+void matToDiag(Mat* M);
+
 void NnFeedForward(NeuralNet* NN);
 
 NeuralNet* NnGetXorToXorNn(size_t loop);
@@ -53,5 +55,8 @@ void NnPrettyPrint(NeuralNet* NN);
 void NnBigPrint(NeuralNet* NN);
 
 double NnGetError(NeuralNet* NN);
+
+void THE_TEST_NN();
+
 #endif
 

@@ -61,8 +61,8 @@ NeuralNet* NnInit(Mat* X_in, Mat* Y_in,
     mCopyAinB(Y_in, OUT);
 
     // Biases init (to random values)
-    B1 = mNewRand(1, L1->yl, 2, -1);
-    B2 = mNewRand(1, L2->yl, 2, -1);
+    B1 = mNewRand(L1->xl, L1->yl, 2, -1);
+    B2 = mNewRand(L2->xl, L2->yl, 2, -1);
 
     // Error and delta of L1 matrix init
     L1_ERR = mNewFill(Y_in->xl, W1to2->xl, 0.0);
@@ -101,7 +101,7 @@ static void set_l1(NeuralNet* NN) {
 
     // L1 = sigmoid(L0 . W0to1)
     Mat* tmp = mDot(L0, W0to1);
-    Mat* tmp2 = mAddLineByLine(tmp, B1);
+    Mat* tmp2 = mAdd(tmp, B1);
 
     //mPrintExt(tmp, "l0 dot w0to1");
 
@@ -124,7 +124,7 @@ static void set_l2(NeuralNet* NN) {
 
     // L2 = sigmoid(L1 . W1to2)
     Mat* tmp = mDot(L1, W1to2);
-    Mat* tmp2 = mAddLineByLine(tmp, B2);
+    Mat* tmp2 = mAdd(tmp, B2);
 
     //mPrintExt(tmp, "l1 dot w1to2");
 
@@ -272,7 +272,7 @@ static void update_w0to1(NeuralNet* NN) {
 
 static void update_b1(NeuralNet* NN) {
 
-    Mat* tmp = mAddAllLines(B1, L1_DELTA);
+    Mat* tmp = mAdd(B1, L1_DELTA);
     mCopyAinB(tmp, B1);
 
     mFree(tmp);
@@ -280,7 +280,7 @@ static void update_b1(NeuralNet* NN) {
 
 static void update_b2(NeuralNet* NN) {
 
-    Mat* tmp = mAddAllLines(B2, L2_DELTA);
+    Mat* tmp = mAdd(B2, L2_DELTA);
     mCopyAinB(tmp, B2);
 
     mFree(tmp);
@@ -333,7 +333,7 @@ static void matToAlt(Mat* M) {
     }
 }
 
-static void matToDiag(Mat* M) {
+void matToDiag(Mat* M) {
 
     for ( size_t y = 0 ; y < M->yl ; ++y ) {
         for ( size_t x = 0 ; x < M->xl ; ++x ) {
@@ -348,7 +348,7 @@ static void matToDiag(Mat* M) {
 
 NeuralNet* NnGetXorToXorNn( size_t loop ) {
 
-    size_t t = 200;
+    size_t t = 20;
     Mat* Input = mNewFill(t, t, 0.0);
     Mat* Output = mNewFill(t, t, 0.0);
 
@@ -364,19 +364,14 @@ NeuralNet* NnGetXorToXorNn( size_t loop ) {
 
         NnLearn(NN);
         
-        if (l % 1000 == 0) {
+        if (l % 10000 == 0) {
             
 	    next = NnGetError(NN);
-            warnx("%5.1f percent >>> Error : %50.50f >>> delta : %50.50f", ((float)l / (float)loop) * 100.0, next, next - prev);
+            warnx("%5.1f percent >>> Error : %10.5f >>> delta : %10.5f", ((float)l / (float)loop) * 100.0, next, next - prev);
             prev = next;
         }
-	if (l % 10000 == 0) {
-	    
-            mPrintCompact(NN->l2, "L2");
-	} 
     }
     
-    mPrintCompact(NN->l2, "L2");
     mFree(Input);
     mFree(Output);
 
@@ -525,10 +520,8 @@ void NnPrettyPrint(NeuralNet* NN) {
 
     printTitle("INPUT", L0->yl);
     printTitle("W0to1", W0to1->yl);
-    printTitle("B1___", B1->yl);
     printTitle("L1___", L1->yl);
     printTitle("W1to2", W1to2->yl);
-    printTitle("B2___", B2->yl);
     printTitle("OUT__", L2->yl);
     printTitle("E_OUT", OUT->yl);
     printf("\n");
@@ -541,10 +534,8 @@ void NnPrettyPrint(NeuralNet* NN) {
         
         printRow(L0, i);
         printRow(W0to1, i);
-        printRow(B1, i);
         printRow(L1, i);
         printRow(W1to2, i);
-        printRow(B2, i);
         printRow(L2, i);
         printRow(OUT, i);
         printf("\n");
@@ -589,4 +580,48 @@ double NnGetError(NeuralNet* NN) {
     mFree(Errors);
     return sum / divide;
 
+}
+
+static void testMatrix(NeuralNet* NN, Mat* M, int i) {
+
+    printf("%1.1f XOR %1.1f = ", mGet(M, 0, 0), mGet(M, 0, 1));
+    NN->l0 = M;
+    printf("%f ", mGet(NN->l2, i-1, 0));
+    if ( mGet(NN->l2, i-1, 0) > 0.5 ) 
+        printf("= 1");
+    else
+        printf("= 0");    
+    
+    printf("\n\n");
+}
+
+void THE_TEST_NN_01() {
+
+    printf("NEURAL NETWORK :\n\n");
+    
+    printf("###### I. Xor Neural Network :\n\n");
+    printf("### 1. Learning :\n\n");
+    NeuralNet* NN = NnGetXorNn(50000);
+    NnPrettyPrint(NN);
+    printf("### 2. Testing :\n\n");
+    Mat* T1 = mNewFill(4, 2, 0.0);
+    Mat* T2 = mNewFill(4, 2, 0.0);
+    mSet(T2, 0, 0, 1.0);
+    Mat* T3 = mNewFill(4, 2, 0.0);
+    mSet(T3, 0, 1, 1.0);
+    Mat* T4 = mNewFill(4, 2, 1.0);
+    testMatrix(NN, T1, 1);
+    testMatrix(NN, T2, 2);
+    testMatrix(NN, T3, 3);
+    testMatrix(NN, T4, 4);
+}
+
+void THE_TEST_NN_02() {
+
+    // INSERT ASCII IMAGE + DECOUPAGE
+
+    Mat* M = learningNN("ascii6.bmp");
+    char* s = getCharFromMat(M);
+    printf(">>> %s", s);
+    // QUE FAIRE AVEC CETTE STRING ?
 }

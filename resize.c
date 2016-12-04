@@ -73,7 +73,7 @@ Bitmap* AdjustChar(List l, Bitmap *b)
      }
 
     
-  //printBitmap(result);  
+  printBitmap(result);  
   return result;
 }
 
@@ -97,8 +97,8 @@ Bitmap* sizeUP(Bitmap* b)
 			setPixel(result,x,y,getPixel(b,x / size_mod, y / size_mod));
 		}
 	}
-        //printf("\nIMAGE RESIZED UP : MOD = %f\n\n", size_mod);
-	//printBitmap(result);
+        printf("\nIMAGE RESIZED UP : MOD = %f\n\n", size_mod);
+	printBitmap(result);
 	freeBitmap(b);
 	return result;
 }
@@ -123,8 +123,8 @@ Bitmap* sizeDO(Bitmap *b)
 			setPixel(result,x,y,getPixel(b,x / size_mod, y / size_mod));
 		}
 	}
-	//printf("\nIMAGE RESIZED DOWN : MOD = %f\n\n", size_mod);
-	//printBitmap(result);
+	printf("\nIMAGE RESIZED DOWN : MOD = %f\n\n", size_mod);
+	printBitmap(result);
 	freeBitmap(b);
 	return result;
 }
@@ -132,7 +132,7 @@ Bitmap* sizeDO(Bitmap *b)
 
 Bitmap* fromCutToNN( List l, Bitmap* b)
 {
-	//printf("\nADJUSTED CHAR BEFORE RESIZING :\n");
+	printf("\nADJUSTED CHAR BEFORE RESIZING :\n");
 	Bitmap* result = AdjustChar(l, b);
 	if (result->height != 24)
 	{
@@ -182,4 +182,10 @@ struct listB* sendList(List *l, Bitmap* b)
 		res = res->next;
 	}*/
 	return res;
+}
+
+void showResize(Bitmap* b)
+{
+	List* l = CutAll(b);
+	lettersPrettyPrint(l,b);
 }

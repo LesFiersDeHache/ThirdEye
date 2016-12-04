@@ -23,8 +23,25 @@
 int main ( int argc, char *argv[] )
 {
 
-    //NeuralNet* NN = NnGetXorToXorNn(5000);
+    //THE_TEST_NN_01();
+    //THE_TEST_NN_02();
+
+    //lrnStartLearning("ascii6.bmp", "save.txt", 10000);
+
+    /*
+    NeuralNet* NN = NnGetXorToXorNn(50000);
+    Mat* M = mNewFill(20, 20, 0.0);
+    matToDiag(M);
+    mPrintCompact(M, "M");
+    mMirrorInPlace(M);
+    mPrintCompact(M, "M");
+    Mat* M2 = mT(M);
+    NN->l0 = M2;
+    NnFeedForward(NN);
+    NnBigPrint(NN);
+    */
     //NnBigPrint(NN);
+
 
     //lrnInitNeuralNet("ascii6.bmp", "save.txt");
 
@@ -32,8 +49,12 @@ int main ( int argc, char *argv[] )
 
     //char* s = getCharFromMat(M);
     //printf("THING %s", s);
-    lrnStartLearning("ascii6.bmp", "save.txt", 1000000);
+    //lrnStartLearning("ascii6.bmp", "save.txt", 1000000);
+//<<<<<<< HEAD
+    Init(argc,argv);
+//=======
     //Init(argc,argv);
+//>>>>>>> 7d148e7c37c7f8c0e360cc743e16291e56f66c27
 
 /*
     //lrnSaveNeuralNet(NN, "save.txt");
@@ -96,11 +117,12 @@ int main ( int argc, char *argv[] )
         //mPrintExt(B1, "B1 MAT");
 	*/
 
-      Bitmap k = LoadToBitmap("Test8x8.bmp");
+      /*Bitmap k = LoadToBitmap("Test8x8.bmp");
       Bitmap * bmp = &k;
+      showResize(bmp);*/
       //DoAll(bmp);
-      List *l = CutAll(bmp);
-      struct listB *res = sendList(l,bmp);
+      //List *l = CutAll(bmp);
+      //struct listB *res = sendList(l,bmp);
 
 	/*while (!is_emptyB(res))
 	{
