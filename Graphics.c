@@ -58,19 +58,23 @@ static void openDialog(GtkWidget *button,gpointer *window){
         display_image(load_image(s));
         //display Binarize Image
         Bitmap B =  LoadToBitmap(s);
-	Bitmap Resize = LoadToBitmap(s);
+	    Bitmap Resize = LoadToBitmap(s);
         BP = &B;
         display_image(BitmapToSurface(BP));
         //display_image(BitmapToSurface(&B));
         //DoAll(&B);
         List * K = CutAll(BP);
+        if(K != NULL){
+        
 	    Bitmap Kline = DrawLines(BP,K);
 	    display_image(BitmapToSurface(&Kline));
         gtk_widget_set_sensitive(button2,TRUE);
         //gtk_widget_set_sensitive(button3,TRUE);
         gtk_widget_set_sensitive(button4,FALSE);
+        
+	    showResize(&Resize);
+        }
         SDL_Quit();
-	showResize(&Resize);
 	//struct listB *res = sendList(L,&B);
     }
 
