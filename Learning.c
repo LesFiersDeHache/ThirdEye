@@ -85,7 +85,7 @@ void lrnInitNeuralNet(char* train_path, char* nn_path) {
 
 char* getCharFromMat(Mat* I) {
 
-    char* result = malloc(sizeof(char) * 94);
+    char* result = malloc(sizeof(char) * 95);
 
     Mat* P_Out = mNewFill(I->xl, 94, 0.0);
 
@@ -121,7 +121,8 @@ char* getCharFromMat(Mat* I) {
             result[x] = 33 + i;
         }
     }
-
+    
+    result[94] = '\0';
     NnFree(NN);
     mFree(P_Out);
     
