@@ -10,21 +10,25 @@ Students : Paul BENETEAU, Maxence CARON-LASNE, Lucas MONSEGU, Antoine SAINSON
     clicking the button:
 
         - XOR : Demo of the XOR Network (In Console)
+
         - Load Text : Choose an image in a folder ("Lorem.bmp" for instance)
         It displays in a new windows the binarized image.
         PRESS SPACEBAR
-        If there are some char to detec, they will be surrounded in red.
+        If there are some char to detect, they will be surrounded in red.
         You can find in the console the Bitmap representation of those chars,
         before and after their resizing.
+
         - Load Neural Network: Shows a fonctionnal example of the final neural
-        network (In Console)
+        network (In Console).
+
         - Save Text: You can only use this button after launching the "Load
         Text" part of the software. This button displays in the right up corner
         the text contained in the image chose in "Load Text".
+
         - Test Learning: Shows in console a quick learning of the neural network
-        (20 x 20 Matrix)
+        (20 x 20 Matrix).
+
         - Read: Choose an image in a folder, the text contained in this image is
         displayed in the right corner up of the window.
 
-        You can get much more information about the project in the ThirdEye's
-        report. 
+You can get much more information about the project in the ThirdEye's report.
