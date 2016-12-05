@@ -5,7 +5,7 @@
 #include <err.h>
 #include <assert.h>
 #include "NeuralNet.h"
-
+#include "loadLearningImage.h"
 #include "Matrix.h"
 
 #define L0 NN->l0

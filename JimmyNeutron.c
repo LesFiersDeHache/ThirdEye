@@ -12,6 +12,7 @@
 #include "SDLstuff.h"
 #include "listB.h"
 #include "resize.h"
+#include "loadLearningImage.h"
 
 // ############ INIT ##################//
 

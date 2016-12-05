@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <err.h>
 #include "Bitmap.h"
+#include "listB.h"
 
 #ifndef ONLYONCE_loadLearningImage
 #define ONLYONCE_loadLearningImage
