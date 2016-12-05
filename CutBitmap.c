@@ -338,7 +338,7 @@ char *givemechar(List* coord, Bitmap *b)
 {
 	return "A";
 	struct listB* bmp_list = sendList(coord, b);
-    struct listB* test = bmp_list;
+	//struct listB* test = bmp_list;
     /*while (!is_emptyB(test))
     {
         printBitmap(test->bmp);
