@@ -30,7 +30,7 @@ static int GoodSize(int a, int b)
     }
 }
 
-Bitmap* AdjustChar(List l, Bitmap *b)
+Bitmap* AdjustChar(List l, Bitmap *b, int arg)
 {
   //l = cutHeight(l,b);
   int xMin = l.a;
@@ -73,13 +73,13 @@ Bitmap* AdjustChar(List l, Bitmap *b)
      }
 
     
-  printBitmap(result);  
+  if (arg){printBitmap(result);}  
   return result;
 }
 
 
 
-Bitmap* sizeUP(Bitmap* b)
+Bitmap* sizeUP(Bitmap* b, int arg)
 {
 	int size = 24;
 	if (b->height != b->width)
@@ -97,14 +97,17 @@ Bitmap* sizeUP(Bitmap* b)
 			setPixel(result,x,y,getPixel(b,x / size_mod, y / size_mod));
 		}
 	}
+    if (arg)
+    {
         printf("\nIMAGE RESIZED UP : MOD = %f\n\n", size_mod);
-	printBitmap(result);
+	    printBitmap(result);
+    }
 	freeBitmap(b);
 	return result;
 }
 
 
-Bitmap* sizeDO(Bitmap *b)
+Bitmap* sizeDO(Bitmap *b, int arg)
 {
 
 	int size = 24;
@@ -123,26 +126,32 @@ Bitmap* sizeDO(Bitmap *b)
 			setPixel(result,x,y,getPixel(b,x / size_mod, y / size_mod));
 		}
 	}
-	printf("\nIMAGE RESIZED DOWN : MOD = %f\n\n", size_mod);
-	printBitmap(result);
+    if (arg)
+    { 
+	    printf("\nIMAGE RESIZED DOWN : MOD = %f\n\n", size_mod);
+	    printBitmap(result);
+    }
 	freeBitmap(b);
 	return result;
 }
 
 
-Bitmap* fromCutToNN( List l, Bitmap* b)
+Bitmap* fromCutToNN( List l, Bitmap* b, int arg)
 {
-	printf("\nADJUSTED CHAR BEFORE RESIZING :\n");
-	Bitmap* result = AdjustChar(l, b);
+	if (arg)
+    {
+        printf("\nADJUSTED CHAR BEFORE RESIZING :\n");
+    }
+	Bitmap* result = AdjustChar(l, b, arg);
 	if (result->height != 24)
 	{
 		if (result->height < 24)
 		{
-			result = sizeUP(result);
+            result = sizeUP(result, arg);
 		}
 		else
 		{
-			result = sizeDO(result);
+			result = sizeDO(result, arg);
 		}
 	}
 	return result;
@@ -155,7 +164,7 @@ void lettersPrettyPrint(List *l, Bitmap* b)
 	printf("START DISPLAY\n\n");
 	while (!is_empty(l))
 	{
-		fromCutToNN(*l,b);
+		fromCutToNN(*l,b,1);
 		l = l->next;
 		++i;
 	}
@@ -166,11 +175,11 @@ void lettersPrettyPrint(List *l, Bitmap* b)
 struct listB* sendList(List *l, Bitmap* b)
 {
 	struct listB* res = empty_listB();
-	res = push_frontB(fromCutToNN(*l,b),res);
+	res = push_frontB(fromCutToNN(*l,b,0),res);
 	l = l->next;
 	while (!is_empty(l))
 	{
-		Bitmap *bmp = fromCutToNN(*l,b);
+		Bitmap *bmp = fromCutToNN(*l,b,0);
 		res = push_frontB(bmp, res);
 		l = l->next;
 	}
