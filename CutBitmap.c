@@ -11,6 +11,7 @@
 #include "loadLearningImage.h"
 #include "Learning.h"
 #include "string.h"
+#include "resize.h"
 
 List* cutblockY(int *tab, Bitmap *b, List ** Psize)
 {
@@ -335,9 +336,9 @@ Bitmap DrawLines(Bitmap *bmp,List *L)
 
 char *givemechar(List* coord, Bitmap *b)
 {
-	return 'A';
+	return "A";
 	struct listB* bmp_list = sendList(coord, b);
-    struct listB* test = bmp_list;
+	//struct listB* test = bmp_list;
     /*while (!is_emptyB(test))
     {
         printBitmap(test->bmp);
