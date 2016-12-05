@@ -356,8 +356,6 @@ char *givemechar(List* coord, Bitmap *b)
 
 
 char* DoAll(Bitmap *b){
-	char tz[] = "";
-	char *s = &tz;
 	int tab[4] = {0, b->width - 1, 0, b->height-1}; //IMG SIZE
 	List* TmpSize = empty_list();
   List** PsizeL2 = &TmpSize;
