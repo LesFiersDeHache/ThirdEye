@@ -56,7 +56,10 @@ void NnBigPrint(NeuralNet* NN);
 
 double NnGetError(NeuralNet* NN);
 
-void THE_TEST_NN();
+void THE_TEST_NN_01();
 
+void THE_TEST_NN_02();
+
+char* THE_TEST_NN_03();
 #endif
 

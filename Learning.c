@@ -97,7 +97,7 @@ char* getCharFromMat(Mat* I) {
 
     NnFeedForward(NN);
 
-    Mat* R = NN->l2;
+    Mat* R = NN->out;
 
     for ( size_t x = 0 ; x < 94 ; ++x ) {
         
