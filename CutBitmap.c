@@ -408,14 +408,18 @@ char* DoAll(Bitmap *b){
           //warnx("RES %s",s);
 			    fprintf(f,"\n");
 			    //warnx("done adding charsi %d", i);
+					
 	    	}
+				free(L3);
+
 		//END OF GETTING THE LINES
 	    }
+			free(L2);
 	    fprintf(f,"\n\n ");
 	}
 	//warnx("done adding char");
 	fclose(f);
-
+free(L);
 	FILE *fp = fopen("OutPut","r");
 	char *buffer = NULL;
 	size_t size = 0;
