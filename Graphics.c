@@ -23,6 +23,7 @@
 GtkWidget *textview,*button,*button2,*button3,*button4 ;
 char *s;
 Bitmap *BP;
+char * path;
 
 struct mymultiple {
 	GtkWidget *Pobject;
@@ -56,6 +57,7 @@ static void openDialog(GtkWidget *button,gpointer *window){
         // YOU SHOULD LOAD THE IMAGE 
         //SHOWING RAW IMAGE
         display_image(load_image(s));
+        path = s;
         //display Binarize Image
         Bitmap B =  LoadToBitmap(s);
 	    Bitmap Resize = LoadToBitmap(s);
@@ -65,7 +67,6 @@ static void openDialog(GtkWidget *button,gpointer *window){
         //DoAll(&B);
         List * K = CutAll(BP);
         if(K != NULL){
-        
 	    Bitmap Kline = DrawLines(BP,K);
 	    display_image(BitmapToSurface(&Kline));
         gtk_widget_set_sensitive(button2,TRUE);
@@ -128,8 +129,9 @@ void Read(GtkWidget *button,gpointer *window){
 }
 void SaveText(){
 	g_print("Give me a Save Text Func\n");
-    if(BP!= NULL){
-        char* result = DoAll(BP);
+    if(s!= NULL){
+        Bitmap B =  LoadToBitmap(s);
+        char* result = DoAll(&B);
         ChangeTxt(result);
     }
 
