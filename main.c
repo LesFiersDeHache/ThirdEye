@@ -23,9 +23,10 @@
 int main ( int argc, char *argv[] )
 {
 
-    THE_TEST_NN_01();
-    THE_TEST_NN_02();
-    THE_TEST_NN_03();
+    Init(argc, argv);
+    //THE_TEST_NN_01();
+    //THE_TEST_NN_02();
+    //THE_TEST_NN_03();
     //lrnStartLearning("ascii6.bmp", "save.txt", 10000);
 
     /*
