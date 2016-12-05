@@ -622,6 +622,11 @@ void THE_TEST_NN_02() {
 
     Mat* M = learningNN("ascii6.bmp");
     char* s = getCharFromMat(M);
-    printf(">>> %s", s);
+
+    for ( int i = 0 ; i < 94 ; ++i ) {
+
+        printf("%c", s[i]);
+    }
+    printf("#END\n");
     // QUE FAIRE AVEC CETTE STRING ?
 }
