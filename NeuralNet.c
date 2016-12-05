@@ -7,6 +7,7 @@
 #include "NeuralNet.h"
 #include "loadLearningImage.h"
 #include "Matrix.h"
+#include "Learning.h"
 
 #define L0 NN->l0
 #define L1 NN->l1
@@ -320,19 +321,6 @@ void NnLearn(NeuralNet* NN) {
     NnBackPropagation(NN);
 }
 
-static void matToAlt(Mat* M) {
-
-    for ( size_t y = 0 ; y < M->yl ; ++y ) {
-        for ( size_t x = 0 ; x < M->xl ; ++x ) {
-
-            if ( x % 2 == y % 2) {
-
-                mSet(M, x, y, 1.0);
-            }
-        }
-    }
-}
-
 void matToDiag(Mat* M) {
 
     for ( size_t y = 0 ; y < M->yl ; ++y ) {
@@ -436,6 +424,7 @@ int NnGetXorOutput(Mat* w0, Mat* w1, int input0, int input1) {
 }
 // ### PRINTS ### // 
 
+/* 
 static void NnPrint(NeuralNet* NN) {
 
     printf("################################\n");
@@ -452,6 +441,7 @@ static void NnPrint(NeuralNet* NN) {
     mPrintExt(L2, "Output (layer 2) :");
     mPrintExt(OUT, "Expected Output :");
 }
+*/
 
 static void printTitle(char* const chr, size_t len) {
 
@@ -651,4 +641,5 @@ char* THE_TEST_NN_03() {
     }
     printf("#END\n");
     // QUE FAIRE AVEC CETTE STRING ?
+    return s;
 }
