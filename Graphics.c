@@ -151,10 +151,16 @@ void MegaPrint(char *s){
     gtk_container_add(GTK_CONTAINER(window),textview);
     gtk_widget_show_all(window);
 }
+void GoXor(){
+    g_print("xor");
+}
+void GoTestLearning(){
+    g_print("testlearning");
+}
 int Init(int argc, char *argv[])
 {
     gtk_init(&argc,&argv);
-    GtkWidget *window,*table;
+    GtkWidget *window,*table,*buttontmp1,*buttontmp2;
     //gtk_window_set_default_size (GTK_WINDOW (window), 640, 480);
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size (GTK_WINDOW (window), 640, 480);
@@ -174,7 +180,8 @@ int Init(int argc, char *argv[])
     button2 = gtk_button_new_with_mnemonic("_Load Neural Network");
     button3 = gtk_button_new_with_mnemonic("_Read");
     button4 = gtk_button_new_with_mnemonic("_Save Text");
-
+    buttontmp1 = gtk_button_new_with_mnemonic("_Xor");
+    buttontmp2 = gtk_button_new_with_mnemonic("_Test Learning");
     //gtk_widget_set_sensitive(button3,FALSE);
 
     gtk_widget_set_sensitive(button4,FALSE);
@@ -195,6 +202,8 @@ int Init(int argc, char *argv[])
     g_signal_connect(button2,"clicked",G_CALLBACK(LoadNeuralNetwork),NULL);
 
     g_signal_connect(button3,"clicked",G_CALLBACK(Read),window);
+    g_signal_connect(buttontmp1,"clicked",G_CALLBACK(GoXor),NULL);
+    g_signal_connect(buttontmp2,"clicked",G_CALLBACK(GoTestLearning),NULL);
 
     g_signal_connect(button4,"clicked",G_CALLBACK(SaveText),NULL);
 
@@ -203,7 +212,8 @@ int Init(int argc, char *argv[])
     gtk_table_attach(GTK_TABLE(table),button2, 0,1,1,2,GTK_FILL,GTK_EXPAND|GTK_FILL,10,10);
     gtk_table_attach(GTK_TABLE(table),button3,3,4,3,4,GTK_FILL,GTK_FILL|GTK_EXPAND,10,10);
     gtk_table_attach(GTK_TABLE(table),button4,0,1,2,3,GTK_FILL,GTK_EXPAND|GTK_FILL,10,10);
-
+    gtk_table_attach(GTK_TABLE(table),buttontmp1,0,1,3,4,GTK_FILL,GTK_EXPAND|GTK_FILL,10,10);
+    gtk_table_attach(GTK_TABLE(table),buttontmp2,1,2,3,4,GTK_FILL,GTK_EXPAND|GTK_FILL,10,10);
     gtk_table_attach(GTK_TABLE(table),textview,1,4,0,3,GTK_EXPAND|GTK_FILL,GTK_FILL,2,2);
 
 
