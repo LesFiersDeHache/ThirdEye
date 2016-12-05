@@ -98,6 +98,7 @@ void LoadNeuralNetwork(){
 	g_print("Weight and bias Loaded\n");
     g_print("Neural Network Init\n");
 
+    ChangeTxt(THE_TEST_NN_03());
     //if success
     gtk_widget_set_sensitive(button4,TRUE);
 }
@@ -154,10 +155,10 @@ void MegaPrint(char *s){
     gtk_widget_show_all(window);
 }
 void GoXor(){
-    g_print("xor");
+    THE_TEST_NN_01();
 }
 void GoTestLearning(){
-    g_print("testlearning");
+    THE_TEST_NN_02();
 }
 int Init(int argc, char *argv[])
 {

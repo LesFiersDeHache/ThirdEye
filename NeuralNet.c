@@ -609,8 +609,8 @@ void THE_TEST_NN_01() {
 
 void THE_TEST_NN_02() {
 
-    printf("II. Bigger Neural Network :\n\n");
-    printf("1. Learning :\n\n");
+    printf("###### II. Bigger Neural Network :\n\n");
+    printf("### 1. Learning :\n\n");
     Mat* M = mNewFill(20, 20, 0.0);
     matToDiag(M);
     mPrintCompact(M, "Training Input");
@@ -620,7 +620,7 @@ void THE_TEST_NN_02() {
     printf("Learning Complete.\n\n");
     mPrintCompact(NN2->l2, "Actual Neural Network Output");
 
-    printf("2. Testing :\n\n");
+    printf("\n### 2. Testing :\n\n");
     mMirrorInPlace(M);
     mPrintCompact(M, "Testing matrix");
     NN2->l0 = M;
@@ -635,11 +635,6 @@ char* THE_TEST_NN_03() {
     Mat* M = learningNN("ascii6.bmp");
     char* s = getCharFromMat(M);
 
-    for ( int i = 0 ; i < 94 ; ++i ) {
-
-        printf("%c", s[i]);
-    }
-    printf("#END\n");
     // QUE FAIRE AVEC CETTE STRING ?
     return s;
 }
