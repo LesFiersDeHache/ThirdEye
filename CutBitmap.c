@@ -83,7 +83,7 @@ List* cutblockY(int *tab, Bitmap *b, List ** Psize)
 	//*PoliceSize= policeSize;
 	//warnx("Psize%d",policeSize);
 	//warnx("CUT Y");
-	print_list(res);
+	//print_list(res);
         return res;
 };
 
@@ -91,7 +91,7 @@ List* cutblockY(int *tab, Bitmap *b, List ** Psize)
 
 List* cutblockX(int* tab, Bitmap *b, int policeSize)
 {
-  warnx("In Cut X %d",policeSize); 
+  //warnx("In Cut X %d",policeSize); 
   //warnx("In Cut X %d",policeSize);
 	int Threshold = 1.5*policeSize; 
 	int white = 0;
@@ -132,7 +132,7 @@ List* cutblockX(int* tab, Bitmap *b, int policeSize)
 				//warnx("White %d",white);
 				if(white > Threshold)
 				{
-				  warnx("Adding Element Threshold: %d",Threshold);
+				  //warnx("Adding Element Threshold: %d",Threshold);
 					xMaxB =x ;
 					int newBloc[4] = {xMinB,xMaxB,tab[2],tab[3]};
 				        res = push_front(newBloc,res);
@@ -355,7 +355,7 @@ char *givemechar(List* coord, Bitmap *b)
 
 
 char* DoAll(Bitmap *b){
-	char tz = malloc(4);
+	char tz[] = "";
 	char *s = &tz;
 	int tab[4] = {0, b->width - 1, 0, b->height-1}; //IMG SIZE
 	List* TmpSize = empty_list();
@@ -414,9 +414,33 @@ char* DoAll(Bitmap *b){
 	    }
 	    fprintf(f,"\n\n ");
 	}
+	//warnx("done adding char");
 	fclose(f);
+
+	FILE *fp = fopen("OutPut","r");
+	char *buffer = NULL;
+	size_t size = 0;
+
+	/* Get the buffer size */
+	fseek(fp, 0, SEEK_END); /* Go to end of file */
+	size = ftell(fp); /* How many bytes did we pass ? */
+
+	/* Set position of stream to the beginning */
+	rewind(fp);
+
+	/* Allocate the buffer (no need to initialize it with calloc) */
+	buffer = malloc((size + 1) * sizeof(*buffer)); /* size + 1 byte for the \0 */
+
+	/* Read the file into the buffer */
+	fread(buffer, size, 1, fp); /* Read 1 chunk of size bytes from fp into buffer */
+
+	/* NULL-terminate the buffer */
+	buffer[size-1] = '\0';
+	/* Print it ! */
+	fclose(f);
+	
     //warnx("WOWO");
-	return s;
+	return buffer	;
 }
 
 List* CutAll(Bitmap *b)
@@ -478,7 +502,7 @@ List* CutAll(Bitmap *b)
 	    }
 
 	}
-	warnx("CutY: %d    , CutX: %d      , LinesC:  %d   ",BlocY,BlocY,LineC);
+	//warnx("CutY: %d    , CutX: %d      , LinesC:  %d   ",BlocY,BlocY,LineC);
 	return TOT;
 }
 
